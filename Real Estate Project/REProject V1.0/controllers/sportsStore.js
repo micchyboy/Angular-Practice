@@ -4,6 +4,8 @@ angular.module("sportsStore")
     .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl, orderUrl, cart) {
         $scope.data = {
         };
+        $scope.currentProduct = {};
+
         $http.get(dataUrl)
             .success(function (data) {
                 $scope.data.products = data;
@@ -24,5 +26,35 @@ angular.module("sportsStore")
                 }).finally(function () {
                     $location.path("/complete");
                 });
+        }
+
+        $scope.redirectPage = function(path, item){
+            $scope.currentProduct = item;
+            $location.path(path);
+        }
+
+        $scope.readyItemGallery = function(){
+            $(document).ready(function () {
+
+                $('li img').on('click', function () {
+                    var src = $(this).attr('src');
+                    var img = '<div style="position: relative; margin-left: 32%"><img src="' + src + '" class="img-responsive"/></div>';
+                    $('#myModal').modal();
+                    $('#myModal').on('shown.bs.modal', function () {
+                        $('#myModal .modal-body').html(img);
+                    });
+                    $('#myModal').on('hidden.bs.modal', function () {
+                        $('#myModal .modal-body').html('');
+                    });
+                });
+
+                /*var height = 1000;
+                $('.img-responsive').each(function(){
+                    height = $(this).height() < height && $(this).height() > 30 ? $(this).height() : height;
+                });
+                $('.img-li').each(function(){
+                    $(this).height(height);
+                });*/
+            })
         }
     });

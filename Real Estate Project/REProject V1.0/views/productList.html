@@ -135,13 +135,7 @@
         font-size: 1.5em;
     }
 
-    .highlighted {
-        color: blue;
-    }
 
-    .pointed {
-        cursor: pointer;
-    }
 
 
 </style>
@@ -199,7 +193,8 @@
                  ng-repeat="item in data.products | filter:categoryFilterFn | range:selectedPage:pageSize"
                     ng-mouseenter="hover = true"
                     ng-mouseleave="hover = false"
-                    ng-class="{pointed: hover}">
+                    ng-class="{pointed: hover}"
+                    ng-click="redirectPage('/details',item)">
                 <!--<div style="margin-left: 50px"></div>-->
                 <div class="house-image" style="float: left; margin-right: 25px; margin-left: 10px">
 

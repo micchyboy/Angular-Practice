@@ -56,9 +56,31 @@
         font-size: 12px;
     }
 
-    @media (min-width: 768px) {
-        button select input {
-            float: initial !important;
+    @media (max-width: 768px) {
+        .house-image {
+            margin-left: 30px !important;
+        }
+        .index {
+            margin-left: 17px;
+        }
+    }
+
+    @media (max-width: 517px) {
+        .house-image img{
+            height: 120px;
+            width: 147px;
+        }
+
+        .pill table td.pill-section {
+            padding: 3px 7px;
+        }
+
+        .location-name {
+            font-size: 1.3em !important;
+        }
+
+        .location-finder {
+            width: 130px !important;
         }
     }
 
@@ -105,6 +127,23 @@
     select, a {
         cursor: pointer;
     }
+
+    .location-name {
+        font-family: 'proxima-nova',sans-serif;
+        font:"Helvetica Neue", Helvetica, Arial, sans-serif !important;
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+
+    .highlighted {
+        color: blue;
+    }
+
+    .pointed {
+        cursor: pointer;
+    }
+
+
 </style>
 
 <div class="panel panel-default row"
@@ -132,7 +171,7 @@
                 <div>
                     <select ng-model="searchData.location"
                             ng-options="item for item in data.products  | orderBy:'category' | unique:'category'"
-                            class="input-control"
+                            class="input-control location-finder"
                             style="width: 180px;">
                         <option value="">
                             Search All
@@ -157,9 +196,12 @@
     <div class="container">
         <div class="row" style="overflow-y: auto; height: 480px;">
             <div class="well well-sm col-md-6 col-lg-6 clearfix"
-                 ng-repeat="item in data.products | filter:categoryFilterFn | range:selectedPage:pageSize">
+                 ng-repeat="item in data.products | filter:categoryFilterFn | range:selectedPage:pageSize"
+                    ng-mouseenter="hover = true"
+                    ng-mouseleave="hover = false"
+                    ng-class="{pointed: hover}">
                 <!--<div style="margin-left: 50px"></div>-->
-                <div style="float: left; margin-right: 25px; margin-left: 10px">
+                <div class="house-image" style="float: left; margin-right: 25px; margin-left: 10px">
 
                     <img ng-src="{{item.image}}">
                 </div>
@@ -167,7 +209,7 @@
                 <div style="float: left; width: 48%">
                     <div>
                         <span class="index">{{$index + 1}}</span>
-                        <span class="lead">{{item.category}}</span>
+                        <span class="location-name" ng-class="{highlighted: hover}">{{item.category}}</span>
 
                         <div id="adder">
                             <!--<button ng-click="addProductToCart(item)"

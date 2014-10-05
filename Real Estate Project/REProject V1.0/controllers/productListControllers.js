@@ -42,4 +42,12 @@ angular.module("sportsStore")
 
             $scope.selectedPage = 1;
         }
+
+        $scope.showDetailsView = function(item){
+            $scope.currentProduct = item;
+        }
+
+        $scope.selectItemForHoverLighting = function(item){
+            $scope.selectedItem = item;
+        }
     });

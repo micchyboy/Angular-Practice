@@ -68,7 +68,7 @@
         border: 2px solid #a1a1a1;
         text-align: center;
         font-weight: bold;
-        width: 540px;
+        width: 520px;
         border-radius: 25px;
         margin-bottom: 2px;
         background-color: #444444;
@@ -76,7 +76,7 @@
     }
 
     .product-details {
-        margin: 10px 0 0 10px;
+        /*margin: 10px 0 0 10px;*/
         width: 100%;
     }
 
@@ -102,114 +102,129 @@
         <div class="product-details"> <!--class="container">-->
             <!--<div class="row">
                 <div class="col-lg-6">-->
-            <div class="description-info">
-                Details
-            </div>
-            <div style="height: 200px; font-size: 12px; font-family: 'proxima-nova', sans-serif; color: #333333; overflow-y: auto">
-                <div>
-                    <ul>
-                        <li>Type: Bungalow</li>
-                        <li>Style: 2 Story "Finished Basement!</li>
-                        <li>Lot Type: Rectangular</li>
-                        <li>Basement: Yes, Full "Finished Basement!</li>
-                        <li>Garage: Triple, Attached "10.5' Tall Ceilings"</li>
-                        <li>Bedrooms: 5</li>
-                        <li>Address: #5 Aurora Pijuan St, BF Resort Village, Las Pinas City</li>
-                        <li>Near Kencare</li>
-
-                        <li>Type: Bungalow</li>
-                        <li>Style: 2 Story "Finished Basement!</li>
-                        <li>Lot Type: Rectangular</li>
-                        <li>Basement: Yes, Full "Finished Basement!</li>
-                        <li>Garage: Triple, Attached "10.5' Tall Ceilings"</li>
-                        <li>Bedrooms: 5</li>
-                        <li>Address: #5 Aurora Pijuan St, BF Resort Village, Las Pinas City</li>
-                        <li>Near Kencare</li>
-                    </ul>
-                    <!-- </div>
-                     <div style="float: left">
-                         <ul>
-                         <li>Address: 710 Red Oaks</li>
-                         <li>Lot Size:  1.7acres  n/a  </li>
-                         <li>Taxes: $2,377.00 (2014)</li>
-                         <li>Basement: Yes, Full "Finished Basement!</li>
-                         <li>Good garden</li>
-                         <li>Morning sun</li>
-                         </ul>-->
+            <div class="well well-sm">
+                <div class="description-info">
+                    Details
                 </div>
-            </div>
+                <div style="height: 200px; font-size: 12px; font-family: 'proxima-nova', sans-serif; color: #333333; overflow-y: auto">
+                    <div>
+                        <ul>
+                            <li>Type: Bungalow</li>
+                            <li>Style: 2 Story "Finished Basement!</li>
+                            <li>Lot Type: Rectangular</li>
+                            <li>Basement: Yes, Full "Finished Basement!</li>
+                            <li>Garage: Triple, Attached "10.5' Tall Ceilings"</li>
+                            <li>Bedrooms: 5</li>
+                            <li>Address: #5 Aurora Pijuan St, BF Resort Village, Las Pinas City</li>
+                            <li>Near Kencare</li>
 
-            <!--<div class="description-info">
-                Description
-            </div>
-
-            <div style="height: 150px; border: 1px solid #a1a1a1;">
-                <div>
-
-                </div>
-            </div>-->
-
-            <div class="description-info">
-                Photos
-            </div>
-            <div style="height: 220px;">
-                <div class="photos-gallery">
-                    <div style="width: 50%; height: 190px; float: left">
-                        <img ng-src="{{currentImage}}" height="210px"
-                             width="250px"/>
-                    </div>
-                    <div class="photo-thumbnails" style="float: left; height: 190px; width: 80px;">
-
-                        <!--<img src="/images/test_image1_200x150.jpg" height="70px"
-                             width="80px"
-                                />-->
-
-                        <img ng-src="{{currentProductImages[getImagesInInterval()[0]]}}" height="70px"
-                             width="80px"
-                                ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[getImagesInInterval()[0]])}"
-                                ng-click="selectThumbnail(currentProductImages[getImagesInInterval()[0]])"/>
-                        <img height="70px"
-                             width="80px"
-                             ng-src="{{currentProductImages[getImagesInInterval()[1]]}}"
-                             ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[getImagesInInterval()[1]])}"
-                                ng-click="selectThumbnail(currentProductImages[getImagesInInterval()[1]])"/>
-                       <img  height="70px"
-                             width="80px"
-                             ng-src="{{currentProductImages[getImagesInInterval()[2]]}}"
-                             ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[getImagesInInterval()[2]])}"
-                             ng-click="selectThumbnail(currentProductImages[getImagesInInterval()[2]])"/>
-
-                    </div>
-                    <div style="float: left; height: 190px; width: 80px;">
-
+                            <li>Type: Bungalow</li>
+                            <li>Style: 2 Story "Finished Basement!</li>
+                            <li>Lot Type: Rectangular</li>
+                            <li>Basement: Yes, Full "Finished Basement!</li>
+                            <li>Garage: Triple, Attached "10.5' Tall Ceilings"</li>
+                            <li>Bedrooms: 5</li>
+                            <li>Address: #5 Aurora Pijuan St, BF Resort Village, Las Pinas City</li>
+                            <li>Near Kencare</li>
+                        </ul>
+                        <!-- </div>
+                         <div style="float: left">
+                             <ul>
+                             <li>Address: 710 Red Oaks</li>
+                             <li>Lot Size:  1.7acres  n/a  </li>
+                             <li>Taxes: $2,377.00 (2014)</li>
+                             <li>Basement: Yes, Full "Finished Basement!</li>
+                             <li>Good garden</li>
+                             <li>Morning sun</li>
+                             </ul>-->
                     </div>
                 </div>
+
+                <!--<div class="description-info">
+                    Description
+                </div>
+
+                <div style="height: 150px; border: 1px solid #a1a1a1;">
+                    <div>
+
+                    </div>
+                </div>-->
+
+
+                <div class="description-info">
+                    Photos
+                </div>
+                <div style="height: 220px;">
+                    <div class="photos-gallery">
+                        <div style="width: 50%; height: 190px; float: left">
+                            <img ng-src="{{currentImage}}" height="210px"
+                                 width="260px"/>
+                        </div>
+                        <div class="photo-thumbnails" style="float: left; height: 190px; width: 80px;">
+
+                            <!--<img src="/images/test_image1_200x150.jpg" height="70px"
+                                 width="80px"
+                                    />-->
+                            <div style="width: 100%; text-align: center"
+                                 ng-click="selectUp()">
+                                <img src="/images/up-arrow.png" height="10px" width="10px">
+                            </div>
+                            <img ng-src="{{currentProductImages[sequence[0]]}}" height="60px"
+                                 width="70px"
+                                 ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[sequence[0]])}"
+                                 ng-click="selectThumbnail(currentProductImages[sequence[0]])"/>
+                            <img height="60px"
+                                 width="70px"
+                                 ng-src="{{currentProductImages[sequence[1]]}}"
+                                 ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[sequence[1]])}"
+                                 ng-click="selectThumbnail(currentProductImages[sequence[1]])"/>
+                            <img height="60px"
+                                 width="70px"
+                                 ng-src="{{currentProductImages[sequence[2]]}}"
+                                 ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[sequence[2]])}"
+                                 ng-click="selectThumbnail(currentProductImages[sequence[2]])"/>
+
+                            <div style="width: 100%; text-align: center"
+                                 ng-click="selectDown()">
+                                <img src="/images/down-arrow.png" height="10px" width="10px">
+                            </div>
+                        </div>
+                        <div style="float: left; height: 160px; width: 180px;">
+
+                        </div>
+                        <div style="float: left; height: 50px; width: 180px;">
+                            <div style="position: relative; text-align: center">
+                                <img src="/images/icons/gallery-icon.png" height="40px" width="40px">
+                                <img src="/images/icons/maps.png" height="40px" width="40px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<ul class="row" >
+                    <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                         src="/images/test_image1_200x150.jpg"/>
+                    </li>
+                    <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                         src="/images/test_image2_200x150.jpg"/>
+                    </li>
+                    <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                         src="/images/test_image3_200x150.jpg"/>
+                    </li>
+                    <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                         src="/images/test_image4_200x150.jpg"/>
+                    </li>
+                    <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                         src="/images/test_image5_200x150.jpg"/>
+                    </li>
+                    <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                         src="/images/test_image6_200x150.jpg"/>
+                    </li>
+                    <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                         src="/images/test_image7_200x150.jpg"/>
+                    </li>
+                </ul>-->
+
             </div>
-            <!--<ul class="row" >
-                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
-                                                                     src="/images/test_image1_200x150.jpg"/>
-                </li>
-                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
-                                                                     src="/images/test_image2_200x150.jpg"/>
-                </li>
-                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
-                                                                     src="/images/test_image3_200x150.jpg"/>
-                </li>
-                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
-                                                                     src="/images/test_image4_200x150.jpg"/>
-                </li>
-                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
-                                                                     src="/images/test_image5_200x150.jpg"/>
-                </li>
-                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
-                                                                     src="/images/test_image6_200x150.jpg"/>
-                </li>
-                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
-                                                                     src="/images/test_image7_200x150.jpg"/>
-                </li>
-            </ul>-->
-
-
         </div>
 
     </div>

@@ -155,12 +155,32 @@
         font-size: 1.5em;
     }
 
+    .ngFade.ng-enter { transition: 0.1s linear all; opacity: 0; }
+    .ngFade.ng-enter-active { opacity: 1; }
 
+    .well-sm {
+        border-radius: 22px;
+        background-color: white;
+        margin: 0 0;
+    }
+
+    .hovered {
+        border-radius: 22px;
+        background-color: white;
+        margin: 0 0;
+        box-shadow: 0 0 20px #222222;
+    }
+
+    #main-container {
+        background-color: rgba(56, 58, 56, 0.100);
+        /*background-color: #222222;*/
+    }
 </style>
 
 <div class="panel panel-default row"
      ng-controller="productListCtrl"
-     ng-hide="data.error">
+     ng-hide="data.error"
+     id="main-container">
 
 
     <div id="search_filter_container">
@@ -178,9 +198,8 @@
                   novalidate
                   class="form-inline" style="padding-top: 10px; padding-left: 30px">
 
-                <!--<a ng-click="searchProduct()"-->
-                <!--class="btn btn-default" class="form-control">Search All</a>-->
-                <div>
+                <!--WITH SEARCH BUTTON-->
+                <!--<div>
                     <select ng-model="searchData.location"
                             ng-options="item for item in data.products  | orderBy:'category' | unique:'category'"
                             class="input-control location-finder"
@@ -201,6 +220,27 @@
 
 
                     </a>
+                </div>-->
+
+                <div>
+                    <select ng-model="searchData.location"
+                            ng-options="item for item in data.products  | orderBy:'category' | unique:'category'"
+                            class="input-control location-finder"
+                            style="width: 180px;"
+                            ng-click="selectCategory(searchData.location)">
+                        <option value="">
+                            Search All
+                        </option>
+                    </select>
+
+                    <input name="minPrice" type="text" ng-model="searchData.minPrice" class="input-control"
+                           style="width: 100px;" placeholder="Min. Price"
+                            ng-change="searchProduct(searchData.location, searchData.minPrice, searchData.maxPrice)">
+                    <input name="maxPrice" type="text" ng-model="searchData.maxPrice" class="input-control"
+                           style="width: 100px;" placeholder="Max. Price"
+                           ng-change="searchProduct(searchData.location, searchData.minPrice, searchData.maxPrice)">
+
+                    </a>
                 </div>
             </form>
         </div>
@@ -208,15 +248,15 @@
     </div>
     <div class="container">
         <div class="col-lg-6">
-            <div class="row" style="overflow-y: auto; height: 480px;">
+            <div class="row" style="overflow-y: auto; height: 492px;">
 
-                <div class="well well-sm col-md-6 col-lg-12 clearfix"
+                <div class="well well-sm col-md-6 col-lg-12 clearfix list-container"
                      ng-repeat="item in data.products | filter:categoryFilterFn | range:selectedPage:pageSize"
                      ng-mouseenter="hover = true"
                      ng-mouseleave="hover = false"
-                     ng-class="{pointed: hover}"
-                     ng-click="redirectPage('/details',item)">
-                    <!--<div style="margin-left: 50px"></div>-->
+                     ng-class="{pointed: hover, hovered: selectedItem.id == item.id}"
+                     ng-click="showDetailsView(item); selectItemForHoverLighting(item);">
+                    <!--ng-click="redirectPage('/details',item)">-->
                     <div class="house-image" style="float: left; margin-right: 25px; margin-left: 10px">
 
                         <img ng-src="{{item.image}}">
@@ -338,7 +378,12 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <ng-include src="'/views/productDetails.html'"></ng-include>
+            <div ng-hide="currentProduct.id">
+                    <span style="font-size: 30px">Click Any Product To See Details</span>
+            </div>
+            <div ng-show="currentProduct.id">
+                <div ng-include="'/views/productDetails.html'" class="ngFade">
+            </div>
         </div>
     </div>
     <!--<div class="container">

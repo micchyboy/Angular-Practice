@@ -164,20 +164,23 @@
                              width="80px"
                                 />-->
 
-                        <img ng-src="{{currentProductImages[0]}}" height="70px"
+                        <img ng-src="{{currentProductImages[getImagesInInterval()[0]]}}" height="70px"
                              width="80px"
-                                ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[0])}"
-                                ng-click="selectThumbnail(currentProductImages[0])"/>
+                                ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[getImagesInInterval()[0]])}"
+                                ng-click="selectThumbnail(currentProductImages[getImagesInInterval()[0]])"/>
                         <img height="70px"
                              width="80px"
-                             ng-src="{{currentProductImages[1]}}"
-                             ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[1])}"
-                                ng-click="selectThumbnail(currentProductImages[1])"/>
+                             ng-src="{{currentProductImages[getImagesInInterval()[1]]}}"
+                             ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[getImagesInInterval()[1]])}"
+                                ng-click="selectThumbnail(currentProductImages[getImagesInInterval()[1]])"/>
                        <img  height="70px"
                              width="80px"
-                             ng-src="{{currentProductImages[2]}}"
-                             ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[2])}"
-                             ng-click="selectThumbnail(currentProductImages[2])"/>
+                             ng-src="{{currentProductImages[getImagesInInterval()[2]]}}"
+                             ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[getImagesInInterval()[2]])}"
+                             ng-click="selectThumbnail(currentProductImages[getImagesInInterval()[2]])"/>
+
+                    </div>
+                    <div style="float: left; height: 190px; width: 80px;">
 
                     </div>
                 </div>

@@ -3,15 +3,36 @@
     <head lang="en">
         <meta charset="UTF-8">
         <script>
-            var scope = {};
+           /* var scope = {};
             function test(){
-                scope.shout = function(){
-                    alert(i);
-                }
-                var i = 3;
+                scope.i = 0;
+                scope.objs = [1 , 2, 3];
+
+                scope.a = scope.objs[scope.i];
+                alert(scope.a);
+                scope.i = 1;
+                scope.a = scope.objs[scope.i];
+                alert(scope.a);
+
             }
             test();
-            scope.shout();
+            scope.shout();*/
+
+           function test(){
+               var x = 0;
+                return {
+                    getX: function(){
+                       return ++x;
+                    }
+                }
+           }
+           var a = test();
+           var b = test();
+
+           alert(a.getX());
+           alert(b.getX());
+           alert(a.getX());
+           alert(b.getX());
         </script>
         <title></title>
     </head>

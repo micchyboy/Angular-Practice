@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="sportsStore">
 <head>
-    <title>SportsStore</title>
+    <title>Real Estate App</title>
     <script src="angular.js"></script>
     <link href="bootstrap.css" rel="stylesheet"/>
     <!--<link href="bootstrap-theme.css" rel="stylesheet"/>-->
@@ -132,8 +132,24 @@
             letter-spacing: 2px;
         }
 
-        @media (min-width: 424px){
-            
+        @media (max-width: 423px){
+            .user-name {
+                font-size: 16px;
+                width: 50% !important;
+            }
+            .user-details {
+                font-size: 14px;
+                width: 50% !important;
+            }
+
+            .user-details img {
+                height: 14px;
+                width: 20px;
+            }
+
+            .user-misc {
+                display: none;
+            }
         }
 
         @media (min-width: 424px) and (max-width: 517px) {
@@ -202,9 +218,23 @@
             cursor: pointer;
         }
 
-        .hehe{
-            background-color: red;
+        /*For Google Scrollbar*/
+       /* ::-webkit-scrollbar
+        {
+            width: 12px;  *//* for vertical scrollbars *//*
+            height: 12px; *//* for horizontal scrollbars *//*
         }
+
+        ::-webkit-scrollbar-track
+        {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb
+        {
+            background: rgba(0, 0, 0, 0.5);
+        }*/
+
     </style>
 </head>
 <body ng-controller="sportsStoreCtrl">
@@ -221,7 +251,7 @@
 
                     <div style="width: 30%; float: left" class="user-details">
                         <div class="pull-right">
-                            <img src="../images/icons/call.png" height="24px" width="30px">
+                            <img src="/images/icons/call.png" height="24px" width="30px">
                             <span>0928.210.5990</span>
                             <!--Navigation goes here-->
                             <!--<nav class="hidden-xs">

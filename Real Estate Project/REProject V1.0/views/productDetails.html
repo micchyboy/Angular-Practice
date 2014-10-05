@@ -11,42 +11,18 @@
 </div>-->
 
 
-<!-- <script src="../jquery-1.10.2.min.js"></script>
- <script src="../bootstrap.min.js"></script>
- <link href="../bootstrap.css" rel="stylesheet"/>
- <script type="text/javascript">
-     var j = $.noConflict();
- </script>
- <script type="text/javascript">
-     j(document).ready(function () {
-         alert("Inside Jquery!");
-         j('li img').on('click', function () {
-             alert("Inside Click!");
-             var src = j(this).attr('src');
-             var img = '<img src="' + src + '" class="img-responsive"/>';
-             j('#myModal').modal();
-             j('#myModal').on('shown.bs.modal', function () {
-                 j('#myModal .modal-body').html(img);
-             });
-             j('#myModal').on('hidden.bs.modal', function () {
-                 j('#myModal .modal-body').html('');
-             });
-         });
-     })
- </script>-->
-
 <style>
-    ul {
+    /*.photos-gallery ul {
         padding: 0 0 0 0;
         margin: 0 0 0 0;
     }
 
-    ul li {
+    .photos-gallery ul li {
         list-style: none;
         margin-bottom: 25px;
-    }
+    }*/
 
-    ul li img {
+    .photos-gallery img {
         cursor: pointer;
     }
 
@@ -88,9 +64,24 @@
     }
 
     .description-info {
-        color: #939292;
-        line-height: 1.6;
-        margin: 0 0 20px 0;
+        /*color: #939292;*/
+        border: 2px solid #a1a1a1;
+        text-align: center;
+        font-weight: bold;
+        width: 540px;
+        border-radius: 25px;
+        margin-bottom: 2px;
+        background-color: #444444;
+        color: #ffffff;
+    }
+
+    .product-details {
+        margin: 10px 0 0 10px;
+        width: 100%;
+    }
+
+    .selectedThumbnail {
+        border: 2px dotted #101010;
     }
 </style>
 
@@ -98,134 +89,141 @@
     <div ng-controller="productDetailsCtrl" ng-init="readyItemGallery()">
 
 
-        <div class="header-placeholder">
+        <!--<div class="header-placeholder">
             <div style="margin: 5px 0 0 5px">
-                <img src="../images/icons/back.png" height="40px" width="40px"
+                <img src="/images/icons/back.png" height="40px" width="40px"
                      ng-class="{pointed : hover}"
                      ng-mouseenter="hover = true"
                      ng-mouseleave="hover = false"
                      ng-click="redirectPage('/products')">
             </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <ul class="row">
-                        <li class="col-lg-4 col-md-2 col-sm-3 col-xs-4"><img class="img-responsive"
-                                                                             src="../images/test_image1_200x150.jpg"/>
-                        </li>
-                        <li class="col-lg-4 col-md-2 col-sm-3 col-xs-4"><img class="img-responsive"
-                                                                             src="../images/test_image2_200x150.jpg"/>
-                        </li>
-                        <li class="col-lg-4 col-md-2 col-sm-3 col-xs-4"><img class="img-responsive"
-                                                                             src="../images/test_image3_200x150.jpg"/>
-                        </li>
-                        <li class="col-lg-4 col-md-2 col-sm-3 col-xs-4"><img class="img-responsive"
-                                                                             src="../images/test_image4_200x150.jpg"/>
-                        </li>
-                        <li class="col-lg-4 col-md-2 col-sm-3 col-xs-4"><img class="img-responsive"
-                                                                             src="../images/test_image5_200x150.jpg"/>
-                        </li>
-                        <li class="col-lg-4 col-md-2 col-sm-3 col-xs-4"><img class="img-responsive"
-                                                                             src="../images/test_image6_200x150.jpg"/>
-                        </li>
-                        <li class="col-lg-4 col-md-2 col-sm-3 col-xs-4"><img class="img-responsive"
-                                                                             src="../images/test_image7_200x150.jpg"/>
-                        </li>
+        </div>-->
+
+        <div class="product-details"> <!--class="container">-->
+            <!--<div class="row">
+                <div class="col-lg-6">-->
+            <div class="description-info">
+                Details
+            </div>
+            <div style="height: 200px; font-size: 12px; font-family: 'proxima-nova', sans-serif; color: #333333; overflow-y: auto">
+                <div>
+                    <ul>
+                        <li>Type: Bungalow</li>
+                        <li>Style: 2 Story "Finished Basement!</li>
+                        <li>Lot Type: Rectangular</li>
+                        <li>Basement: Yes, Full "Finished Basement!</li>
+                        <li>Garage: Triple, Attached "10.5' Tall Ceilings"</li>
+                        <li>Bedrooms: 5</li>
+                        <li>Address: #5 Aurora Pijuan St, BF Resort Village, Las Pinas City</li>
+                        <li>Near Kencare</li>
+
+                        <li>Type: Bungalow</li>
+                        <li>Style: 2 Story "Finished Basement!</li>
+                        <li>Lot Type: Rectangular</li>
+                        <li>Basement: Yes, Full "Finished Basement!</li>
+                        <li>Garage: Triple, Attached "10.5' Tall Ceilings"</li>
+                        <li>Bedrooms: 5</li>
+                        <li>Address: #5 Aurora Pijuan St, BF Resort Village, Las Pinas City</li>
+                        <li>Near Kencare</li>
                     </ul>
+                    <!-- </div>
+                     <div style="float: left">
+                         <ul>
+                         <li>Address: 710 Red Oaks</li>
+                         <li>Lot Size:  1.7acres  n/a  </li>
+                         <li>Taxes: $2,377.00 (2014)</li>
+                         <li>Basement: Yes, Full "Finished Basement!</li>
+                         <li>Good garden</li>
+                         <li>Morning sun</li>
+                         </ul>-->
                 </div>
-                <div class="col-lg-6">
-                    <div class="location-info">
-                        <h1>{{currentProduct.category}}</h1>
+            </div>
+
+            <!--<div class="description-info">
+                Description
+            </div>
+
+            <div style="height: 150px; border: 1px solid #a1a1a1;">
+                <div>
+
+                </div>
+            </div>-->
+
+            <div class="description-info">
+                Photos
+            </div>
+            <div style="height: 220px;">
+                <div class="photos-gallery">
+                    <div style="width: 50%; height: 190px; float: left">
+                        <img ng-src="{{currentImage}}" height="210px"
+                             width="250px"/>
                     </div>
-                    <div class="description-info">
-                        {{currentProduct.description}}
-                    </div>
-                    <div style="width:60%;">
-                        <div class="pill">
-                            <table class="pill-info1">
-                                <tbody>
-                                <tr>
-                                    <td class="pill-section">
-                                        <div class="pill-section-figure">
-                                            2
+                    <div class="photo-thumbnails" style="float: left; height: 190px; width: 80px;">
 
-                                        </div>
-                                        <div class="pill-section-caption">
-                                            bed
+                        <!--<img src="/images/test_image1_200x150.jpg" height="70px"
+                             width="80px"
+                                />-->
 
-                                        </div>
-                                    </td>
-                                    <td class="pill-section">
-                                        <div class="pill-section-figure">
-                                            2.5
+                        <img ng-src="{{currentProductImages[0]}}" height="70px"
+                             width="80px"
+                                ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[0])}"
+                                ng-click="selectThumbnail(currentProductImages[0])"/>
+                        <img height="70px"
+                             width="80px"
+                             ng-src="{{currentProductImages[1]}}"
+                             ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[1])}"
+                                ng-click="selectThumbnail(currentProductImages[1])"/>
+                       <img  height="70px"
+                             width="80px"
+                             ng-src="{{currentProductImages[2]}}"
+                             ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[2])}"
+                             ng-click="selectThumbnail(currentProductImages[2])"/>
 
-                                        </div>
-                                        <div class="pill-section-caption">
-                                            bath
-
-                                        </div>
-                                    </td>
-                                    <td class="pill-section">
-                                        <div class="pill-section-figure">
-                                            {{currentProduct.price | currency}}
-
-                                        </div>
-                                        <div class="pill-section-caption">
-                                            price
-
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="pill">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="pill-section">
-                                        <div class="pill-section-figure">
-                                            100 sq. m
-
-                                        </div>
-                                        <div class="pill-section-caption">
-                                            floor area
-
-                                        </div>
-                                    </td>
-                                    <td class="pill-section">
-                                        <div class="pill-section-figure">
-                                            250 sq m
-
-                                        </div>
-                                        <div class="pill-section-caption">
-                                            lot area
-
-                                        </div>
-                                    </td>
-
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <!--<ul class="row" >
+                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                     src="/images/test_image1_200x150.jpg"/>
+                </li>
+                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                     src="/images/test_image2_200x150.jpg"/>
+                </li>
+                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                     src="/images/test_image3_200x150.jpg"/>
+                </li>
+                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                     src="/images/test_image4_200x150.jpg"/>
+                </li>
+                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                     src="/images/test_image5_200x150.jpg"/>
+                </li>
+                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                     src="/images/test_image6_200x150.jpg"/>
+                </li>
+                <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                     src="/images/test_image7_200x150.jpg"/>
+                </li>
+            </ul>-->
 
 
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
         </div>
-        <!-- /.modal -->
+
     </div>
+</div>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+</div>
 </div>

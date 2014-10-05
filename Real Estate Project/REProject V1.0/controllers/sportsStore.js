@@ -33,10 +33,10 @@ angular.module("sportsStore")
             $location.path(path);
         }
 
-        $scope.readyItemGallery = function(){
+        //TODO: Might use this for actual size photo gallery
+        /*$scope.readyItemGallery = function(){
             $(document).ready(function () {
-
-                $('li img').on('click', function () {
+                $('.photos-gallery img').on('click', function () {
                     var src = $(this).attr('src');
                     var img = '<div style="position: relative; margin-left: 32%"><img src="' + src + '" class="img-responsive"/></div>';
                     $('#myModal').modal();
@@ -47,14 +47,8 @@ angular.module("sportsStore")
                         $('#myModal .modal-body').html('');
                     });
                 });
-
-                /*var height = 1000;
-                $('.img-responsive').each(function(){
-                    height = $(this).height() < height && $(this).height() > 30 ? $(this).height() : height;
-                });
-                $('.img-li').each(function(){
-                    $(this).height(height);
-                });*/
             })
-        }
+        }*/
+
+
     });

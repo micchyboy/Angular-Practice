@@ -60,13 +60,33 @@
         .house-image {
             margin-left: 30px !important;
         }
+
         .index {
             margin-left: 17px;
         }
     }
 
-    @media (max-width: 517px) {
-        .house-image img{
+    @media (max-width: 423px) {
+        .house-image img {
+            height: 116px;
+            width: 143px;
+        }
+
+        .pill table td.pill-section {
+            padding: 3px 7px;
+        }
+
+        .location-name {
+            font-size: 1.3em !important;
+        }
+
+        .location-finder {
+            width: 130px !important;
+        }
+    }
+
+    @media (min-width: 424px) and (max-width: 517px) {
+        .house-image img {
             height: 120px;
             width: 147px;
         }
@@ -108,7 +128,7 @@
         color: #939292;
         font-size: 12px;
         font-weight: 700;
-        font-family: "proxima-nova",sans-serif;
+        font-family: "proxima-nova", sans-serif;
     }
 
     .index {
@@ -129,13 +149,11 @@
     }
 
     .location-name {
-        font-family: 'proxima-nova',sans-serif;
-        font:"Helvetica Neue", Helvetica, Arial, sans-serif !important;
+        font-family: 'proxima-nova', sans-serif;
+        font: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
         font-weight: bold;
         font-size: 1.5em;
     }
-
-
 
 
 </style>
@@ -166,7 +184,8 @@
                     <select ng-model="searchData.location"
                             ng-options="item for item in data.products  | orderBy:'category' | unique:'category'"
                             class="input-control location-finder"
-                            style="width: 180px;">
+                            style="width: 180px;"
+                            ng-click="selectCategory(searchData.location)">
                         <option value="">
                             Search All
                         </option>
@@ -178,7 +197,7 @@
                            style="width: 100px;" placeholder="Max. Price">
 
                     <a ng-click="searchProduct(searchData.location, searchData.minPrice, searchData.maxPrice)">
-                        <img src="../images/icons/search-icon.png" height="34px" width="40px">
+                        <img src="/images/icons/search-icon.png" height="34px" width="40px">
 
 
                     </a>
@@ -188,111 +207,113 @@
 
     </div>
     <div class="container">
-        <div class="row" style="overflow-y: auto; height: 480px;">
-            <div class="well well-sm col-md-6 col-lg-6 clearfix"
-                 ng-repeat="item in data.products | filter:categoryFilterFn | range:selectedPage:pageSize"
-                    ng-mouseenter="hover = true"
-                    ng-mouseleave="hover = false"
-                    ng-class="{pointed: hover}"
-                    ng-click="redirectPage('/details',item)">
-                <!--<div style="margin-left: 50px"></div>-->
-                <div class="house-image" style="float: left; margin-right: 25px; margin-left: 10px">
+        <div class="col-lg-6">
+            <div class="row" style="overflow-y: auto; height: 480px;">
 
-                    <img ng-src="{{item.image}}">
-                </div>
+                <div class="well well-sm col-md-6 col-lg-12 clearfix"
+                     ng-repeat="item in data.products | filter:categoryFilterFn | range:selectedPage:pageSize"
+                     ng-mouseenter="hover = true"
+                     ng-mouseleave="hover = false"
+                     ng-class="{pointed: hover}"
+                     ng-click="redirectPage('/details',item)">
+                    <!--<div style="margin-left: 50px"></div>-->
+                    <div class="house-image" style="float: left; margin-right: 25px; margin-left: 10px">
 
-                <div style="float: left; width: 48%">
-                    <div>
-                        <span class="index">{{$index + 1}}</span>
-                        <span class="location-name" ng-class="{highlighted: hover}">{{item.category}}</span>
+                        <img ng-src="{{item.image}}">
+                    </div>
 
-                        <div id="adder">
-                            <!--<button ng-click="addProductToCart(item)"
-                                    class="btn btn-success">
-                                Add to cart
-                            </button>-->
-                            <div class="pill-section-figure">
-                               Added 3 days ago
+                    <div style="float: left; width: 48%">
+                        <div>
+                            <span class="index">{{$index + 1}}</span>
+                            <span class="location-name" ng-class="{highlighted: hover}">{{item.category}}</span>
 
+                            <div id="adder">
+                                <!--<button ng-click="addProductToCart(item)"
+                                        class="btn btn-success">
+                                    Add to cart
+                                </button>-->
+                                <div class="pill-section-figure">
+                                    Added 3 days ago
+
+                                </div>
                             </div>
                         </div>
+                        <div class="pill">
+                            <table class="pill-info1">
+                                <tbody>
+                                <tr>
+                                    <td class="pill-section">
+                                        <div class="pill-section-figure">
+                                            2
+
+                                        </div>
+                                        <div class="pill-section-caption">
+                                            bed
+
+                                        </div>
+                                    </td>
+                                    <td class="pill-section">
+                                        <div class="pill-section-figure">
+                                            2.5
+
+                                        </div>
+                                        <div class="pill-section-caption">
+                                            bath
+
+                                        </div>
+                                    </td>
+                                    <td class="pill-section">
+                                        <div class="pill-section-figure">
+                                            {{item.price | currency}}
+
+                                        </div>
+                                        <div class="pill-section-caption">
+                                            price
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pill">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="pill-section">
+                                        <div class="pill-section-figure">
+                                            100 sq. m
+
+                                        </div>
+                                        <div class="pill-section-caption">
+                                            floor area
+
+                                        </div>
+                                    </td>
+                                    <td class="pill-section">
+                                        <div class="pill-section-figure">
+                                            250 sq m
+
+                                        </div>
+                                        <div class="pill-section-caption">
+                                            lot area
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
-                    <div class="pill">
-                        <table class="pill-info1">
-                            <tbody>
-                            <tr>
-                                <td class="pill-section">
-                                    <div class="pill-section-figure">
-                                        2
 
-                                    </div>
-                                    <div class="pill-section-caption">
-                                        bed
-
-                                    </div>
-                                </td>
-                                <td class="pill-section">
-                                    <div class="pill-section-figure">
-                                        2.5
-
-                                    </div>
-                                    <div class="pill-section-caption">
-                                        bath
-
-                                    </div>
-                                </td>
-                                <td class="pill-section">
-                                    <div class="pill-section-figure">
-                                        {{item.price | currency}}
-
-                                    </div>
-                                    <div class="pill-section-caption">
-                                        price
-
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <!--<div class="list-image">
+                        <img ng-src="{{item.image}}">
                     </div>
-                    <div class="pill">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td class="pill-section">
-                                    <div class="pill-section-figure">
-                                        100 sq. m
+                    <div class="list-info">
 
-                                    </div>
-                                    <div class="pill-section-caption">
-                                        floor area
-
-                                    </div>
-                                </td>
-                                <td class="pill-section">
-                                    <div class="pill-section-figure">
-                                        250 sq m
-
-                                    </div>
-                                    <div class="pill-section-caption">
-                                        lot area
-
-                                    </div>
-                                </td>
-
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-
-                <!--<div class="list-image">
-                    <img ng-src="{{item.image}}">
-                </div>
-                <div class="list-info">
-
-                    &lt;!&ndash;<span class="pull-right label label-primary">
+                        &lt;!&ndash;<span class="pull-right label label-primary">
                     {{item.price | currency}}
                     </span>&ndash;&gt;
 
@@ -304,8 +325,8 @@
                     </div>
                 </div>-->
 
+                </div>
             </div>
-
 
             <div class="pull-right btn-group">
                 <a ng-repeat="page in data.products | filter:categoryFilterFn | pageCount:pageSize"
@@ -315,6 +336,9 @@
                     {{$index + 1}}
                 </a>
             </div>
+        </div>
+        <div class="col-lg-6">
+            <ng-include src="'/views/productDetails.html'"></ng-include>
         </div>
     </div>
     <!--<div class="container">

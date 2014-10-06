@@ -68,7 +68,7 @@
         border: 2px solid #a1a1a1;
         text-align: center;
         font-weight: bold;
-        width: 520px;
+        width: 100%;
         border-radius: 25px;
         margin-bottom: 2px;
         background-color: #444444;
@@ -82,6 +82,11 @@
 
     .selectedThumbnail {
         border: 2px dotted #101010;
+    }
+
+    .details-container {
+        width: 100%;
+        height: 532px;
     }
 </style>
 
@@ -102,7 +107,7 @@
         <div class="product-details"> <!--class="container">-->
             <!--<div class="row">
                 <div class="col-lg-6">-->
-            <div class="well well-sm">
+            <div class="well well-sm details-container">
                 <div class="description-info">
                     Details
                 </div>
@@ -156,42 +161,40 @@
                 </div>
                 <div style="height: 220px;">
                     <div class="photos-gallery">
-                        <div style="width: 50%; height: 190px; float: left">
-                            <img ng-src="{{currentImage}}" height="210px"
-                                 width="260px"/>
+                        <div style="width: 260px; height: 270px; float: left">
+                            <div style="width: 260px;">
+                                <img ng-src="{{currentImage}}" height="190px"
+                                     width="260px"/>
+                            </div>
+
+                            <div style="float: left; height: 60px; width: 260px;">
+                                <img src="/images/up-arrow.png" height="10px" width="10px" ng-click="selectUp()">
+                                <img ng-src="{{currentProductImages[sequence[0]]}}" height="60px"
+                                     width="70px"
+                                     ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[sequence[0]])}"
+                                     ng-click="selectThumbnail(currentProductImages[sequence[0]])"/>
+                                <img height="60px"
+                                     width="70px"
+                                     ng-src="{{currentProductImages[sequence[1]]}}"
+                                     ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[sequence[1]])}"
+                                     ng-click="selectThumbnail(currentProductImages[sequence[1]])"/>
+                                <img height="60px"
+                                     width="70px"
+                                     ng-src="{{currentProductImages[sequence[2]]}}"
+                                     ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[sequence[2]])}"
+                                     ng-click="selectThumbnail(currentProductImages[sequence[2]])"/>
+
+                                <img src="/images/down-arrow.png" height="10px" width="10px" ng-click="selectDown()">
+                            </div>
                         </div>
-                        <div class="photo-thumbnails" style="float: left; height: 190px; width: 80px;">
+                        <div class="photo-thumbnails" style="float: left; height: 190px; width: 20%;">
 
                             <!--<img src="/images/test_image1_200x150.jpg" height="70px"
                                  width="80px"
                                     />-->
-                            <div style="width: 100%; text-align: center"
-                                 ng-click="selectUp()">
-                                <img src="/images/up-arrow.png" height="10px" width="10px">
-                            </div>
-                            <img ng-src="{{currentProductImages[sequence[0]]}}" height="60px"
-                                 width="70px"
-                                 ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[sequence[0]])}"
-                                 ng-click="selectThumbnail(currentProductImages[sequence[0]])"/>
-                            <img height="60px"
-                                 width="70px"
-                                 ng-src="{{currentProductImages[sequence[1]]}}"
-                                 ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[sequence[1]])}"
-                                 ng-click="selectThumbnail(currentProductImages[sequence[1]])"/>
-                            <img height="60px"
-                                 width="70px"
-                                 ng-src="{{currentProductImages[sequence[2]]}}"
-                                 ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[sequence[2]])}"
-                                 ng-click="selectThumbnail(currentProductImages[sequence[2]])"/>
-
-                            <div style="width: 100%; text-align: center"
-                                 ng-click="selectDown()">
-                                <img src="/images/down-arrow.png" height="10px" width="10px">
-                            </div>
-                        </div>
-                        <div style="float: left; height: 160px; width: 180px;">
 
                         </div>
+
                         <div style="float: left; height: 50px; width: 180px;">
                             <div style="position: relative; text-align: center">
                                 <img src="/images/icons/gallery-icon.png" height="40px" width="40px">

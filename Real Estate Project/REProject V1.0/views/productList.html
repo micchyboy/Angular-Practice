@@ -76,10 +76,6 @@
             margin-left: 17px;
         }
 
-        .details-view {
-            position: static !important;
-            width: 100% !important;
-        }
     }
 
     @media (max-width: 767px) {
@@ -414,10 +410,14 @@
             </div>
         </div>
         <div class="col-md-6 col-lg-6">
-            <div ng-hide="currentProduct.id">
+            <div ng-hide="util.currentProduct.id">
                     <span style="font-size: 30px">Click Any Product To See Details</span>
             </div>
-            <div ng-if="currentProduct.id"  style="position: fixed; width: 40%" class="details-view">
+            <!--For fixed details view on right page-->
+            <!--<div ng-if="util.currentProduct.id"  style="position: fixed; width: 40%" class="details-view">
+                <div ng-include="'/views/productDetails.html'" class="ngFade"></div>
+            </div>-->
+            <div ng-if="util.currentProduct.id" class="details-view">
                 <div ng-include="'/views/productDetails.html'" class="ngFade"></div>
             </div>
         </div>

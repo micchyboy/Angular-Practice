@@ -1,10 +1,17 @@
 angular.module("sportsStore")
     .constant("dataUrl", "http://localhost:5501/products")
     .constant("orderUrl", "http://localhost:5501/orders")
-    .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl, orderUrl, cart) {
+    .config(function ($locationProvider) {
+        if (window.history && history.pushState) {
+            $locationProvider.html5Mode(true);
+        }
+    })
+    .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl, orderUrl, cart,
+                                             $location, $anchorScroll, $timeout, anchorSmoothScroll) {
         $scope.data = {
         };
-        $scope.currentProduct = {};
+        $scope.util = {};
+        $scope.util.currentProduct = {};
 
         $http.get(dataUrl)
             .success(function (data) {
@@ -29,10 +36,26 @@ angular.module("sportsStore")
         }
 
         $scope.redirectPage = function(path, item){
-            $scope.currentProduct = item;
+            $scope.util.currentProduct = item;
             $location.path(path);
         }
 
+        /*$scope.invokeScrollToHash = function(elementId){
+            $timeout(function(){
+                $location.hash(elementId);
+                $anchorScroll();
+            }, 200);
+        }*/
+
+        $scope.gotoElement = function (eID){
+            // set the location.hash to the id of
+            // the element you wish to scroll to.
+            $location.hash('details');
+
+            // call $anchorScroll()
+            anchorSmoothScroll.scrollTo(eID);
+
+        };
         //TODO: Might use this for actual size photo gallery
         /*$scope.readyItemGallery = function(){
             $(document).ready(function () {

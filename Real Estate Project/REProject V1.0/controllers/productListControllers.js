@@ -1,6 +1,9 @@
 angular.module("sportsStore")
     .constant("productListActiveClass", "btn-primary")
     .constant("productListPageCount", 8)
+    .config(function($anchorScrollProvider){
+        $anchorScrollProvider.disableAutoScrolling();
+    })
     .controller("productListCtrl", function ($scope, $filter, productListActiveClass, productListPageCount, cart) {
         var selectedCategory = null;
         var minimumPrice = 0;
@@ -16,7 +19,7 @@ angular.module("sportsStore")
             $scope.selectedPage = newPage;
         }
         $scope.categoryFilterFn = function (product) {
-            if(selectedCategory == null && minimumPrice == 0 && maximumPrice == 0){
+            if (selectedCategory == null && minimumPrice == 0 && maximumPrice == 0) {
                 return true;
             }
             var isLocated = selectedCategory ? (product.category == selectedCategory) : true;
@@ -35,7 +38,7 @@ angular.module("sportsStore")
             cart.addProduct(product.id, product.name, product.price);
         }
 
-        $scope.searchProduct = function(location, minPrice, maxPrice){
+        $scope.searchProduct = function (location, minPrice, maxPrice) {
             selectedCategory = location ? location : null;
             minimumPrice = minPrice ? minPrice : 0;
             maximumPrice = maxPrice ? maxPrice : 0;
@@ -43,11 +46,14 @@ angular.module("sportsStore")
             $scope.selectedPage = 1;
         }
 
-        $scope.showDetailsView = function(item){
-            $scope.currentProduct = item;
+        $scope.showDetailsView = function (item) {
+            $scope.util.currentProduct = item;
+
+            $scope.gotoElement('main');
         }
 
-        $scope.selectItemForHoverLighting = function(item){
+        $scope.selectItemForHoverLighting = function (item) {
             $scope.selectedItem = item;
         }
+
     });

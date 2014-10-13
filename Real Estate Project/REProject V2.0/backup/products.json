@@ -1,0 +1,102 @@
+[
+    {
+        "category": "Las Pinas",
+        "description": "This serene 92-acre planned community on the westside is replete with lush greenery, scenic views of the Hudson, and idyllic spots for quiet reflection. Battery Park City is a well-deserved break from the hustle and bustle of downtown NYC.",
+        "floorArea": 100,
+        "image": "/images/test_image1_200x150.jpg",
+        "lotArea": 250,
+        "name": "House #1",
+        "price": 275,
+        "id": "a68cb14bc4fb799b"
+    },
+    {
+        "category": "Paranaque",
+        "description": "This serene 92-acre planned community on the westside is replete with lush greenery, scenic views of the Hudson, and idyllic spots for quiet reflection. Battery Park City is a well-deserved break from the hustle and bustle of downtown NYC.",
+        "floorArea": 100,
+        "image": "/images/test_image5_200x150.jpg",
+        "lotArea": 250,
+        "name": "House #6",
+        "price": 19.5,
+        "id": "22ee016945ed7871"
+    },
+    {
+        "category": "Paranaque",
+        "description": "This serene 92-acre planned community on the westside is replete with lush greenery, scenic views of the Hudson, and idyllic spots for quiet reflection. Battery Park City is a well-deserved break from the hustle and bustle of downtown NYC.",
+        "floorArea": 100,
+        "image": "/images/test_image6_200x150.jpg",
+        "lotArea": 250,
+        "name": "House #7",
+        "price": 79500,
+        "id": "0c519656d1fec841"
+    },
+    {
+        "category": "Las Pinas",
+        "description": "This serene 92-acre planned community on the westside is replete with lush greenery, scenic views of the Hudson, and idyllic spots for quiet reflection. Battery Park City is a well-deserved break from the hustle and bustle of downtown NYC.",
+        "floorArea": 100,
+        "image": "/images/test_image7_200x150.jpg",
+        "lotArea": 250,
+        "name": "House #8",
+        "price": 29.95,
+        "id": "a037aaef6826581f"
+    },
+    {
+        "category": "Las Pinas",
+        "description": "This serene 92-acre planned community on the westside is replete with lush greenery, scenic views of the Hudson, and idyllic spots for quiet reflection. Battery Park City is a well-deserved break from the hustle and bustle of downtown NYC.",
+        "floorArea": 100,
+        "image": "/images/test_image8_200x150.jpg",
+        "lotArea": 250,
+        "name": "House #9",
+        "price": 75,
+        "id": "6bce078badb069f4"
+    },
+    {
+        "category": "Muntinlupa",
+        "description": "This serene 92-acre planned community on the westside is replete with lush greenery, scenic views of the Hudson, and idyllic spots for quiet reflection. Battery Park City is a well-deserved break from the hustle and bustle of downtown NYC.",
+        "floorArea": 100,
+        "image": "/images/test_image9_200x150.jpg",
+        "lotArea": 250,
+        "name": "House #10",
+        "price": 1200,
+        "id": "7d35fcf4ac6caa7a"
+    },
+    {
+        "category": "Pasay",
+        "description": "This serene 92-acre planned community on the westside is replete with lush greenery, scenic views of the Hudson, and idyllic spots for quiet reflection. Battery Park City is a well-deserved break from the hustle and bustle of downtown NYC.",
+        "floorArea": 100,
+        "image": "/images/test_image10_200x150.jpg",
+        "lotArea": 250,
+        "name": "House #5",
+        "price": 800,
+        "id": "5a8f469da8a598c4"
+    },
+    {
+        "category": "Las Pinas",
+        "description": "This serene 92-acre planned community on the westside is replete with lush greenery, scenic views of the Hudson, and idyllic spots for quiet reflection. Battery Park City is a well-deserved break from the hustle and bustle of downtown NYC.",
+        "floorArea": 100,
+        "image": "/images/test_image2_200x150.jpg",
+        "lotArea": 250,
+        "name": "House #2",
+        "price": 48.95,
+        "id": "c1e958bc850ea8e9"
+    },
+    {
+        "category": "Makati",
+        "description": "This serene 92-acre planned community on the westside is replete with lush greenery, scenic views of the Hudson, and idyllic spots for quiet reflection. Battery Park City is a well-deserved break from the hustle and bustle of downtown NYC.",
+        "floorArea": 100,
+        "image": "/images/test_image3_200x150.jpg",
+        "lotArea": 250,
+        "name": "House #3",
+        "price": 34.95,
+        "id": "fdc6a5f166896818"
+    },
+    {
+        "category": "Makati",
+        "description": "This serene 92-acre planned community on the westside is replete with lush greenery, scenic views of the Hudson, and idyllic spots for quiet reflection. Battery Park City is a well-deserved break from the hustle and bustle of downtown NYC.",
+        "floorArea": 100,
+        "image": "/images/test_image4_200x150.jpg",
+        "lotArea": 250,
+        "name": "House #4",
+        "price": 16,
+        "id": "ba05c5527a4d88d6"
+    }
+]

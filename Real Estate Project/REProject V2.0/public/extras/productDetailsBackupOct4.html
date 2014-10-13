@@ -1,0 +1,195 @@
+
+<style>
+    ul {
+        padding: 0 0 0 0;
+        margin: 0 0 0 0;
+    }
+
+    ul li {
+        list-style: none;
+        margin-bottom: 25px;
+    }
+
+    ul li img {
+        cursor: pointer;
+    }
+
+    /*arbored*/
+    .pill {
+        border: 1px solid #dadde2;
+        -webkit-border-radius: 4px;
+        -webkit-background-clip: padding-box;
+        -moz-border-radius: 4px;
+        -moz-background-clip: padding;
+        border-radius: 4px;
+        background-clip: padding-box;
+    }
+
+    .pill table {
+        width: 100%;
+    }
+
+    .pill table td.pill-section {
+        border-right: 1px solid #dadde2;
+        color: #3b3d40;
+        padding: 7px 14px;
+        text-align: center;
+    }
+
+    .pill table td.pill-section .pill-section-figure {
+        font-size: 17px;
+    }
+
+    .pill table td.pill-section .pill-section-caption {
+        color: #939292;
+        font-size: 12px;
+    }
+
+    .location-info h1 {
+        font-size: 31px;
+        font-weight: 300;
+        margin: 0 0 8px 0;
+    }
+
+    .description-info {
+        color: #939292;
+        line-height: 1.6;
+        margin: 0 0 20px 0;
+    }
+</style>
+
+<div>
+    <div ng-controller="productDetailsCtrl" ng-init="readyItemGallery()">
+
+
+        <div class="header-placeholder">
+            <div style="margin: 5px 0 0 5px">
+                <img src="/images/icons/back.png" height="40px" width="40px"
+                     ng-class="{pointed : hover}"
+                     ng-mouseenter="hover = true"
+                     ng-mouseleave="hover = false"
+                     ng-click="redirectPage('/products')">
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <ul class="row">
+                        <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                             src="/images/test_image1_200x150.jpg"/>
+                        </li>
+                        <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                             src="/images/test_image2_200x150.jpg"/>
+                        </li>
+                        <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                             src="/images/test_image3_200x150.jpg"/>
+                        </li>
+                        <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                             src="/images/test_image4_200x150.jpg"/>
+                        </li>
+                        <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                             src="/images/test_image5_200x150.jpg"/>
+                        </li>
+                        <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                             src="/images/test_image6_200x150.jpg"/>
+                        </li>
+                        <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
+                                                                             src="/images/test_image7_200x150.jpg"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <div class="location-info">
+                        <h1>{{currentProduct.category}}</h1>
+                    </div>
+                    <div class="description-info">
+                        {{currentProduct.description}}
+                    </div>
+                    <div style="width:60%;">
+                        <div class="pill">
+                            <table class="pill-info1">
+                                <tbody>
+                                <tr>
+                                    <td class="pill-section">
+                                        <div class="pill-section-figure">
+                                            2
+
+                                        </div>
+                                        <div class="pill-section-caption">
+                                            bed
+
+                                        </div>
+                                    </td>
+                                    <td class="pill-section">
+                                        <div class="pill-section-figure">
+                                            2.5
+
+                                        </div>
+                                        <div class="pill-section-caption">
+                                            bath
+
+                                        </div>
+                                    </td>
+                                    <td class="pill-section">
+                                        <div class="pill-section-figure">
+                                            {{currentProduct.price | currency}}
+
+                                        </div>
+                                        <div class="pill-section-caption">
+                                            price
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pill">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="pill-section">
+                                        <div class="pill-section-figure">
+                                            100 sq. m
+
+                                        </div>
+                                        <div class="pill-section-caption">
+                                            floor area
+
+                                        </div>
+                                    </td>
+                                    <td class="pill-section">
+                                        <div class="pill-section-figure">
+                                            250 sq m
+
+                                        </div>
+                                        <div class="pill-section-caption">
+                                            lot area
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>

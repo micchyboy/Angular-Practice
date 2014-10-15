@@ -17,9 +17,12 @@ var passport = require('passport');
 var passportLocal = require('passport-local');
 
 //for file upload
-var fs = require('fs');
+//var fs = require('fs');
+var fs = require('fs-extra');
+
 //var busboy = require('connect-busboy');
 var Busboy = require('busboy');
+var async = require('async');
 
 var app = express();
 
@@ -193,11 +196,31 @@ app.post('/create', function (req, res) {
                     }
                     else {
                         console.log("Data is now Saved")
-                        res.json(data);
+
+                        mongoose.model('Users').aggregate([
+                            { $match: {
+                                username: "jethro"
+                            }},
+                            { $unwind: "$products" },
+                            { $sort: {"products._id": -1}},
+                            { $limit: 1 }
+                        ], function (err, result) {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).send(err.message);
+                            }
+                            else {
+                                var productId = result[0].products._id
+                                console.log("Product Id: " + productId);
+                                res.json({"productId": productId});
+                            }
+                        });
+
+
                     }
                 })
             }
-            catch(err){
+            catch (err) {
                 console.log(err);
                 res.status(500).send(err.message);
             }
@@ -209,22 +232,149 @@ app.post('/create', function (req, res) {
         });
 });
 
+(function (app) {
+    var paths = [];
 
-app.post('/file_upload', function (req, res) {
-    console.log("Received images");
-    var fstream;
-    console.log("Headers: " + req.headers);
-    var busboy = new Busboy({ headers: req.headers });
-    req.pipe(busboy);
-    busboy.on('file', function (fieldname, file, filename) {
-        console.log("Uploading: " + filename);
-        fstream = fs.createWriteStream(__dirname + '/files/' + filename);
-        file.pipe(fstream);
-        fstream.on('close', function () {
-            res.redirect('back');
+    app.post('/upload', function (req, res) {
+        /*var i = 0, j = 0;
+         for(var r in req){
+         console.log("Request property " + i++ +": " + r);
+         }*/
+//        console.log("Username: " + req.body.user.username);
+        var deferred = Q.defer();
+
+
+        console.log("Received images");
+        var fstream;
+        console.log("Headers: " + req.headers);
+        var busboy = new Busboy({ headers: req.headers });
+        req.pipe(busboy);
+
+        busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
+            if (fieldname == "myModel") {
+                console.log('Field [' + fieldname + ']: value: ' + val);
+                busboy.on('file', function (fieldname, file, filename) {
+                    var parsedModel = JSON.parse(val);
+                    var path = __dirname + '/files/' + parsedModel.username + "/" + parsedModel.productId + "/" + filename;
+                    paths.push(path);
+                    fs.ensureFileSync(path);
+                    console.log("Uploading: " + filename);
+                    fstream = fs.createWriteStream(path);
+                    console.log("Saved: " + filename);
+                    file.pipe(fstream);
+                    /*fstream.on('close', function () {
+                     res.redirect('back');
+                     });*/
+                    deferred.resolve([paths, parsedModel.productId])
+                });
+            }
         });
+
+        deferred.promise.then(function (args) {
+            console.log("Paths: " + args[0]);
+            console.log("Product Id: " + args[1]);
+            var paths = args[0];
+            var productId = args[1]
+            busboy.on('finish', function () {
+                mongoose.model('Users').update(
+                    {
+                        "products._id": productId
+
+                    },
+                    {
+                        $set: {
+                            "products.$.images": paths
+                        }
+                    }
+                    , function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+                        console.log(result);
+                    }
+                )
+
+                res.writeHead(200, { 'Connection': 'close' });
+                res.end("That's all folks!");
+            });
+        })
+
+
+    });
+})(app);
+
+app.post('/create2', function (req, res) {
+    async.waterfall([
+        function (callback) {
+            User.findOne({ username: req.body.user.username }, function (err, data) {
+                callback(err, data);
+            });
+        },
+        function (user, callback) {
+            console.log("Mapping product schema..");
+            var product = {
+                category: req.body.category,
+                description: req.body.description,
+                floorArea: req.body.floorArea,
+//                images: req.body.images,
+                lotArea: req.body.lotArea,
+                name: req.body.name,
+                price: req.body.price,
+                city: req.body.city,
+                bath: req.body.bath,
+                beds: req.body.beds
+            };
+            user.products.push(product);
+
+            console.log("Saving product..")
+            user.save(function (err, data) {
+                callback(err, data.product);
+            })
+        },
+        function (product, callback) {
+            console.log("Saved product with id: " + product._id)
+            var paths = []
+            console.log("Receiving images..");
+            var fstream;
+            var busboy = new Busboy({ headers: req.headers });
+            req.pipe(busboy);
+            busboy.on('file', function (fieldname, file, filename) {
+                try {
+                    var path = __dirname + '/files/' + product._id + "/" + filename
+                    paths.push(path);
+                    fstream = fs.createWriteStream(path);
+                    console.log("Saved: " + filename);
+                    file.pipe(fstream);
+                }
+                catch (err) {
+                    callback(err);
+                }
+                /*fstream.on('close', function () {
+                 res.redirect('back');
+                 });*/
+                busboy.on('finish', function () {
+                    console.log("Done saving images..");
+                    callback(null, product, paths);
+                });
+            });
+        },
+        function (product, paths, callback) {
+            product.images = paths;
+            product.save(function (err, data) {
+                callback(err, data);
+            })
+        }
+    ], function (err, data) {
+        if (err) {
+            res.status(500).send(err.message);
+        }
+        else {
+            res.json(data);
+        }
     });
 });
+
 
 var schemas = require('./db/schemas.js');
 var User = new schemas.getUserModel();

@@ -2,13 +2,15 @@
 <html ng-app="sportsStoreAdmin">
 <head>
     <title>Administration</title>
+    <script src="ngmodules/angular-file-upload-shim.min.js"></script>
     <script src="angular.js"></script>
+    <script src="ngmodules/angular-file-upload.min.js"></script>
     <script src="ngmodules/angular-route.js"></script>
     <script src="ngmodules/angular-resource.js"></script>
     <link href="bootstrap.css" rel="stylesheet"/>
     <link href="bootstrap-theme.css" rel="stylesheet"/>
     <script>
-        angular.module("sportsStoreAdmin", ["ngRoute", "ngResource"])
+        angular.module("sportsStoreAdmin", ["ngRoute", "ngResource", "angularFileUpload"])
                 .config(function ($routeProvider) {
                     $routeProvider.when("/login", {
                         templateUrl: "/views/adminLogin.html"

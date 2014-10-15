@@ -11,7 +11,7 @@ module.exports.getUserModel = function () {
         category: String,
         description: String,
         floorArea: Number,
-        image: [String],
+        images: [String],
         lotArea: Number,
         name: String,
         price: Number,

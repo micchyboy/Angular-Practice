@@ -1,10 +1,20 @@
 
-angular.module('fileUpload', [ 'angularFileUpload' ]);
-
-var uploadUrl = 'http://localhost:5501/file_upload';
-window.uploadUrl = window.uploadUrl || 'upload';
-
-var MyCtrl = [ '$scope', '$http', '$timeout', '$upload', function($scope, $http, $timeout, $upload) {
+angular.module('fileUpload', [ 'angularFileUpload' ])
+    .config(function ($httpProvider) {
+        $httpProvider.interceptors.push(function () {
+            return {
+                request: function (config) {
+                    console.log(config.data);
+                    console.log(config.headers);
+//                    config.data.username = "jethrooo";
+                    return config;
+                }
+            }
+        });
+    })
+    .controller("MyCtrl", function($scope, $http, $timeout, $upload) {
+    var uploadUrl = 'http://localhost:5501/upload';
+    window.uploadUrl = window.uploadUrl || 'upload';
     $scope.usingFlash = FileAPI && FileAPI.upload != null;
     $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
     $scope.uploadRightAway = true;
@@ -58,6 +68,7 @@ var MyCtrl = [ '$scope', '$http', '$timeout', '$upload', function($scope, $http,
     $scope.start = function(index) {
         $scope.progress[index] = 0;
         $scope.errorMsg = null;
+        $scope.myModel = {productId: "hehehehe", username: "hahahaha"};
         if ($scope.howToSend == 1) {
             //$upload.upload()
             $scope.upload[index] = $upload.upload({
@@ -198,4 +209,4 @@ var MyCtrl = [ '$scope', '$http', '$timeout', '$upload', function($scope, $http,
     $scope.success_action_redirect = $scope.success_action_redirect || window.location.protocol + "//" + window.location.host;
     $scope.jsonPolicy = $scope.jsonPolicy || '{\n  "expiration": "2020-01-01T00:00:00Z",\n  "conditions": [\n    {"bucket": "angular-file-upload"},\n    ["starts-with", "$key", ""],\n    {"acl": "private"},\n    ["starts-with", "$Content-Type", ""],\n    ["starts-with", "$filename", ""],\n    ["content-length-range", 0, 524288000]\n  ]\n}';
     $scope.acl = $scope.acl || 'private';
-} ];
+});

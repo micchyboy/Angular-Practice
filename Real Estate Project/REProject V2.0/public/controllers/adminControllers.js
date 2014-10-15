@@ -2,11 +2,23 @@ angular.module("sportsStoreAdmin")
     .constant("authUrl", "http://localhost:5501/login")
     .constant("signUpUrl", "http://localhost:5501/signup")
     .constant("createUrl", "http://localhost:5501/create")
+    .constant("uploadUrl", "http://localhost:5501/upload")
     .constant("ordersUrl", "http://localhost:5501/orders")
     .config(function ($locationProvider) {
         /*if (window.history && history.pushState) {
-            $locationProvider.html5Mode(true);
-        }*/
+         $locationProvider.html5Mode(true);
+         }*/
+    })
+    .config(function ($httpProvider) {
+        $httpProvider.interceptors.push(function () {
+            return {
+                request: function (config) {
+                    console.log(config.data);
+//                    config.data.username = "jethrooo";
+                    return config;
+                }
+            }
+        });
     })
     .controller("topCtrl", function ($scope, authService, $location) {
         $scope.data = {};
@@ -16,47 +28,46 @@ angular.module("sportsStoreAdmin")
             console.log("Route change success!");
             var isAuthenticated = authService.getData("isAuthenticated");
             console.log("Is authenticated? " + (isAuthenticated))
-            if(!isAuthenticated){
+            if (!isAuthenticated) {
                 console.log("Redirect to login page..")
                 $location.path("/login");
             }
-            else{
+            else {
                 console.log("Authenticated! Proceed to main page..");
                 $scope.data.user = authService.getData("user");
                 $location.path("/main");
             }
         });
     })
-    .controller("authCtrl", function ($scope, $http, $location, authUrl,
-                                      signUpUrl, authService) {
+    .controller("authCtrl", function ($scope, $http, $location, authUrl, signUpUrl, authService) {
         $scope.authenticate = function (user, pass) {
 //            console.log("Username: " + user + " Password: " + pass);
             /*$http({
-                url: authUrl,
-                method: "POST",
-                data: { username: user, password: pass }
-            }).success(function (data) {
-                for(var i in data.user){
-                    console.log(i + ": " + data.user[i])
-                }
-                console.log( data.isAuthenticated + " " + data.user.name);
-                $scope.data.user = data.user;
-                $location.path("/main");
-            }).error(function (error) {
-                $scope.authenticationError = error;
-            });*/
+             url: authUrl,
+             method: "POST",
+             data: { username: user, password: pass }
+             }).success(function (data) {
+             for(var i in data.user){
+             console.log(i + ": " + data.user[i])
+             }
+             console.log( data.isAuthenticated + " " + data.user.name);
+             $scope.data.user = data.user;
+             $location.path("/main");
+             }).error(function (error) {
+             $scope.authenticationError = error;
+             });*/
             authService.authenticateUser($scope, user, pass)
-            .then(function(data){
+                .then(function (data) {
                     console.log("Z POWER OF PROMISES!! THE FUCKING DATA: " + data);
                     $location.path("/main");
-                    $scope.data.user =  data;
+                    $scope.data.user = data;
                 },
-                function(error){
+                function (error) {
                     $scope.authenticationError = error;
                 });
         }
 
-        $scope.signUp = function(){
+        $scope.signUp = function () {
             $scope.accountCreated = false;
             console.log("Signing up!")
             $http({
@@ -89,8 +100,8 @@ angular.module("sportsStoreAdmin")
             return $scope.current == "Products"
                 ? "/views/adminProducts.html" : "/views/adminOrders.html";
         };
-    }).controller("editorCtrl", function ($scope, createUrl, $http) {
-        $scope.saveProduct = function(){
+    }).controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl, $timeout) {
+        $scope.saveProduct = function () {
             $http({
                 url: createUrl,
                 method: "POST",
@@ -99,7 +110,7 @@ angular.module("sportsStoreAdmin")
                     category: $scope.currentProduct.category,
                     description: $scope.currentProduct.description,
                     floorArea: $scope.currentProduct.floorArea,
-                    image: $scope.currentProduct.images,
+//                    image: $scope.currentProduct.images,
                     lotArea: $scope.currentProduct.lotArea,
                     name: $scope.currentProduct.name,
                     price: $scope.currentProduct.price,
@@ -107,13 +118,100 @@ angular.module("sportsStoreAdmin")
                     bath: $scope.currentProduct.bath,
                     beds: $scope.currentProduct.beds
                 }
-            }).success(function (data) {
-                console.log("Successfully saved product!! " + data);
+            }).then(function (result) {
+//                console.log("Successfully saved product!! " + data);
+                console.log("Prooooooduct ID: " + result.data.productId);
+
+                $scope.myModel= {username: $scope.data.user.username, productId: result.data.productId};
+                if($scope.selectedFiles.length != 0){
+                    for(var i = 0; i < $scope.selectedFiles.length; i++){
+                        $scope.start(i);
+                    }
+                }
+
                 $scope.accountCreated = true;
 //                $scope.authenticate(data.username, data.password)
-            }).error(function (error) {
+            }).catch(function (error) {
                 console.log("Error is: " + error);
                 $scope.authenticationError = error;
+            });
+        }
+
+        $scope.onFileSelect = function ($files) {
+            console.log($files);
+            $scope.selectedFiles = [];
+            $scope.progress = [];
+            if ($scope.upload && $scope.upload.length > 0) {
+                for (var i = 0; i < $scope.upload.length; i++) {
+                    if ($scope.upload[i] != null) {
+                        $scope.upload[i].abort();
+                    }
+                }
+            }
+            $scope.upload = [];
+            $scope.uploadResult = [];
+            $scope.selectedFiles = $files;
+            $scope.dataUrls = [];
+            for (var i = 0; i < $files.length; i++) {
+                var $file = $files[i];
+                if ($scope.fileReaderSupported && $file.type.indexOf('image') > -1) {
+                    var fileReader = new FileReader();
+                    fileReader.readAsDataURL($files[i]);
+                    var loadFile = function (fileReader, index) {
+                        fileReader.onload = function (e) {
+                            $timeout(function () {
+                                $scope.dataUrls[index] = e.target.result;
+                            });
+                        }
+                    }(fileReader, i);
+                }
+                $scope.progress[i] = -1;
+                /*if ($scope.uploadRightAway) {
+                    $scope.start(i);
+                }*/
+            }
+        };
+
+        $scope.start = function (index) {
+            $scope.progress[index] = 0;
+            $scope.errorMsg = null;
+            //$upload.upload()
+            $scope.upload[index] = $upload.upload({
+                url: uploadUrl,
+                method: "POST",
+//                headers: {'my-header': 'my-header-value'},
+                data: {
+                    myModel: $scope.myModel,
+                    errorCode: $scope.generateErrorOnServer && $scope.serverErrorCode,
+                    errorMessage: $scope.generateErrorOnServer && $scope.serverErrorMsg
+                },
+                /* formDataAppender: function(fd, key, val) {
+                 if (angular.isArray(val)) {
+                 angular.forEach(val, function(v) {
+                 fd.append(key, v);
+                 });
+                 } else {
+                 fd.append(key, val);
+                 }
+                 }, */
+                /* transformRequest: [function(val, h) {
+                 console.log(val, h('my-header')); return val + '-modified';
+                 }], */
+                file: $scope.selectedFiles[index],
+                fileFormDataName: 'myFile'
+            });
+            $scope.upload[index].then(function (response) {
+                $timeout(function () {
+                    $scope.uploadResult.push(response.data);
+                });
+            }, function (response) {
+                if (response.status > 0) $scope.errorMsg = response.status + ': ' + response.data;
+            }, function (evt) {
+                // Math.min is to fix IE which reports 200% sometimes
+                $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+            });
+            $scope.upload[index].xhr(function (xhr) {
+//				xhr.upload.addEventListener('abort', function() {console.log('abort complete')}, false);
             });
         }
         console.log("Editor Scope!");

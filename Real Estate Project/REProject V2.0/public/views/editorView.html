@@ -22,6 +22,22 @@
                 <label>Floor Area:</label>
                 <input class="form-control" ng-model="currentProduct.floorArea"/>
             </div>
+            <div class="form-group">
+                <label>Upload images:</label>
+                <input type="file" ng-file-select="onFileSelect($files)" multiple onclick="this.value=null">
+
+                <div class="sel-file" ng-repeat="f in selectedFiles">
+                    {{($index + 1) + '.'}}
+                    <!--<img ng-show="dataUrls[$index]" ng-src="{{dataUrls[$index]}}">-->
+                    <!--<button class="button" ng-click="start($index)" ng-show="progress[$index] < 0">Start</button>-->
+				<!--<span class="progress" ng-show="progress[$index] >= 0">-->
+					<!--<div style="width:{{progress[$index]}}%">{{progress[$index]}}%</div>-->
+				<!--</span>-->
+
+                    <!--<button class="button" ng-click="abort($index)" ng-show="hasUploader($index) && progress[$index] < 100">Abort</button>-->
+                    {{f.name}} - size: {{f.size}}B - type: {{f.type}}
+                </div>
+            </div>
 
         </div>
         <div class="col-lg-4">
@@ -53,6 +69,8 @@
             <!--</div>-->
         </div>
     </div>
+
+
 
     <button class="btn btn-primary" ng-click="saveProduct(currentProduct)">Save</button>
     <button class="btn btn-primary" ng-click="cancelEdit()">Cancel</button>

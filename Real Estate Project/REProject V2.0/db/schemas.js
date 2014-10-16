@@ -17,7 +17,8 @@ module.exports.getUserModel = function () {
         price: Number,
         city: String,
         bath: Number,
-        beds: Number
+        beds: Number,
+        primaryImage: String
     });
 
     var userSchema = Schema({

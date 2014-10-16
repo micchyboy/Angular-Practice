@@ -14,7 +14,8 @@ var productSchema = Schema({
     price: Number,
     city: String,
     bath: Number,
-    beds: Number
+    beds: Number,
+    primaryImage: String
 });
 
 var userSchema = Schema({
@@ -67,14 +68,29 @@ var User = mongoose.model('Users', userSchema);
 
 mongoose.model('Users').update(
     {
-        "products.city": "Dreams"
+        "products.name": "test"
 
     },
     {
-        $set: {
-            "products.$.bath" : 788
+        $addToSet: {
+            "products.$.images": ["teeeeest!"]
+        },
+        "$set": {
+            "products.$.primaryImage" : "Set this shiiii"
         }
     }
+
+    , function (err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log(result);
+    }
+)
+
+mongoose.model('Users').find({username: "jethro"}
+
     , function (err, result) {
         if (err) {
             console.log(err);

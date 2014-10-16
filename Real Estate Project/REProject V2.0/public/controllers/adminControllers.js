@@ -4,6 +4,7 @@ angular.module("sportsStoreAdmin")
     .constant("createUrl", "http://localhost:5501/create")
     .constant("uploadUrl", "http://localhost:5501/upload")
     .constant("ordersUrl", "http://localhost:5501/orders")
+    .constant("primaryImageUrl", "http://localhost:5501/primary_image")
     .config(function ($locationProvider) {
         /*if (window.history && history.pushState) {
          $locationProvider.html5Mode(true);
@@ -41,21 +42,6 @@ angular.module("sportsStoreAdmin")
     })
     .controller("authCtrl", function ($scope, $http, $location, authUrl, signUpUrl, authService) {
         $scope.authenticate = function (user, pass) {
-//            console.log("Username: " + user + " Password: " + pass);
-            /*$http({
-             url: authUrl,
-             method: "POST",
-             data: { username: user, password: pass }
-             }).success(function (data) {
-             for(var i in data.user){
-             console.log(i + ": " + data.user[i])
-             }
-             console.log( data.isAuthenticated + " " + data.user.name);
-             $scope.data.user = data.user;
-             $location.path("/main");
-             }).error(function (error) {
-             $scope.authenticationError = error;
-             });*/
             authService.authenticateUser($scope, user, pass)
                 .then(function (data) {
                     console.log("Z POWER OF PROMISES!! THE FUCKING DATA: " + data);
@@ -122,15 +108,15 @@ angular.module("sportsStoreAdmin")
 //                console.log("Successfully saved product!! " + data);
                 console.log("Prooooooduct ID: " + result.data.productId);
 
-                $scope.myModel= {username: $scope.data.user.username, productId: result.data.productId};
+                $scope.myModel= {
+                    username: $scope.data.user.username,
+                    productId: result.data.productId
+                };
                 if($scope.selectedFiles.length != 0){
                     for(var i = 0; i < $scope.selectedFiles.length; i++){
                         $scope.start(i);
                     }
                 }
-
-                $scope.accountCreated = true;
-//                $scope.authenticate(data.username, data.password)
             }).catch(function (error) {
                 console.log("Error is: " + error);
                 $scope.authenticationError = error;

@@ -234,11 +234,6 @@ app.post('/create', function (req, res) {
 
 
 app.post('/upload', function (req, res) {
-    /*var i = 0, j = 0;
-     for(var r in req){
-     console.log("Request property " + i++ +": " + r);
-     }*/
-//        console.log("Username: " + req.body.user.username);
     var deferred = Q.defer();
 
 
@@ -253,44 +248,47 @@ app.post('/upload', function (req, res) {
             console.log('Field [' + fieldname + ']: value: ' + val);
             busboy.on('file', function (fieldname, file, filename) {
                 var parsedModel = JSON.parse(val);
-                var path = __dirname + '/files/' + parsedModel.username + "/" + parsedModel.productId + "/" + filename;
+//                var path = __dirname + '/files/' + parsedModel.username + "/" + parsedModel.productId + "/" + filename;
+                var path = 'public/images/actual-size/' + parsedModel.username + "/" + parsedModel.productId + "/" + filename;
                 fs.ensureFileSync(path);
                 console.log("Uploading: " + filename);
                 fstream = fs.createWriteStream(path);
                 console.log("Saved: " + filename);
                 file.pipe(fstream);
 
-
-
                 /*fstream.on('close', function () {
                  res.redirect('back');
                  });*/
-                deferred.resolve([path, parsedModel.productId, parsedModel.username, filename])
+                deferred.resolve([path, parsedModel, filename])
             });
         }
     });
 
     deferred.promise.then(function (args) {
         console.log("Path: " + args[0]);
-        console.log("Product Id: " + args[1]);
+        console.log("Product Id: " + args[1].productId);
         var path = args[0];
-        var productId = args[1]
-        var username = args[2];
-        var filename = args[3];
+        var productId = args[1].productId;
+        var username = args[1].username;
+        var filename = args[2];
         busboy.on('finish', function () {
 
-            var thumbPath = __dirname + '/thumbnails/' + username + "/" + productId + "/" + filename;
+//            var thumbPath = __dirname + '/thumbnails/' + username + "/" + productId + "/" + filename;
+            var thumbPath = 'public/images/thumbnails/' + username + "/" + productId + "/" + filename;
             fs.ensureFileSync(thumbPath);
             im.resize({
                 srcPath: path,
                 dstPath: thumbPath,
-                width:   200,
+                width: 200,
                 height: 150
-            }, function(err, stdout, stderr){
+            }, function (err, stdout, stderr) {
                 if (err) throw err;
                 console.log('resized image to fit within 200x150px');
             });
 
+
+            var staticPath = path.substring(path.indexOf("/"), path.length);
+            var staticThumbPath = thumbPath.substring(thumbPath.indexOf("/"), thumbPath.length);
 
             mongoose.model('Users').update(
                 {
@@ -299,7 +297,10 @@ app.post('/upload', function (req, res) {
                 },
                 {
                     $addToSet: {
-                        "products.$.images": path
+                        "products.$.images": staticPath
+                    },
+                    $set: {
+                        "products.$.primaryImage": staticThumbPath
                     }
                 }
                 , function (err, result) {
@@ -317,77 +318,42 @@ app.post('/upload', function (req, res) {
     })
 });
 
-app.post('/create2', function (req, res) {
-    async.waterfall([
-        function (callback) {
-            User.findOne({ username: req.body.user.username }, function (err, data) {
-                callback(err, data);
-            });
-        },
-        function (user, callback) {
-            console.log("Mapping product schema..");
-            var product = {
-                category: req.body.category,
-                description: req.body.description,
-                floorArea: req.body.floorArea,
-//                images: req.body.images,
-                lotArea: req.body.lotArea,
-                name: req.body.name,
-                price: req.body.price,
-                city: req.body.city,
-                bath: req.body.bath,
-                beds: req.body.beds
-            };
-            user.products.push(product);
+app.post('/primary_image', function (req, res) {
+    mongoose.model('Users').update(
+        {
+            "products._id": productId
 
-            console.log("Saving product..")
-            user.save(function (err, data) {
-                callback(err, data.product);
-            })
         },
-        function (product, callback) {
-            console.log("Saved product with id: " + product._id)
-            var paths = []
-            console.log("Receiving images..");
-            var fstream;
-            var busboy = new Busboy({ headers: req.headers });
-            req.pipe(busboy);
-            busboy.on('file', function (fieldname, file, filename) {
-                try {
-                    var path = __dirname + '/files/' + product._id + "/" + filename
-                    paths.push(path);
-                    fstream = fs.createWriteStream(path);
-                    console.log("Saved: " + filename);
-                    file.pipe(fstream);
-                }
-                catch (err) {
-                    callback(err);
-                }
-                /*fstream.on('close', function () {
-                 res.redirect('back');
-                 });*/
-                busboy.on('finish', function () {
-                    console.log("Done saving images..");
-                    callback(null, product, paths);
-                });
-            });
-        },
-        function (product, paths, callback) {
-            product.images = paths;
-            product.save(function (err, data) {
-                callback(err, data);
-            })
+        {
+            $set: {
+                "products.$.primaryImage": primaryImagePath
+            }
         }
-    ], function (err, data) {
-        if (err) {
-            res.status(500).send(err.message);
+        , function (err, result) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            console.log(result);
         }
-        else {
-            res.json(data);
-        }
-    });
+    )
 });
 
+app.get('/:username/products', function (req, res) {
+    console.log("Getting products of " + req.params.username);
+    mongoose.model('Users').findOne(
+        {
+            username: req.params.username
+        },
+        {
+            products: 1
+        },
+        function (err, data) {
+            if (err) return console.error(err);
+            console.log(data);
+            res.json(data);
+        })
+});
 
 var schemas = require('./db/schemas.js');
 var User = new schemas.getUserModel();

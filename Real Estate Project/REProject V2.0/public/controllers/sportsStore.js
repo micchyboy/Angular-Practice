@@ -1,5 +1,5 @@
 angular.module("sportsStore")
-    .constant("dataUrl", "http://localhost:5501/db/products")
+    .constant("dataUrl", "http://localhost:5501/jethro/products")
     .constant("orderUrl", "http://localhost:5501/orders")
     .config(function ($locationProvider) {
        /* if (window.history && history.pushState) {
@@ -15,7 +15,11 @@ angular.module("sportsStore")
 
         $http.get(dataUrl)
             .success(function (data) {
-                $scope.data.products = data;
+                for(var i in data){
+                    console.log(i + ": " + data[i]);
+                }
+                console.log(data.products);
+                $scope.data.products = data.products;
             })
             .error(function (error) {
                 $scope.data.error = error;

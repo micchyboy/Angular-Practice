@@ -44,15 +44,6 @@ var User = mongoose.model('Users', userSchema);
     }
     console.log(result[0].products._id);
 });*/
-var q = require('q');
-var deferred = q.defer();
-
-deferred.resolve("test1")
-deferred.resolve("test2");
-
-deferred.promise.then(function(result){
-    console.log(result)
-});
 
 //setting array element values
 /*mongoose.model('Users').update(
@@ -73,6 +64,26 @@ deferred.promise.then(function(result){
         console.log(result);
     }
 )*/
+
+mongoose.model('Users').update(
+    {
+        "products.city": "Dreams"
+
+    },
+    {
+        $set: {
+            "products.$.bath" : 788
+        }
+    }
+    , function (err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log(result);
+    }
+)
+
 
 /*Product.find(function (err, kittens) {
  if (err) return console.error(err);

@@ -261,21 +261,11 @@ app.post('/upload', function (req, res) {
                 file.pipe(fstream);
 
 
-                var thumbPath = __dirname + '/thumbnails/' + parsedModel.username + "/" + parsedModel.productId + "/" + filename;
-                fs.ensureFileSync(thumbPath);
-                im.resize({
-                    srcPath: path,
-                    dstPath: thumbPath,
-                    width:   200,
-                    height: 150
-                }, function(err, stdout, stderr){
-                    if (err) throw err;
-                    console.log('resized image to fit within 200x150px');
-                });
+
                 /*fstream.on('close', function () {
                  res.redirect('back');
                  });*/
-                deferred.resolve([path, parsedModel.productId])
+                deferred.resolve([path, parsedModel.productId, parsedModel.username, filename])
             });
         }
     });
@@ -285,7 +275,23 @@ app.post('/upload', function (req, res) {
         console.log("Product Id: " + args[1]);
         var path = args[0];
         var productId = args[1]
+        var username = args[2];
+        var filename = args[3];
         busboy.on('finish', function () {
+
+            var thumbPath = __dirname + '/thumbnails/' + username + "/" + productId + "/" + filename;
+            fs.ensureFileSync(thumbPath);
+            im.resize({
+                srcPath: path,
+                dstPath: thumbPath,
+                width:   200,
+                height: 150
+            }, function(err, stdout, stderr){
+                if (err) throw err;
+                console.log('resized image to fit within 200x150px');
+            });
+
+
             mongoose.model('Users').update(
                 {
                     "products._id": productId

@@ -124,7 +124,7 @@ angular.module("sportsStoreAdmin")
         }
 
         $scope.onFileSelect = function ($files) {
-            console.log($files);
+//            console.log($files);
             $scope.selectedFiles = [];
             $scope.progress = [];
             if ($scope.upload && $scope.upload.length > 0) {

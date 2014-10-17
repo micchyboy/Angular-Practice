@@ -65,7 +65,7 @@ angular.module("sportsStore")
             $(document).ready(function () {
                 $('.photos-gallery img').on('click', function () {
                     var src = $(this).attr('src');
-                    var img = '<div style="position: relative; margin-left: 32%"><img src="' + src + '" class="img-responsive"/></div>';
+                    var img = '<div><img src="' + src + '" class="img-responsive"/></div>';
                     $('#myModal').modal();
                     $('#myModal').on('shown.bs.modal', function () {
                         $('#myModal .modal-body').html(img);

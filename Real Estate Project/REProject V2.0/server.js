@@ -173,8 +173,11 @@ app.post('/create', function (req, res) {
     var promise = User.findOne({ username: req.body.user.username }).exec();
     promise.then(function (user) {
             try {
-                console.log("Mapping product schema..");
+//                console.log("Mapping product schema..");
+                var id = new mongoose.Types.ObjectId();
+                console.log("New generated product id: " + id);
                 var product = {
+                    _id: id,
                     category: req.body.category,
                     description: req.body.description,
                     floorArea: req.body.floorArea,
@@ -188,35 +191,15 @@ app.post('/create', function (req, res) {
                 };
                 user.products.push(product);
 
-                console.log("Saving product..")
+//                console.log("Saving product..")
                 user.save(function (err, data) {
                     if (err) {
                         console.log("Error2: ", err);
                         res.status(500).send(err.message);
                     }
                     else {
-                        console.log("Data is now Saved")
-
-                        mongoose.model('Users').aggregate([
-                            { $match: {
-                                username: "jethro"
-                            }},
-                            { $unwind: "$products" },
-                            { $sort: {"products._id": -1}},
-                            { $limit: 1 }
-                        ], function (err, result) {
-                            if (err) {
-                                console.log(err);
-                                res.status(500).send(err.message);
-                            }
-                            else {
-                                var productId = result[0].products._id
-                                console.log("Product Id: " + productId);
-                                res.json({"productId": productId});
-                            }
-                        });
-
-
+//                        console.log("Data is now Saved")
+                        res.json({"productId": id});
                     }
                 })
             }
@@ -234,24 +217,23 @@ app.post('/create', function (req, res) {
 
 
 app.post('/upload', function (req, res) {
-    var deferred = Q.defer();
+    var busDeferred = Q.defer();
+    var fsDeferred = Q.defer();
 
 
-    console.log("Received images");
     var fstream;
-    console.log("Headers: " + req.headers);
     var busboy = new Busboy({ headers: req.headers });
     req.pipe(busboy);
 
     busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
         if (fieldname == "myModel") {
-            console.log('Field [' + fieldname + ']: value: ' + val);
+//            console.log('Field [' + fieldname + ']: value: ' + val);
             busboy.on('file', function (fieldname, file, filename) {
                 var parsedModel = JSON.parse(val);
 //                var path = __dirname + '/files/' + parsedModel.username + "/" + parsedModel.productId + "/" + filename;
                 var path = 'public/images/actual-size/' + parsedModel.username + "/" + parsedModel.productId + "/" + filename;
                 fs.ensureFileSync(path);
-                console.log("Uploading: " + filename);
+//                console.log("Saving: " + filename);
                 fstream = fs.createWriteStream(path);
                 console.log("Saved: " + filename);
                 file.pipe(fstream);
@@ -259,62 +241,79 @@ app.post('/upload', function (req, res) {
                 /*fstream.on('close', function () {
                  res.redirect('back');
                  });*/
-                deferred.resolve([path, parsedModel, filename])
+                fstream.on("finish", function () {
+                    fsDeferred.resolve([path, parsedModel, filename]);
+                })
+
             });
         }
     });
 
-    deferred.promise.then(function (args) {
-        console.log("Path: " + args[0]);
-        console.log("Product Id: " + args[1].productId);
+    fsDeferred.promise.then(function (args) {
         var path = args[0];
         var productId = args[1].productId;
         var username = args[1].username;
         var filename = args[2];
-        busboy.on('finish', function () {
+//        busboy.on('finish', function () {
 
 //            var thumbPath = __dirname + '/thumbnails/' + username + "/" + productId + "/" + filename;
-            var thumbPath = 'public/images/thumbnails/' + username + "/" + productId + "/" + filename;
-            fs.ensureFileSync(thumbPath);
-            im.resize({
-                srcPath: path,
-                dstPath: thumbPath,
-                width: 200,
-                height: 150
-            }, function (err, stdout, stderr) {
-                if (err) throw err;
-                console.log('resized image to fit within 200x150px');
-            });
+        var thumbPath = 'public/images/thumbnails/' + username + "/" + productId + "/" + filename;
+        async.waterfall([
+            function (callback) {
 
-
-            var staticPath = path.substring(path.indexOf("/"), path.length);
-            var staticThumbPath = thumbPath.substring(thumbPath.indexOf("/"), thumbPath.length);
-
-            mongoose.model('Users').update(
-                {
-                    "products._id": productId
-
-                },
-                {
-                    $addToSet: {
-                        "products.$.images": staticPath
-                    },
-                    $set: {
-                        "products.$.primaryImage": staticThumbPath
-                    }
-                }
-                , function (err, result) {
+                fs.ensureFileSync(thumbPath);
+                im.resize({
+                    srcPath: path,
+                    dstPath: thumbPath,
+                    width: 200,
+                    height: 150
+                }, function (err, stdout, stderr) {
                     if (err) {
                         console.log(err);
-                        return;
+                        throw err;
                     }
-                    console.log(result);
-                }
-            )
+                    console.log('resized image to fit within 200x150px');
+                    callback(err);
+                });
+            },
+            function (callback) {
+                //            var staticPath = path.substring(path.indexOf("/"), path.length);
+                var staticThumbPath = thumbPath.substring(thumbPath.indexOf("/"), thumbPath.length);
+                mongoose.model('Users').update(
+                    {
+                        "products._id": productId
 
-            res.writeHead(200, { 'Connection': 'close' });
-            res.end("That's all folks!");
-        });
+                    },
+                    {
+                        $addToSet: {
+                            "products.$.images": staticThumbPath
+                        },
+                        $set: {
+                            "products.$.primaryImage": staticThumbPath
+                        }
+                    }
+                    , function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+//                        console.log("Saved thumbnail path to database");
+                        callback(err)
+                    }
+                )
+            }
+        ], function (err, result) {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err.message);
+            }
+            else {
+//                console.log("Done upload!");
+                res.writeHead(200, { 'Connection': 'close' });
+                res.end("That's all folks!");
+            }
+        })
+//        });
     })
 });
 
@@ -350,7 +349,7 @@ app.get('/:username/products', function (req, res) {
         },
         function (err, data) {
             if (err) return console.error(err);
-            console.log(data);
+//            console.log(data);
             res.json(data);
         })
 });

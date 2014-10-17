@@ -66,6 +66,28 @@ var User = mongoose.model('Users', userSchema);
     }
 )*/
 
+//Getting array from document in descending sort order
+/*mongoose.model('Users').aggregate([
+    { $match: {
+        username: "jethro"
+    }},
+    { $unwind: "$products" },
+    { $sort: {"products._id": -1}},
+    { $limit: 1 }
+], function (err, result) {
+    if (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+    }
+    else {
+        var productId = result[0].products._id
+        console.log("Product Id: " + productId);
+        res.json({"productId": productId});
+    }
+});*/
+
+
+
 mongoose.model('Users').update(
     {
         "products.name": "test"

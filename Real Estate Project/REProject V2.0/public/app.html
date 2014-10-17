@@ -1,293 +1,305 @@
 <!DOCTYPE html>
 <html ng-app="sportsStore">
 <head>
-    <title>Real Estate App</title>
-    <script src="/angular.js"></script>
-    <link href="/bootstrap.css" rel="stylesheet"/>
-    <!--<link href="bootstrap-theme.css" rel="stylesheet"/>-->
+<title>Real Estate App</title>
+<script src="/angular.js"></script>
+<link href="/bootstrap.css" rel="stylesheet"/>
+<!--<link href="bootstrap-theme.css" rel="stylesheet"/>-->
 
 
-    <script src="/jquery-1.10.2.min.js"></script>
-    <script src="/bootstrap.min.js"></script>
+<script src="/jquery-1.10.2.min.js"></script>
+<script src="/bootstrap.min.js"></script>
 
 
-    <script>
-        angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate"])
-                .config(function ($routeProvider) {
-                    $routeProvider.when("/complete", {
-                        templateUrl: "/views/thankYou.html"
-                    });
-                    $routeProvider.when("/placeorder", {
-                        templateUrl: "/views/placeOrder.html"
-                    });
-                    $routeProvider.when("/checkout", {
-                        templateUrl: "/views/checkoutSummary.html"
-                    });
-                    $routeProvider.when("/products", {
-                        templateUrl: "/views/productList.html"
-                    });
-                    $routeProvider.when("/details", {
-                        templateUrl: "/views/productDetails.html"
-                    });
-                    $routeProvider.otherwise({
-                        redirectTo: "/products"
-                    });
+<script>
+    angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate"])
+            .config(function ($routeProvider) {
+                $routeProvider.when("/complete", {
+                    templateUrl: "/views/thankYou.html"
                 });
-    </script>
-    <script src="/controllers/sportsStore.js"></script>
-    <script src="/filters/customFilters.js"></script>
-    <script src="/controllers/productListControllers.js"></script>
-    <script src="/controllers/productDetailsController.js"></script>
-    <script src="/components/cart/cart.js"></script>
-    <script src="/ngmodules/angular-route.js"></script>
-    <script src="/ngmodules/angular-animate.js"></script>
-    <script src="/controllers/checkoutControllers.js"></script>
-    <script src="/services/dataHandlerService.js"></script>
-    <script src="/services/smoothScrollService.js"></script>
+                $routeProvider.when("/placeorder", {
+                    templateUrl: "/views/placeOrder.html"
+                });
+                $routeProvider.when("/checkout", {
+                    templateUrl: "/views/checkoutSummary.html"
+                });
+                $routeProvider.when("/products", {
+                    templateUrl: "/views/productList.html"
+                });
+                $routeProvider.when("/details", {
+                    templateUrl: "/views/productDetails.html"
+                });
+                $routeProvider.otherwise({
+                    redirectTo: "/products"
+                });
+            });
+</script>
+<script src="/controllers/sportsStore.js"></script>
+<script src="/filters/customFilters.js"></script>
+<script src="/controllers/productListControllers.js"></script>
+<script src="/controllers/productDetailsController.js"></script>
+<script src="/components/cart/cart.js"></script>
+<script src="/ngmodules/angular-route.js"></script>
+<script src="/ngmodules/angular-animate.js"></script>
+<script src="/controllers/checkoutControllers.js"></script>
+<script src="/services/dataHandlerService.js"></script>
+<script src="/services/smoothScrollService.js"></script>
 
-    <style>
-        html,
-        body {
-            height: 100%;
-            /* The html and body elements cannot have any padding or margin. */
-        }
+<style>
+html,
+body {
+    height: 100%;
+    /* The html and body elements cannot have any padding or margin. */
+}
 
-        .header-placeholder {
-            height: 54px
-        }
+.header-placeholder {
+    height: 54px
+}
 
-        .bs-header {
-            padding: 30px 15px 40px;
-            font-size: 16px;
-            text-align: center;
-            text-shadow: 0 1px 0 rgba(0, 0, 0, .15);
-            color: #cdbfe3;
-            /*background-color: #e7e7e7;*/
-            /*background-image: url(header.png);*/
-        }
+.bs-header {
+    padding: 30px 15px 40px;
+    font-size: 16px;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .15);
+    color: #cdbfe3;
+    /*background-color: #e7e7e7;*/
+    /*background-image: url(header.png);*/
+}
 
-        /*.navbar-inverse {
-            background-color: #53b50a;
+.navbar-inverse {
+    background: linear-gradient(#222222, #444444);;
 
-            border-color: #ffffff;
-        }*/
+    border-color: #ffffff;
+}
 
-        .navbar-nav {
-            color: #ffffff;
-        }
+.navbar-nav {
+    color: #ffffff;
+}
 
-        .navbar-fixed-top {
-            height: 55px;
-            /*background: #53b50a;*/
-        }
+.navbar-fixed-top {
+    height: 55px;
+    /*background: #53b50a;*/
+}
 
-        #search_filter_container {
-            -webkit-box-shadow: 2px 0 3px #777777;
-            -moz-box-shadow: 2px 0 3px #777777;
-            box-shadow: 2px 0 3px #777777;
-            min-height: 55px;
-            margin: 0;
-            width: 100%;
-            background: #e8eaf0;
-            position: relative;
-            z-index: 100;
-        }
+#search_filter_container {
+    -webkit-box-shadow: 2px 0 3px #777777;
+    -moz-box-shadow: 2px 0 3px #777777;
+    box-shadow: 2px 0 3px #777777;
+    min-height: 55px;
+    margin: 0;
+    width: 100%;
+    background: #e8eaf0;
+    position: relative;
+    z-index: 100;
+}
 
-        #wrap {
-            min-height: 100%;
-            height: auto !important;
-            height: 100%;
-            /* Negative indent footer by it's height */
-            margin: 0 auto -60px;
-        }
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Negative indent footer by it's height */
+    margin: 0 auto -60px;
 
-        .footer {
-            text-align: center;
-            padding: 30px 0;
-            /*margin-top: 70px;*/
-            border-top: 1px solid #e5e5e5;
-            background: #e8eaf0;
-            height: 60px;
-        }
+}
 
-        /*.user-info h2 {
-            font: 700 25px/20px 'Lato', sans-serif;
-            color: #ffffff;
-            text-align: right;
-            letter-spacing: 2px;
-            padding: 7px 8px 0;
-            display: inline-block;
-            position: relative;
-        }*/
+.footer {
+    text-align: center;
+    padding: 30px 0;
+    /*margin-top: 70px;*/
+    border-top: 1px solid #e5e5e5;
+    background: #e8eaf0;
+    height: 60px;
+}
 
-        .navbar-info {
-            width: 100%;
-            display: inline;
-            /*margin: 0px 0 0 -35%;*/
-            /*left: 50%;*/
-        }
+/*.user-info h2 {
+    font: 700 25px/20px 'Lato', sans-serif;
+    color: #ffffff;
+    text-align: right;
+    letter-spacing: 2px;
+    padding: 7px 8px 0;
+    display: inline-block;
+    position: relative;
+}*/
 
-        .user-info > * {
-            height: 50px;
-            color: #ffffff;
-            padding: 10px 12px;
-            font-size: 25px;
-            letter-spacing: 2px;
-        }
+.navbar-info {
+    width: 100%;
+    display: inline;
+    /*margin: 0px 0 0 -35%;*/
+    /*left: 50%;*/
+}
 
-        @media (max-width: 423px){
-            .user-name {
-                font-size: 16px;
-                width: 50% !important;
-            }
-            .user-details {
-                font-size: 14px;
-                width: 50% !important;
-            }
+.user-info > * {
+    height: 50px;
+    color: #ffffff;
+    padding: 10px 12px;
+    font-size: 25px;
+    letter-spacing: 2px;
+}
 
-            .user-details img {
-                height: 14px;
-                width: 20px;
-            }
+.user-misc a {
+    border-radius: 10px;
+    font-weight: bold;
+    color: #ffffff;
+    border: 0;
+}
 
-            .user-misc {
-                display: none;
-            }
-        }
+@media (max-width: 423px) {
+    .user-name {
+        font-size: 16px;
+        width: 50% !important;
+    }
 
-        @media (min-width: 424px) and (max-width: 517px) {
-            .user-info .user-name {
-                font-size: 18px;
-                width: 50% !important;
-            }
+    .user-details {
+        font-size: 14px;
+        width: 50% !important;
+    }
 
-            .user-details {
-                font-size: 14px;
-                width: 45% !important;
-            }
+    .user-details img {
+        height: 14px;
+        width: 20px;
+    }
 
-            .user-details img {
-                height: 14px;
-                width: 20px;
-            }
+    .user-misc {
+        display: none;
+    }
+}
 
-            .user-misc {
-                display: none;
-            }
-        }
+@media (min-width: 424px) and (max-width: 517px) {
+    .user-info .user-name {
+        font-size: 18px;
+        width: 50% !important;
+    }
 
-        @media (min-width: 518px) and (max-width: 769px) {
-            .user-info .user-name {
-                font-size: 20px;
-                width: 50% !important;
-            }
+    .user-details {
+        font-size: 14px;
+        width: 45% !important;
+    }
 
-            .user-details {
-                font-size: 18px;
-                width: 45% !important;
-            }
+    .user-details img {
+        height: 14px;
+        width: 20px;
+    }
 
-            .user-details img {
-                height: 20px;
-                width: 26px;
-            }
+    .user-misc {
+        display: none;
+    }
+}
 
-            .user-misc {
-                display: none;
-            }
-        }
+@media (min-width: 518px) and (max-width: 769px) {
+    .user-info .user-name {
+        font-size: 20px;
+        width: 50% !important;
+    }
 
-        @media (min-width: 519px) and (max-width: 993px) {
-            .user-misc {
-                width: 15% !important;
-            }
+    .user-details {
+        font-size: 18px;
+        width: 45% !important;
+    }
 
-            .user-details {
-                width: 45% !important;
-            }
-        }
+    /*.user-details img {
+        height: 20px;
+        width: 26px;
+    }*/
 
-        @media (min-width: 993px) {
-            .user-details {
-                font-size: 24px;
-            }
-        }
+    .user-misc {
+        display: none;
+    }
+}
 
-        .highlighted {
-            color: blue;
-        }
+@media (min-width: 519px) and (max-width: 993px) {
+    .user-misc {
+        width: 15% !important;
+    }
 
-        .pointed {
-            cursor: pointer;
-        }
+    .user-details {
+        width: 45% !important;
+    }
+}
 
-        /*For Google Scrollbar*/
-       /* ::-webkit-scrollbar
-        {
-            width: 12px;  *//* for vertical scrollbars *//*
-            height: 12px; *//* for horizontal scrollbars *//*
-        }
+@media (min-width: 993px) {
+    .user-details {
+        font-size: 24px;
+    }
+}
 
-        ::-webkit-scrollbar-track
-        {
-            background: rgba(0, 0, 0, 0.1);
-        }
+.vertical-center {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
 
-        ::-webkit-scrollbar-thumb
-        {
-            background: rgba(0, 0, 0, 0.5);
-        }*/
+.highlighted {
+    color: blue;
+}
 
-    </style>
+.pointed {
+    cursor: pointer;
+}
+
+/*For Google Scrollbar*/
+/* ::-webkit-scrollbar
+ {
+     width: 12px;  *//* for vertical scrollbars *//*
+     height: 12px; *//* for horizontal scrollbars *//*
+ }
+
+ ::-webkit-scrollbar-track
+ {
+     background: rgba(0, 0, 0, 0.1);
+ }
+
+ ::-webkit-scrollbar-thumb
+ {
+     background: rgba(0, 0, 0, 0.5);
+ }*/
+
+</style>
 </head>
 <body ng-controller="sportsStoreCtrl">
-    <div id="wrap">
-        <header class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container user-info">
-                    <div style="width: 40%; float: left" class="user-name">
-                        Real Estate App
-                    </div>
-                    <div style="width: 30%; float: left" class="user-misc">
+<div id="wrap">
+    <header class="navbar navbar-inverse navbar-fixed-top">
+        <nav class="container user-info">
+            <div style="width: 40%; float: left" class="user-name">
+                Real Estate App
+            </div>
 
-                    </div>
 
-                    <div style="width: 30%; float: left" class="user-details">
-                        <div class="pull-right">
-                            <img src="/images/icons/call.png" height="24px" width="30px">
-                            <span>0928.210.5990</span>
-                            <!--Navigation goes here-->
-                            <!--<nav class="hidden-xs">
-                                <ul class="nav navbar-nav">
-                                    <li>Home</li>
-                                    <li>Maps</li>
-                                    <li>About</li>
+            <div style="width: 30%; float: left" class="user-details">
+                <div class="pull-right">
+                    <!--<img src="/images/icons/call.png" height="24px" width="30px">-->
+                    <!--<span>0928.210.5990</span>-->
 
-                                </ul>
-                            </nav>-->
-                        </div>
-                    </div>
+
 
                 </div>
-                <!--<cart-summary/>-->
-        </header>
-        <div class="header-placeholder"></div>
-        <div class="alert alert-danger" ng-show="data.error">
-            Error ({{data.error.status}}). The product data was not loaded.
-            <a href="/app.html" class="alert-link">Click here to try again</a>
-        </div>
-        <!--<ng-view/>-->
+            </div>
 
-        <div role="main">
-            <!--<header class="bs-header" id="overview">
-
-
-            </header>-->
-            <ng-view/>
-
-
-        </div>
+            <nav style="width: 30%; float: left" class="user-misc">
+                <!--<ul class="pull-right navbar-collapse bs-navbar-collapse collapse in">
+                    <a class="btn btn-default" style="background-color: #5bc0de"> Log In</a>
+                    <a class="btn btn-default" style="background-color: #C53F00"> Sign Up</a>
+                </ul>-->
+            </nav>
+        </nav>
+        <!--<cart-summary/>-->
+    </header>
+    <div class="header-placeholder"></div>
+    <div class="alert alert-danger" ng-show="data.error">
+        Error ({{data.error.status}}). The product data was not loaded.
+        <a href="/app.html" class="alert-link">Click here to try again</a>
     </div>
+    <!--<ng-view/>-->
+
+    <div role="main">
+        <!--<header class="bs-header" id="overview">
+
+
+        </header>-->
+        <ng-view/>
+
+
+    </div>
+</div>
 </body>
 <footer class="footer">
 

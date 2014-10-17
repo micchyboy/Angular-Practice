@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <title>Directive Scopes</title>
+    <script src="angular.js"></script>
+    <link href="bootstrap.css" rel="stylesheet"/>
+    <link href="bootstrap-theme.css" rel="stylesheet"/>
+    <script type="text/ng-template" id="scopeTemplate">
+        <div class="panel-body">
+            <p>Name: {{local}}, City: {{cityFn()}}</p>
+        </div>
+    </script>
+    <script type="text/javascript">
+        angular.module("exampleApp", [])
+                .controller("topCtrl", function ($scope) {
+                    $scope.util = {};
+                    $scope.util.data = {
+                        topName: "top",
+                        topCity: ["topOne", "topTwo"]
+                    };
+                    $scope.getCity = function (name) {
+                        return name == "Adam" ? $scope.data.defaultCity : "Unknown";
+                    };
+
+                })
+                .controller("scopeCtrl", function ($scope, $timeout) {
+                    $scope.$watch("util.data.topCity", function () {
+                        $scope.bottomCity = $scope.util.data.topCity;
+                    })
+                    $scope.bottomName = $scope.util.data.topName;
+
+
+                    $scope.getCity = function (name) {
+                        return name == "Adam" ? $scope.data.defaultCity : "Unknown";
+                    }
+
+                    /*$timeout(function(){
+                        $scope.util.data = {
+                            topName: "top",
+                            topCity: ["Fex", "Five"]
+                        };
+                    }, 3000)*/
+                });
+    </script>
+</head>
+<body ng-controller="topCtrl">
+<div class="panel panel-default">
+    Top Controller Two way Binding:
+    <input ng-model="util.data.topName"/>
+    <input ng-model="util.data.topCity"/>
+
+    <div class="panel-body" ng-controller="scopeCtrl">
+
+
+        Scope Controller Two way Binding:
+        <input ng-model="bottomName"/>
+        <input ng-model="bottomCity"/>
+    </div>
+</div>
+</body>
+</html>

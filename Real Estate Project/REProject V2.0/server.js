@@ -257,10 +257,23 @@ app.post('/upload', function (req, res) {
 //        busboy.on('finish', function () {
 
 //            var thumbPath = __dirname + '/thumbnails/' + username + "/" + productId + "/" + filename;
+        var galleryImagePath = 'public/images/gallery/' + username + "/" + productId + "/" + filename;
         var thumbPath = 'public/images/thumbnails/' + username + "/" + productId + "/" + filename;
+
         async.waterfall([
             function (callback) {
-
+                fs.ensureFileSync(galleryImagePath);
+                im.resize({
+                    srcPath: path,
+                    dstPath: galleryImagePath,
+                    width: "620!",
+                    height: "465!"
+                }, function (err, stdout, stderr) {
+                    console.log('resized image to gallery size 620x465px');
+                    callback(err);
+                });
+            },
+            function (callback) {
                 fs.ensureFileSync(thumbPath);
                 im.resize({
                     srcPath: path,
@@ -268,17 +281,14 @@ app.post('/upload', function (req, res) {
                     width: 200,
                     height: 150
                 }, function (err, stdout, stderr) {
-                    if (err) {
-                        console.log(err);
-                        throw err;
-                    }
-                    console.log('resized image to fit within 200x150px');
+                    console.log('resized image to thumbnail size 200x150px');
                     callback(err);
                 });
             },
             function (callback) {
                 //            var staticPath = path.substring(path.indexOf("/"), path.length);
                 var staticThumbPath = thumbPath.substring(thumbPath.indexOf("/"), thumbPath.length);
+                var staticGalleryPath = galleryImagePath.substring(galleryImagePath.indexOf("/"), galleryImagePath.length);
                 mongoose.model('Users').update(
                     {
                         "products._id": productId
@@ -286,7 +296,8 @@ app.post('/upload', function (req, res) {
                     },
                     {
                         $addToSet: {
-                            "products.$.images": staticThumbPath
+                            "products.$.galleryImages": staticGalleryPath,
+                            "products.$.thumbnailImages": staticThumbPath
                         },
                         $set: {
                             "products.$.primaryImage": staticThumbPath

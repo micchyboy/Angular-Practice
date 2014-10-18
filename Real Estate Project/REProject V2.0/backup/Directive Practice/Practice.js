@@ -1,13 +1,29 @@
-/**
- * Created by user on 10/16/2014.
- */
 
+/*for (var i=0, len=arr.length; i<len; i++) {
+    var str = arr[i];
+    for (var j=1; j<3; j++)
+        str += ","+arr[(i+j)%len]; // you could push to an array as well
+    alert(str);
+}*/
+var arr = ["A","B","C","D","E"];
+/*for(var i = 0; i < arr.length; i++){
+    arr = right(arr);
+}*/
 
-var arr = ["Jethro", "Estrada"];
-
-function convertToActualSize(thumbnail){
-    console.log();
-    var thumbPath = "/images/thumbnails";
-    thumbnail =  thumbnail.replace(thumbPath, "/images/actual-size");
+for(var i = 0; i < arr.length; i++){
+    right(arr);
+    alert(arr);
 }
 
+function right(arr){
+    var item = arr.shift();
+    arr[arr.length] = item;
+    return arr;
+}
+
+
+function left(arr){
+    var item = arr.pop();
+    arr.unshift(item)
+    return arr;
+}

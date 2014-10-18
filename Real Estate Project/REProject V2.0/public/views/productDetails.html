@@ -1,17 +1,61 @@
-<!--<div class="container">
-    <div class="row">
-        <div class="col-lg-6">
-           {{util.currentProduct.description}}
+<script type="text/ng-template" id="galleryTemplate">
+    <div id="slideshow-wrap">
+        <div id="slideshow-inner">
+            <ul ng-style="{'left' : leftDistance, 'width' : ulWidth}">
+                <li ng-repeat="item in galleryImages" ng-style="{'width' : liWidth}">
+                    <img ng-src="{{item}}"/>
+                </li>
+            </ul>
         </div>
-        <div class="col-lg-6">
-            {{util.currentProduct.description}}
+        <div style="margin-top: 5px">
+            <img ng-src="{{item}}" height="60px" width="70px" ng-repeat="item in productImages"
+                 ng-click="calculateLeftDistance($index)"/>
         </div>
     </div>
-
-</div>-->
-
+</script>
 
 <style>
+    .modal-dialog {
+        width: 640px !important;
+    }
+
+    #slideshow-wrap {
+        height: auto;
+        min-width: 260px;
+        max-width: 620px;
+
+    }
+
+    #slideshow-inner {
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0, 0, 0);
+        overflow: hidden;
+        position: relative;
+
+    }
+
+    #slideshow-inner > ul {
+        list-style: none;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        left: 0px;
+        -webkit-transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
+        -moz-transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
+        -o-transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
+        transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
+        margin: 0;
+        padding: 0;
+    }
+
+    #slideshow-inner > ul > li {
+        height: 465px;
+        float: left;
+        position: relative;
+
+    }
+
     /*.photos-gallery ul {
         padding: 0 0 0 0;
         margin: 0 0 0 0;
@@ -22,9 +66,13 @@
         margin-bottom: 25px;
     }*/
 
-    .photos-gallery img {
+    .main-picture {
         cursor: pointer;
     }
+
+    /*.photos-gallery {
+        background: linear-gradient(#222222, #444444);
+    }*/
 
     /*arbored*/
     .pill {
@@ -103,123 +151,82 @@
         border-radius: 15px;
     }
 
-    .striped-list li {
-        padding: 5px 0px;
+    .striped-list ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .striped-list ul li {
+        background: url("/images/icons/check-small.png") no-repeat;
+        background-position:  0% 40%;
+
+        padding: 5px 0px 5px 25px;
         font-weight: 900;
     }
-    .striped-list li:nth-child(odd){
-        background-color: #ebebeb;
+
+    .striped-list li:nth-child(odd) {
+        /*background-color: #ebebeb;*/
     }
+
 </style>
 
 <div>
     <div ng-controller="productDetailsCtrl">
-
-
-        <!--<div class="header-placeholder">
-            <div style="margin: 5px 0 0 5px">
-                <img src="/images/icons/back.png" height="40px" width="40px"
-                     ng-class="{pointed : hover}"
-                     ng-mouseenter="hover = true"
-                     ng-mouseleave="hover = false"
-                     ng-click="redirectPage('/products')">
-            </div>
-        </div>-->
-
-        <div class="product-details"> <!--class="container">-->
-                                      <!--<div class="row">
-                                          <div class="col-lg-6">-->
+        <div class="product-details">
             <div class="well well-sm details-container">
-
-
-                <!--<div class="description-info">
-                    Description
-                </div>
-
-                <div style="height: 150px; border: 1px solid #a1a1a1;">
-                    <div>
-
-                    </div>
-                </div>-->
-
-
-                <!--<div class="description-info">
-                    Photos
-                </div>-->
                 <div style="height: 420px; width: 100%; text-align: center">
-                    <div class="photos-gallery">
-                        <div style="float: left; width: 100%; ">
-                            <div style="margin: 3px auto">
-                                <img ng-src="{{currentImage}}" height="340px"
-                                     width="490px" class="main-picture" style="border-radius: 15px;" modal-gallery="{{currentProductImages}}"/>
-                            </div>
-
-                            <div style="float: left; height: 60px; width: 100%;">
-                                <div style="width: 65%; float: left;">
-                                    <img src="/images/up-arrow.png" height="10px" width="10px" ng-click="selectUp()">
-                                    <img ng-src="{{currentProductImages[sequence[$index]]}}" height="60px" width="70px"
-                                         ng-click="selectThumbnail(currentProductImages[sequence[$index]])"
-                                            ng-repeat="item in currentProductImages | limitTo: 3"/>
-                                    <!--ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[sequence[$index]])}"-->
-
-                                    <!--<img height="60px"
-                                         width="70px"
-                                         ng-src="{{currentProductImages[sequence[1]]}}"
-                                         ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[sequence[1]])}"
-                                         ng-click="selectThumbnail(currentProductImages[sequence[1]])"/>
-                                    <img height="60px"
-                                         width="70px"
-                                         ng-src="{{currentProductImages[sequence[2]]}}"
-                                         ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[sequence[2]])}"
-                                         ng-click="selectThumbnail(currentProductImages[sequence[2]])"/>-->
-
-
-                                    <img src="/images/down-arrow.png" height="10px" width="10px"
-                                         ng-click="selectDown()">
-                                </div>
-                                <div style="float: left; height: 60px; width: 35%; ">
-                                    <button class="btn-circle vertical-center">Gallery</button>
-                                </div>
-                            </div>
+                    <div style="float: left; width: 100%; " class="photos-gallery">
+                        <div style="margin: 3px auto">
+                            <img ng-src="{{currentImage}}" height="340px"
+                                 width="490px" class="main-picture" style="border-radius: 15px;"
+                                 modal-gallery/>
                         </div>
 
+                        <div style="float: left; height: 60px; width: 100%;">
+                            <div style="width: 65%; float: left;">
+                                <!--<img src="/images/up-arrow.png" height="10px" width="10px" ng-click="selectUp()">-->
+                                <img ng-src="{{currentProductImages[$index]}}" height="60px" width="70px"
+                                     ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[$index])}"
+                                     ng-repeat="item in currentProductImages | limitTo: 3"/>
+                                <!--ng-click="selectThumbnail(currentProductImages[$index])"-->
 
-                        <!--<div style="float: left; height: 50px; width: 180px;">
-                            <div style="position: relative; text-align: center">
-                                <button class="btn-circle">Gallery</button>
-                                <img src="/images/icons/gallery-icon.png" height="40px" width="40px">
-                                <img src="/images/icons/maps.png" height="40px" width="40px">
+
+                                <!--<img src="/images/down-arrow.png" height="10px" width="10px"
+                                     ng-click="selectDown()">-->
                             </div>
-                        </div>-->
+                            <div style="float: left; height: 60px; width: 35%; ">
+                                <button class="btn-circle vertical-center">Gallery</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="description-info">
                     Details
                 </div>
-                <div class="striped-list" style="height: 380px; overflow-y: auto; font-size: 12px; font-family: 'proxima-nova', sans-serif; color: #333333;">
-                     <div>
-                         <ul style="padding-left: 14px">
-                             <li>Type: Bungalow</li>
-                             <li>Style: 2 Story "Finished Basement!</li>
-                             <li>Lot Type: Rectangular</li>
-                             <li>Basement: Yes, Full "Finished Basement!</li>
-                             <li>Garage: Triple, Attached "10.5' Tall Ceilings"</li>
-                             <li>Bedrooms: 5</li>
-                             <li>Address: #5 Aurora Pijuan St, BF Resort Village, Las Pinas City</li>
-                             <li>Near Kencare</li>
- 
-                             <li>Type: Bungalow</li>
-                             <li>Style: 2 Story "Finished Basement!</li>
-                             <li>Lot Type: Rectangular</li>
-                             <li>Basement: Yes, Full "Finished Basement!</li>
-                             <li>Garage: Triple, Attached "10.5' Tall Ceilings"</li>
-                             <li>Bedrooms: 5</li>
-                             <li>Address: #5 Aurora Pijuan St, BF Resort Village, Las Pinas City</li>
-                             <li>Near Kencare</li>
-                         </ul>
-                     </div>
-                 </div>
+                <div class="striped-list"
+                     style="height: 380px; overflow-y: auto; font-size: 12px; font-family: 'proxima-nova', sans-serif; color: #333333;">
+                    <ul>
+                        <li>Type: Bungalow</li>
+                        <li>Style: 2 Story "Finished Basement!</li>
+                        <li>Lot Type: Rectangular</li>
+                        <li>Basement: Yes, Full "Finished Basement!</li>
+                        <li>Garage: Triple, Attached "10.5' Tall Ceilings"</li>
+                        <li>Bedrooms: 5</li>
+                        <li>Address: #5 Aurora Pijuan St, BF Resort Village, Las Pinas City</li>
+                        <li>Near Kencare</li>
+
+                        <li>Type: Bungalow</li>
+                        <li>Style: 2 Story "Finished Basement!</li>
+                        <li>Lot Type: Rectangular</li>
+                        <li>Basement: Yes, Full "Finished Basement!</li>
+                        <li>Garage: Triple, Attached "10.5' Tall Ceilings"</li>
+                        <li>Bedrooms: 5</li>
+                        <li>Address: #5 Aurora Pijuan St, BF Resort Village, Las Pinas City</li>
+                        <li>Near Kencare</li>
+                    </ul>
+                </div>
                 <!--<ul class="row" >
                     <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
                                                                          src="/images/test_image1_200x150.jpg"/>

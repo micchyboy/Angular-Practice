@@ -11,14 +11,16 @@ module.exports.getUserModel = function () {
         category: String,
         description: String,
         floorArea: Number,
-        images: [String],
+        galleryImages: [String],
+        thumbnailImages: [String],
         lotArea: Number,
         name: String,
         price: Number,
         city: String,
         bath: Number,
         beds: Number,
-        primaryImage: String
+        primaryImage: String,
+        created: { type: Date, default : Date.now() }
     });
 
     var userSchema = Schema({

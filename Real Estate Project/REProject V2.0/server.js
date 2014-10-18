@@ -181,7 +181,7 @@ app.post('/create', function (req, res) {
                     category: req.body.category,
                     description: req.body.description,
                     floorArea: req.body.floorArea,
-                    image: req.body.images,
+//                    image: req.body.images,
                     lotArea: req.body.lotArea,
                     name: req.body.name,
                     price: req.body.price,
@@ -198,7 +198,7 @@ app.post('/create', function (req, res) {
                         res.status(500).send(err.message);
                     }
                     else {
-//                        console.log("Data is now Saved")
+                        console.log("Product Saved")
                         res.json({"productId": id});
                     }
                 })
@@ -238,9 +238,6 @@ app.post('/upload', function (req, res) {
                 console.log("Saved: " + filename);
                 file.pipe(fstream);
 
-                /*fstream.on('close', function () {
-                 res.redirect('back');
-                 });*/
                 fstream.on("finish", function () {
                     fsDeferred.resolve([path, parsedModel, filename]);
                 })
@@ -253,6 +250,7 @@ app.post('/upload', function (req, res) {
         var path = args[0];
         var productId = args[1].productId;
         var username = args[1].username;
+        var imageDescription = args[1].imageDescription;
         var filename = args[2];
 //        busboy.on('finish', function () {
 
@@ -289,6 +287,11 @@ app.post('/upload', function (req, res) {
                 //            var staticPath = path.substring(path.indexOf("/"), path.length);
                 var staticThumbPath = thumbPath.substring(thumbPath.indexOf("/"), thumbPath.length);
                 var staticGalleryPath = galleryImagePath.substring(galleryImagePath.indexOf("/"), galleryImagePath.length);
+
+                console.log("Thumbnail path: " + staticThumbPath);
+                console.log("Image Description: " + imageDescription);
+                var imageObject = {path: staticGalleryPath, imageDescription: imageDescription}
+
                 mongoose.model('Users').update(
                     {
                         "products._id": productId
@@ -296,7 +299,7 @@ app.post('/upload', function (req, res) {
                     },
                     {
                         $addToSet: {
-                            "products.$.galleryImages": staticGalleryPath,
+                            "products.$.galleryImages": imageObject,
                             "products.$.thumbnailImages": staticThumbPath
                         },
                         $set: {

@@ -22,22 +22,7 @@
                 <label>Floor Area:</label>
                 <input class="form-control" ng-model="currentProduct.floorArea"/>
             </div>
-            <div class="form-group">
-                <label>Upload images:</label>
-                <input type="file" ng-file-select="onFileSelect($files)" multiple onclick="this.value=null">
 
-                <div class="sel-file" ng-repeat="f in selectedFiles">
-                    {{($index + 1) + '.'}}
-                    <!--<img ng-show="dataUrls[$index]" ng-src="{{dataUrls[$index]}}">-->
-                    <!--<button class="button" ng-click="start($index)" ng-show="progress[$index] < 0">Start</button>-->
-				<!--<span class="progress" ng-show="progress[$index] >= 0">-->
-					<!--<div style="width:{{progress[$index]}}%">{{progress[$index]}}%</div>-->
-				<!--</span>-->
-
-                    <!--<button class="button" ng-click="abort($index)" ng-show="hasUploader($index) && progress[$index] < 100">Abort</button>-->
-                    {{f.name}} - size: {{f.size}}B - type: {{f.type}}
-                </div>
-            </div>
 
         </div>
         <div class="col-lg-4">
@@ -68,9 +53,41 @@
             </div>
             <!--</div>-->
         </div>
+
+
     </div>
+    <div>
+        <label>Upload images:</label>
+        <input type="file" ng-file-select="onFileSelect($files)" multiple
+               onclick="this.value=null" onchange="angular.element(this).scope().$apply('imageDescriptions = []')">
 
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-4" ng-repeat="f in selectedFiles">
+                    <div style="margin-top: 20px">
+                        <table>
+                            <tr>
+                                <td style="width: 50%">
+                                    <img ng-show="dataUrls[$index]" ng-src="{{dataUrls[$index]}}"
+                                         style="width: 120px; height: 90px">
+                                    {{($index + 1) + '.'}}
+                                    {{f.name}}
+                                </td>
+                            </tr>
+                            <tr style="height: 5px"></tr>
+                            <tr>
+                                <td>
+                                    <label>Description:</label>
+                                    <input type="text" ng-model="imageDescriptions[$index]"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+    </div>
 
     <button class="btn btn-primary" ng-click="saveProduct(currentProduct)">Save</button>
     <button class="btn btn-primary" ng-click="cancelEdit()">Cancel</button>

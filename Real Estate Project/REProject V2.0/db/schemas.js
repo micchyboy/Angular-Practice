@@ -7,11 +7,11 @@ module.exports.getUserModel = function () {
 
     mongoose.connect("mongodb://localhost/re_db");
     console.log("Connected to mongoose");
-    var productSchema = Schema({
+    var productSchema = new Schema({
         category: String,
         description: String,
         floorArea: Number,
-        galleryImages: [String],
+        galleryImages: [{path: String, imageDescription: String}],
         thumbnailImages: [String],
         lotArea: Number,
         name: String,
@@ -20,10 +20,10 @@ module.exports.getUserModel = function () {
         bath: Number,
         beds: Number,
         primaryImage: String,
-        created: { type: Date, default : Date.now() }
+        created: { type: Date, default : Date.now }
     });
 
-    var userSchema = Schema({
+    var userSchema = new Schema({
         username: String,
         password: String,
         email: String,

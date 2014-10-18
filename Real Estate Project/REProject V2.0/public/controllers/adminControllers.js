@@ -86,7 +86,11 @@ angular.module("sportsStoreAdmin")
             return $scope.current == "Products"
                 ? "/views/adminProducts.html" : "/views/adminOrders.html";
         };
-    }).controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl, $timeout) {
+    }).controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl, $timeout, $q) {
+        $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
+        $scope.imageDescriptions = [];
+        var deferred;
+
         $scope.saveProduct = function () {
             $http({
                 url: createUrl,
@@ -105,16 +109,34 @@ angular.module("sportsStoreAdmin")
                     beds: $scope.currentProduct.beds
                 }
             }).then(function (result) {
+                deferred = [];
 //                console.log("Successfully saved product!! " + data);
                 console.log("Prooooooduct ID: " + result.data.productId);
 
-                $scope.myModel= {
+                $scope.myModel = {
                     username: $scope.data.user.username,
                     productId: result.data.productId
                 };
-                if($scope.selectedFiles.length != 0){
-                    for(var i = 0; i < $scope.selectedFiles.length; i++){
-                        $scope.start(i);
+                if ($scope.selectedFiles.length != 0) {
+                    for (var i = 0; i < $scope.selectedFiles.length; i++) {
+                        deferred[i] = $q.defer();
+                        if (i == 0) {
+                            $scope.myModel.imageDescription = $scope.imageDescriptions[i];
+                            $scope.start(i);
+                        }
+
+                        (function(i) {
+//                            var j = i;
+                            deferred[i].promise.then(function () {
+                                i++;
+                                if(i < $scope.selectedFiles.length) {
+                                    $scope.myModel.imageDescription = $scope.imageDescriptions[i];
+                                    $scope.start(i);
+                                }
+                            })
+                        })(i);
+//                        console.log("Image description "+ i +": " +  $scope.myModel.imageDescription)
+
                     }
                 }
             }).catch(function (error) {
@@ -153,8 +175,8 @@ angular.module("sportsStoreAdmin")
                 }
                 $scope.progress[i] = -1;
                 /*if ($scope.uploadRightAway) {
-                    $scope.start(i);
-                }*/
+                 $scope.start(i);
+                 }*/
             }
         };
 
@@ -187,6 +209,7 @@ angular.module("sportsStoreAdmin")
                 fileFormDataName: 'myFile'
             });
             $scope.upload[index].then(function (response) {
+                deferred[index].resolve();
                 $timeout(function () {
                     $scope.uploadResult.push(response.data);
                 });

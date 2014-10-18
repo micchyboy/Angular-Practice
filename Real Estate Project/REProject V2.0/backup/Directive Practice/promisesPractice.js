@@ -37,5 +37,13 @@ angular.module("exampleApp", [])
             }
         }
     })
-    .controller("defaultCtrl", function ($scope) {
+    .controller("defaultCtrl", function ($scope, $q) {
+        var d = $q.defer();
+
+        d.promise.then(function(arg){
+            alert(arg)
+        })
+        d = $q.defer();
+
+        d.resolve("Hey")
     });

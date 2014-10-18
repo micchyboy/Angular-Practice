@@ -3,13 +3,16 @@
         <div id="slideshow-inner">
             <ul ng-style="{'left' : leftDistance, 'width' : ulWidth}">
                 <li ng-repeat="item in galleryImages" ng-style="{'width' : liWidth}">
-                    <img ng-src="{{item}}"/>
+                    <img ng-src="{{item.path}}"/>
                 </li>
             </ul>
         </div>
         <div style="margin-top: 5px">
-            <img ng-src="{{item}}" height="60px" width="70px" ng-repeat="item in productImages"
-                 ng-click="calculateLeftDistance($index)"/>
+            <div style="text-align: center; font-weight: bold; font-size: 25px"><span>{{imageDescription}}</span></div>
+            <div>
+                <img ng-src="{{item}}" height="60px" width="70px" style="padding: 1px; cursor:pointer; margin-top: 10px" ng-repeat="item in productImages"
+                 ng-click="calculateLeftDistance($index); setImageDescription($index)"/>
+            </div>
         </div>
     </div>
 </script>
@@ -151,13 +154,13 @@
         border-radius: 15px;
     }
 
-    .striped-list ul {
+    .features-list ul {
         list-style-type: none;
         margin: 0;
         padding: 0;
     }
 
-    .striped-list ul li {
+    .features-list ul li {
         background: url("/images/icons/check-small.png") no-repeat;
         background-position:  0% 40%;
 
@@ -165,8 +168,22 @@
         font-weight: 900;
     }
 
-    .striped-list li:nth-child(odd) {
+    .features-list li:nth-child(odd) {
         /*background-color: #ebebeb;*/
+    }
+
+    .details-list table {
+        width: 100%;
+    }
+
+    .details-list table tr td {
+        padding: 5px 3px;
+        font-weight: 900;
+        width: 50%;
+    }
+
+    .details-list table tr:nth-child(odd) {
+        background-color: #ebebeb;
     }
 
 </style>
@@ -203,30 +220,80 @@
                 </div>
 
                 <div class="description-info">
-                    Details
+                    Features
                 </div>
-                <div class="striped-list"
-                     style="height: 380px; overflow-y: auto; font-size: 12px; font-family: 'proxima-nova', sans-serif; color: #333333;">
-                    <ul>
-                        <li>Type: Bungalow</li>
-                        <li>Style: 2 Story "Finished Basement!</li>
-                        <li>Lot Type: Rectangular</li>
-                        <li>Basement: Yes, Full "Finished Basement!</li>
-                        <li>Garage: Triple, Attached "10.5' Tall Ceilings"</li>
-                        <li>Bedrooms: 5</li>
-                        <li>Address: #5 Aurora Pijuan St, BF Resort Village, Las Pinas City</li>
-                        <li>Near Kencare</li>
+                <div class="features-list"
+                     style="min-height: 200px; font-size: 12px; font-family: 'proxima-nova', sans-serif; color: #333333;">
+                    <ul class="row">
+                        <li class="col-md-6 col-lg-6">Good Condition</li>
+                        <li class="col-md-6 col-lg-6">Near SM</li>
+                        <li class="col-md-6 col-lg-6">Nice garden</li>
+                        <li class="col-md-6 col-lg-6">Open sun </li>
+                        <li class="col-md-6 col-lg-6">Near beach </li>
+                        <li class="col-md-6 col-lg-6">10 mins walk from Seton</li>
+                        <li class="col-md-6 col-lg-6">20 mins walk from Kencare</li>
+                        <li class="col-md-6 col-lg-6">No problems with floods</li>
 
-                        <li>Type: Bungalow</li>
-                        <li>Style: 2 Story "Finished Basement!</li>
-                        <li>Lot Type: Rectangular</li>
-                        <li>Basement: Yes, Full "Finished Basement!</li>
-                        <li>Garage: Triple, Attached "10.5' Tall Ceilings"</li>
-                        <li>Bedrooms: 5</li>
-                        <li>Address: #5 Aurora Pijuan St, BF Resort Village, Las Pinas City</li>
-                        <li>Near Kencare</li>
+                        <li class="col-md-6 col-lg-6">Type: Bungalow</li>
+                        <li class="col-md-6 col-lg-6">Style: 2 Story !</li>
+                        <li class="col-md-6 col-lg-6">Lot Type: Rectangular</li>
+                        <li class="col-md-6 col-lg-6">Basement: Yes, Full </li>
+                        <!--<li class="col-lg-6">Garage: Triple, Attached </li>
+                        <li class="col-lg-6">Bedrooms: 5</li>
+                        <li class="col-lg-6">Address: #5 Aurora Pijuan St, </li>
+                        <li class="col-lg-6">Near Kencare</li>-->
+
+
                     </ul>
                 </div>
+
+                <div class="description-info">
+                    Details
+                </div>
+
+                <div class="details-list"
+                     style="height: 230px; overflow-y: auto; font-size: 12px; font-family: 'proxima-nova', sans-serif; color: #333333;">
+                    <table>
+                        <tr>
+                            <td>Price: 2,000,000</td>
+                            <td>Bath: 3</td>
+                        </tr>
+                        <tr>
+                            <td>Bedrooms: 3</td>
+                            <td>Lot Area: 120 sq. m</td>
+                        </tr>
+                        <tr>
+                            <td>Oldie but goodie</td>
+                            <td>Bath: 3</td>
+                        </tr>
+                        <tr>
+                            <td>Floor Area: 140 sq. m</td>
+                            <td>Type: Condo</td>
+                        </tr>
+
+                        <tr>
+                            <td>Built in 1980</td>
+                            <td>Basement: Yes, Full "Finished Basement!</td>
+                        </tr>
+
+                        <tr>
+                            <td>Built in 1980</td>
+                            <td>Garage: Triple, Attached Full "Furnished Flooring!</td>
+                        </tr>
+
+                        <tr>
+                            <td>Built in 1980</td>
+                            <td>Basement: Yes, Full "Finished Basement!</td>
+                        </tr>
+
+                        <tr>
+                            <td>Built in 1980</td>
+                            <td>Near Kencare</td>
+                        </tr>
+
+                    </table>
+                </div>
+
                 <!--<ul class="row" >
                     <li class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><img class="img-responsive"
                                                                          src="/images/test_image1_200x150.jpg"/>

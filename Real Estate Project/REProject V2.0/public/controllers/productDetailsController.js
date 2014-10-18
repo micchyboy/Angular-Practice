@@ -76,11 +76,16 @@ angular.module("sportsStore")
                     scope.leftDistance = "-" + (index * 100) + "%"
                 }
 
+                scope.setImageDescription = function(index){
+                    scope.imageDescription = scope.galleryImages[index].imageDescription;
+                }
+
                 scope.$watch("util.currentProduct.thumbnailImages", function () {
                     scope.productImages = scope.util.currentProduct.thumbnailImages.slice();
                     scope.galleryImages = scope.util.currentProduct.galleryImages.slice();
                 })
                 function initialize(){
+                    scope.imageDescription = scope.galleryImages[0].imageDescription;
                     scope.ulWidth = (scope.productImages.length * 100) + "%";
                     scope.liWidth = (100 / scope.productImages.length) + "%";
                     scope.leftDistance = 0 + "%";

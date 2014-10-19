@@ -78,4 +78,35 @@ angular.module("sportsStore")
         }*/
 
 
+    })
+    .filter("daysBetween", function () {
+        return function (value) {
+            var date;
+            if(angular.isString(value)){
+                date = new Date(value);
+            }
+
+            //Get 1 day in milliseconds
+            var one_day=1000*60*60*24;
+
+            // Convert both dates to milliseconds
+            var date1_ms = date.getTime();
+            var date2_ms = new Date().getTime();
+
+            // Calculate the difference in milliseconds
+            var difference_ms = date2_ms - date1_ms;
+
+            var difference_days = Math.round(difference_ms/one_day);
+            // Convert back to days and return
+            var desc = "";
+            if(difference_days == 0){
+                return "Added today";
+            }
+            else if(difference_days == 1){
+                return "Added 1 day ago"
+            }
+            else {
+                return "Added " + difference_days + " days ago";
+            }
+        };
     });

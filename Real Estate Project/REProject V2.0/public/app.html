@@ -67,7 +67,7 @@ body {
 }
 
 .navbar-inverse {
-    background: linear-gradient(#222222, #444444);;
+    background: linear-gradient(#222222, #444444);
 
     border-color: #ffffff;
 }
@@ -95,8 +95,6 @@ body {
 
 #wrap {
     min-height: 100%;
-    height: auto !important;
-    height: 100%;
     /* Negative indent footer by it's height */
     margin: 0 auto -60px;
 
@@ -107,8 +105,9 @@ body {
     padding: 30px 0;
     /*margin-top: 70px;*/
     border-top: 1px solid #e5e5e5;
-    background: #e8eaf0;
-    height: 60px;
+    margin-top: 60px;
+    background: linear-gradient(#222222, #444444);
+    /*background-image: url(http://subtlepatterns.com/patterns/dark_wall.png);*/
 }
 
 /*.user-info h2 {
@@ -185,15 +184,13 @@ body {
     }
 }
 
-@media (min-width: 518px) and (max-width: 769px) {
+@media (min-width: 518px) and (max-width: 767px) {
     .user-info .user-name {
         font-size: 20px;
-        width: 50% !important;
     }
 
     .user-details {
-        font-size: 18px;
-        width: 45% !important;
+        font-size: 12px;
     }
 
     /*.user-details img {
@@ -206,17 +203,17 @@ body {
     }
 }
 
-@media (min-width: 519px) and (max-width: 993px) {
+@media (min-width: 768px) and (max-width: 991px) {
     .user-misc {
         width: 15% !important;
     }
 
     .user-details {
-        width: 45% !important;
+        font-size: 18px;
     }
 }
 
-@media (min-width: 993px) {
+@media (min-width: 992px) {
     .user-details {
         font-size: 24px;
     }
@@ -259,13 +256,13 @@ body {
 <div id="wrap">
     <header class="navbar navbar-inverse navbar-fixed-top">
         <nav class="container user-info">
-            <div style="width: 40%; float: left" class="user-name">
+            <div class="user-name pull-left">
                 Real Estate App
             </div>
 
 
-            <div style="width: 30%; float: left" class="user-details">
-                <div class="pull-right">
+            <div class="user-details pull-right">
+                <div>
                     <!--<img src="/images/icons/call.png" height="24px" width="30px">-->
                     <span style="font-size: 14px">For inquiries:</span>
                     <span>0928.210.5990</span>
@@ -275,12 +272,12 @@ body {
                 </div>
             </div>
 
-            <nav style="width: 30%; float: left" class="user-misc">
-                <!--<ul class="pull-right navbar-collapse bs-navbar-collapse collapse in">
-                    <a class="btn btn-default" style="background-color: #5bc0de"> Log In</a>
-                    <a class="btn btn-default" style="background-color: #C53F00"> Sign Up</a>
-                </ul>-->
-            </nav>
+            <!-- <nav style="width: 30%; float: left" class="user-misc">
+                 <ul class="pull-right navbar-collapse bs-navbar-collapse collapse in">
+                     <a class="btn btn-default" style="background-color: #5bc0de"> Log In</a>
+                     <a class="btn btn-default" style="background-color: #C53F00"> Sign Up</a>
+                 </ul>
+            </nav>-->
         </nav>
         <!--<cart-summary/>-->
     </header>

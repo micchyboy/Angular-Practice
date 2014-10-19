@@ -19,17 +19,90 @@
                         templateUrl: "/views/adminMain.html"
                     });
                     $routeProvider.otherwise({
-                        templateUrl: "/views/adminLogin.html"
+                        redirectTo: "/login"
                     });
                 });
     </script>
     <script src="controllers/adminControllers.js"></script>
     <script src="controllers/adminProductController.js"></script>
     <script src="services/sessionStorageService.js"></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .header-placeholder {
+            height: 48px
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            /*margin-top: 70px;*/
+            height: 60px;
+            border-top: 1px solid #e5e5e5;
+            margin-top: 60px;
+            background: linear-gradient(#222222, #444444);
+        }
+
+        .navbar-inverse {
+            background: linear-gradient(#222222, #444444);
+
+            border-color: #ffffff;
+        }
+
+        .user-info > * {
+            height: 50px;
+            color: #ffffff;
+            padding: 10px 12px;
+            font-size: 25px;
+            letter-spacing: 2px;
+        }
+
+        .user-details {
+            font-size: 15px;
+            letter-spacing: 2px;
+        }
+    </style>
 </head>
 <body ng-controller="topCtrl">
-<ng-view/>
+<header class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="container user-info">
+        <div class="user-name pull-left">
+            Real Estate App
+        </div>
+
+
+        <div class="user-details pull-right">
+            <div>
+                <!--<span style="font-size: 14px">For inquiries:</span>
+                <span>0928.210.5990</span>-->
+                <span>Logged in as: {{data.user.username}}</span>
+
+
+            </div>
+        </div>
+
+        <!-- <nav style="width: 30%; float: left" class="user-misc">
+             <ul class="pull-right navbar-collapse bs-navbar-collapse collapse in">
+                 <a class="btn btn-default" style="background-color: #5bc0de"> Log In</a>
+                 <a class="btn btn-default" style="background-color: #C53F00"> Sign Up</a>
+             </ul>
+        </nav>-->
+    </nav>
+
+
+    <!--<cart-summary/>-->
+</header>
+<div class="header-placeholder"></div>
+<div>
+    <ng-view/>
+</div>
 </body>
+<footer class="footer">
+</footer>
 </html>
 
 <!--

@@ -89,6 +89,7 @@ angular.module("sportsStoreAdmin")
     }).controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl, $timeout, $q) {
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
         $scope.imageDescriptions = [];
+        $scope.currentProduct = {};
         var deferred;
 
         $scope.saveProduct = function () {
@@ -100,13 +101,13 @@ angular.module("sportsStoreAdmin")
                     category: $scope.currentProduct.category,
                     description: $scope.currentProduct.description,
                     floorArea: $scope.currentProduct.floorArea,
-//                    image: $scope.currentProduct.images,
                     lotArea: $scope.currentProduct.lotArea,
                     name: $scope.currentProduct.name,
                     price: $scope.currentProduct.price,
                     city: $scope.currentProduct.city,
                     bath: $scope.currentProduct.bath,
-                    beds: $scope.currentProduct.beds
+                    beds: $scope.currentProduct.beds,
+                    features: $scope.currentProduct.features
                 }
             }).then(function (result) {
                 deferred = [];
@@ -125,11 +126,11 @@ angular.module("sportsStoreAdmin")
                             $scope.start(i);
                         }
 
-                        (function(i) {
+                        (function (i) {
 //                            var j = i;
                             deferred[i].promise.then(function () {
                                 i++;
-                                if(i < $scope.selectedFiles.length) {
+                                if (i < $scope.selectedFiles.length) {
                                     $scope.myModel.imageDescription = $scope.imageDescriptions[i];
                                     $scope.start(i);
                                 }
@@ -246,5 +247,37 @@ angular.module("sportsStoreAdmin")
             }
             return total;
         }
+    })
+    .directive("simpleRepeater", function () {
+//        alert("Entered simple repeater directive..");
+        return {
+            restrict: "EA",
+            template: "<div ng-transclude></div>",
+            transclude: true,
+            replace: true,
+            scope: true,
+            compile: function (element, attrs, transcludeFn) {
+                return function ($scope, $element, $attr) {
+                    $scope.$$nextSibling.index = 0; //accesses the transcluded scope
+                    var index = 1;
+                    var lastScope = $element;
+                    $element.find("button").on("click", function(){
+                        $scope.$apply(function(){
+                            var childScope = $scope.$parent.$new();
+                            childScope.index = index++;
+                            transcludeFn(childScope, function (clone) {
+                                var buttonElem = clone.find("button");
+                                buttonElem.addClass("btn-danger").text("-");
+                                buttonElem.on("click", function(){
+                                    clone.remove();
+                                });
+                                lastScope.after(clone);
+                                lastScope = clone;
+                            });
+                        })
+
+                    })
+                }
+            }
+        }
     });
-;

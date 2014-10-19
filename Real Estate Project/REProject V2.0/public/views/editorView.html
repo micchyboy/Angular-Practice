@@ -1,96 +1,206 @@
+<style>
+    .form-group {
+        margin: 0 !important;
+    }
+
+    .action {
+        width: 100%;
+    }
+
+    .well-sm {
+        height: 520px;
+    }
+
+    .features-form {
+        height: 260px;
+    }
+
+    .details-form {
+        height: 260px;
+    }
+
+    .required-details-form {
+        /*height: 520px;*/
+    }
+
+    .upload-form {
+        height: 520px;
+        /*overflow-y: auto;*/
+    }
+</style>
+
+
 <div class="panel-body" ng-controller="editorCtrl">
     <div class="container">
-        <div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="action">
 
-            <h3>Details:</h3>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="form-group">
-                <label>Name:</label>
-                <input class="form-control" ng-model="currentProduct.name"/>
-            </div>
-            <div class="form-group">
-                <label>Category:</label>
-                <input class="form-control" ng-model="currentProduct.category"/>
-            </div>
-            <div class="form-group">
-                <label>Price:</label>
-                <input class="form-control" ng-model="currentProduct.price"/>
-            </div>
-            <div class="form-group">
-                <label>Floor Area:</label>
-                <input class="form-control" ng-model="currentProduct.floorArea"/>
-            </div>
-
-
-        </div>
-        <div class="col-lg-4">
-            <div class="form-group">
-                <label>City:</label>
-                <input class="form-control" ng-model="currentProduct.city"/>
-            </div>
-            <div class="form-group">
-                <label>Beds:</label>
-                <input class="form-control" ng-model="currentProduct.beds"/>
-            </div>
-            <div class="form-group">
-                <label>Bath:</label>
-                <input class="form-control" ng-model="currentProduct.bath"/>
-            </div>
-            <div class="form-group">
-                <label>Lot Area:</label>
-                <input class="form-control" ng-model="currentProduct.lotArea"/>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <!--<div class="form-group">-->
-            <div>
-                <label>Description:</label>
-            </div>
-            <div>
-                <textarea cols="40" rows="10" ng-model="currentProduct.description"></textarea>
-            </div>
-            <!--</div>-->
-        </div>
-
-
-    </div>
-    <div>
-        <label>Upload images:</label>
-        <input type="file" ng-file-select="onFileSelect($files)" multiple
-               onclick="this.value=null" onchange="angular.element(this).scope().$apply('imageDescriptions = []')">
-
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-lg-4" ng-repeat="f in selectedFiles">
-                    <div style="margin-top: 20px">
-                        <table>
-                            <tr>
-                                <td style="width: 50%">
-                                    <img ng-show="dataUrls[$index]" ng-src="{{dataUrls[$index]}}"
-                                         style="width: 120px; height: 90px">
-                                    {{($index + 1) + '.'}}
-                                    {{f.name}}
-                                </td>
-                            </tr>
-                            <tr style="height: 5px"></tr>
-                            <tr>
-                                <td>
-                                    <label>Description:</label>
-                                    <input type="text" ng-model="imageDescriptions[$index]"/>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                    <button class="btn btn-primary" ng-click="saveProduct(currentProduct)">Save</button>
+                    <button class="btn btn-danger" ng-click="cancelEdit()">Cancel</button>
                 </div>
+
+                <div class="col-sm-4 col-md-3 col-lg-3">
+                    <div class="panel panel-info required-details-form">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Required Details
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>Category:</label> <span>{{currentProduct.category}}</span>
+                                <select class="form-control" ng-model="currentProduct.category">
+                                    <option></option>
+                                    <option selected>House</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <span><label>Price:</label> </span><span>{{currentProduct.price | currency}}</span>
+                                <input class="form-control" ng-model="currentProduct.price"/>
+                            </div>
+                            <div class="form-group">
+                                <span><label>Floor Area:</label> </span>
+                                <span>{{currentProduct.floorArea ? currentProduct.floorArea + " sq. m" : ""}}</span>
+                                <input class="form-control" ng-model="currentProduct.floorArea"/>
+                            </div>
+
+                            <div class="form-group">
+                                <span><label>City:</label> </span><span>{{currentProduct.city}}</span>
+                                <input class="form-control" ng-model="currentProduct.city"/>
+                            </div>
+
+                            <div class="form-group">
+                                <span><label>Beds:</label> </span>
+                <span><ng-pluralize count="currentProduct.beds"
+                                    when="{'1' : '1 bed', 'other' : '{} beds'}"></ng-pluralize></span>
+                                <input class="form-control" ng-model="currentProduct.beds"/>
+                            </div>
+                            <div class="form-group">
+                                <span><label>Bath:</label> </span>
+                <span><ng-pluralize count="currentProduct.bath"
+                                    when="{'1' : '1 bath', 'other' : '{} baths'}"></ng-pluralize></span>
+
+                                <input class="form-control" ng-model="currentProduct.bath"/>
+                            </div>
+                            <div class="form-group">
+                                <span><label>Lot Area:</label> </span>
+                                <span>{{currentProduct.lotArea ? currentProduct.lotArea + " sq. m" : ""}}</span>
+                                <input class="form-control" ng-model="currentProduct.lotArea"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">
+                        <label>Name:</label>
+                        <input class="form-control" ng-model="currentProduct.name"/>
+                    </div>-->
+
+                </div>
+                <div class="col-sm-8 col-md-4 col-lg-4 ">
+                    <!--<div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input type="text" class="form-control" style="width: 200px">
+                        <button type="button" class="btn btn-success btn-add">+</button>
+                    </div>-->
+                    <div class="panel panel-success features-form">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Key Features
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <simple-repeater>
+                                <div class="form-group multiple-form-group input-group">
+                                    <input type="text" class="form-control"
+                                           ng-model="currentProduct.features[index]">
+                             <span class="input-group-btn">
+                                <button type="button" class="btn btn-success btn-add cloner">+</button>
+                             </span>
+                                </div>
+                            </simple-repeater>
+                        </div>
+                    </div>
+
+
+
+                    <div class="panel panel-warning details-form">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Other Details
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <simple-repeater>
+                                <div class="form-group multiple-form-group input-group">
+                                    <input type="text" class="form-control"
+                                           ng-model="currentProduct.features[index]">
+                             <span class="input-group-btn">
+                                <button type="button" class="btn btn-success btn-add cloner">+</button>
+                             </span>
+                                </div>
+                            </simple-repeater>
+                        </div>
+                    </div>
+
+
+                    <!--<div>
+                        <label>Description:</label>
+                    </div>
+                    <div>
+                        <textarea ng-model="currentProduct.description"></textarea>
+                    </div>-->
+                </div>
+
+                <div class="col-sm-12 col-md-5 col-lg-5">
+
+                    <div class="panel panel-danger upload-form">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Upload Images
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div>
+                                <!--<label>Upload images:</label>-->
+                                <input type="file" ng-file-select="onFileSelect($files)" multiple
+                                       onclick="this.value=null"
+                                       onchange="angular.element(this).scope().$apply('imageDescriptions = []')">
+
+                                <div class="row" style="height: 420px; overflow-y: auto">
+                                    <div class="col-md-6 col-lg-6" ng-repeat="f in selectedFiles">
+                                        <div style="margin-top: 20px">
+                                            <table>
+                                                <tr>
+                                                    <td style="width: 50%">
+                                                        <img ng-show="dataUrls[$index]" ng-src="{{dataUrls[$index]}}"
+                                                             style="width: 120px; height: 90px">
+                                                        {{($index + 1) + '.'}}
+                                                        {{f.name}}
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 5px"></tr>
+                                                <tr>
+                                                    <td>
+                                                        <label>Description:</label>
+                                                        <input type="text" ng-model="imageDescriptions[$index]"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
-
     </div>
 
-    <button class="btn btn-primary" ng-click="saveProduct(currentProduct)">Save</button>
-    <button class="btn btn-primary" ng-click="cancelEdit()">Cancel</button>
+
 </div>
 
 

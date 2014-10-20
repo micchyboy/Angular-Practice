@@ -1,4 +1,15 @@
-angular.module("sportsStoreAdmin")
+angular.module("sportsStore")
+    /*.config(function ($routeProvider) {
+        $routeProvider.when("/login", {
+            templateUrl: "/views/adminLogin.html"
+        });
+        $routeProvider.when("/main", {
+            templateUrl: "/views/adminMain.html"
+        });
+        $routeProvider.otherwise({
+            redirectTo: "/login"
+        });
+    })*/
     .constant("authUrl", "http://localhost:5501/login")
     .constant("signUpUrl", "http://localhost:5501/signup")
     .constant("createUrl", "http://localhost:5501/create")
@@ -10,7 +21,9 @@ angular.module("sportsStoreAdmin")
          $locationProvider.html5Mode(true);
          }*/
     })
-    .config(function ($httpProvider) {
+
+    //TODO: Might need interceptors in the future
+    /*.config(function ($httpProvider) {
         $httpProvider.interceptors.push(function () {
             return {
                 request: function (config) {
@@ -20,8 +33,10 @@ angular.module("sportsStoreAdmin")
                 }
             }
         });
-    })
-    .controller("topCtrl", function ($scope, authService, $location) {
+    })*/
+
+
+    /*.controller("topCtrl", function ($scope, authService, $location) {
         $scope.data = {};
         $scope.data.user = {};
 
@@ -86,7 +101,43 @@ angular.module("sportsStoreAdmin")
             return $scope.current == "Products"
                 ? "/views/adminProducts.html" : "/views/adminOrders.html";
         };
-    }).controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl, $timeout, $q) {
+    })*/
+    .controller("authCtrl", function ($scope, $http, $location, authUrl, signUpUrl, authService) {
+        $scope.authenticate = function (user, pass) {
+            authService.authenticateUser($scope, user, pass)
+                .then(function (data) {
+                    console.log("Z POWER OF PROMISES!! THE FUCKING DATA: " + data);
+                    $location.path("/main");
+                    $scope.data.user = data;
+                },
+                function (error) {
+                    $scope.authenticationError = error;
+                });
+        }
+
+        $scope.signUp = function () {
+            $scope.accountCreated = false;
+            console.log("Signing up!")
+            $http({
+                url: signUpUrl,
+                method: "POST",
+                data: {
+                    username: $scope.credentials[0],
+                    password: $scope.credentials[1],
+                    email: $scope.credentials[2],
+                    phone: $scope.credentials[3]
+                }
+            }).success(function (data) {
+//                console.log("Success" + data);
+                $scope.accountCreated = true;
+//                $scope.authenticate(data.username, data.password)
+            }).error(function (error) {
+                console.log("Error is: " + error);
+                $scope.authenticationError = error;
+            });
+        }
+    })
+    .controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl, $timeout, $q) {
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
         $scope.imageDescriptions = [];
         $scope.currentProduct = {};

@@ -1,4 +1,4 @@
-angular.module("sportsStoreAdmin")
+angular.module("authenticationServiceModule", [])
     .factory("sessionStorage", function () {
         return {
 

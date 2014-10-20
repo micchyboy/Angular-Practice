@@ -1,3 +1,5 @@
+
+
 <style>
 .list-image {
     float: left;
@@ -116,9 +118,6 @@
         font-size: 1.3em !important;
     }
 
-    .location-finder {
-        width: 130px !important;
-    }
 }
 
 @media (max-width: 423px) {
@@ -130,32 +129,9 @@
     .pill table td.pill-section {
         padding: 3px 7px;
     }
-
-    /*.location-name {
-        font-size: 1.3em !important;
-    }
-
-    .location-finder {
-        width: 130px !important;
-    }*/
 }
 
-.input-control {
-    height: 34px;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-}
+
 
 #adder {
     position: absolute;
@@ -222,13 +198,6 @@ select, a {
     /*background-color: #222222;*/
 }
 
-.user-button {
-    width: 80px;
-    color: #ffffff;
-    border-radius: 10px;
-    background-clip: padding-box;
-    padding: 7px 14px;
-}
 </style>
 
 <div class="panel panel-default row"
@@ -237,84 +206,7 @@ select, a {
      id="main-container">
 
 
-<div id="search_filter_container">
 
-    <!--<a ng-click="selectCategory()"
-       class="btn btn-block btn-default btn-lg col-lg-1">Home</a>-->
-
-    <!--<div ng-repeat="item in data.products | orderBy:'category' | unique:'category'"
-         ng-click="selectCategory(item)"
-         class=" btn btn-lg btn-default col-md-2"
-         ng-class="getCategoryClass(item)">-->
-
-    <div>
-        <form name="myForm"
-              novalidate
-              class="form-inline" style="padding-top: 10px; padding-left: 30px">
-
-            <!--WITH SEARCH BUTTON-->
-            <!--<div>
-                <select ng-model="searchData.location"
-                        ng-options="item for item in data.products  | orderBy:'category' | unique:'category'"
-                        class="input-control location-finder"
-                        style="width: 180px;"
-                        ng-click="selectCategory(searchData.location)">
-                    <option value="">
-                        Search All
-                    </option>
-                </select>
-
-                <input name="minPrice" type="text" ng-model="searchData.minPrice" class="input-control"
-                       style="width: 100px;" placeholder="Min. Price">
-                <input name="maxPrice" type="text" ng-model="searchData.maxPrice" class="input-control"
-                       style="width: 100px;" placeholder="Max. Price">
-
-                <a ng-click="searchProduct(searchData.location, searchData.minPrice, searchData.maxPrice)">
-                    <img src="/images/icons/search-icon.png" height="34px" width="40px">
-
-
-                </a>
-            </div>-->
-
-            <div>
-                <select ng-model="searchData.location"
-                        ng-options="item for item in data.products  | orderBy:'category' | unique:'category'"
-                        class="input-control location-finder"
-                        style="width: 180px;"
-                        ng-click="selectCategory(searchData.location)">
-                    <option value="">
-                        Search All
-                    </option>
-                </select>
-
-                <input name="minPrice" type="text" ng-model="searchData.minPrice" class="input-control"
-                       style="width: 100px;" placeholder="Min. Price"
-                       ng-change="searchProduct(searchData.location, searchData.minPrice, searchData.maxPrice)">
-                <input name="maxPrice" type="text" ng-model="searchData.maxPrice" class="input-control"
-                       style="width: 100px;" placeholder="Max. Price"
-                       ng-change="searchProduct(searchData.location, searchData.minPrice, searchData.maxPrice)">
-
-                <div style="width: 50px" class="pull-right">
-                    &nbsp;
-                </div>
-
-                <button name="maxPrice" type="button" class="input-control pull-right user-button"
-                        style="background-color: #3acb9a">
-                   Sign Up</button>
-
-                <button name="maxPrice" type="button" class="input-control pull-right user-button"
-                        style="background-color: #227dda;">
-                    Log In</button>
-                <!--<ul>
-                    <a class="input-control"> Log In</a>
-                    <a class="input-control"> Sign Up</a>
-                </ul>-->
-            </div>
-
-        </form>
-    </div>
-
-</div>
 <div class="container">
     <div class="col-md-6 col-lg-6">
         <div class="row"><!--style="overflow-y: auto; height: 492px;">-->
@@ -471,4 +363,5 @@ select, a {
             </div>
         </div>-->
 </div>
-</div>
+
+

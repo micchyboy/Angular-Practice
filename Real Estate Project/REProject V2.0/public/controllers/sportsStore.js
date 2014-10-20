@@ -1,17 +1,46 @@
-angular.module("sportsStore")
+angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate",
+    "authenticationServiceModule", "angularFileUpload"])
+    .config(function ($routeProvider) {
+        $routeProvider.when("/products", {
+            templateUrl: "/views/productList.html"
+        });
+        $routeProvider.when("/details", {
+            templateUrl: "/views/productDetails.html"
+        });
+        $routeProvider.when("/editor", {
+            templateUrl: "/views/editorView.html"
+        });
+        $routeProvider.otherwise({
+            redirectTo: "/products"
+        });
+    })
+    .run(function($templateCache, $http){
+        $http.get('/views/adminLogin.html', {cache:$templateCache});
+    })
     .constant("dataUrl", "http://localhost:5501/jethro/products")
-    .constant("orderUrl", "http://localhost:5501/orders")
     .config(function ($locationProvider) {
        /* if (window.history && history.pushState) {
             $locationProvider.html5Mode(true);
         }*/
     })
-    .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl, orderUrl, cart,
-                                             $location, $anchorScroll, $timeout, anchorSmoothScroll) {
+    .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl, cart,
+                                             $location, $anchorScroll, $timeout, anchorSmoothScroll, authService) {
         $scope.data = {
         };
         $scope.util = {};
         $scope.util.currentProduct = {};
+
+
+        $scope.$on("$routeChangeSuccess", function () {
+            console.log("Route change success! Main");
+            var isAuthenticated = authService.getData("isAuthenticated");
+            console.log("Is authenticated? " + (isAuthenticated))
+            if (!isAuthenticated) {
+                console.log("Redirect to login page..")
+                $location.path("/login");
+            }
+        });
+
 
         $http.get(dataUrl)
             .success(function (data) {
@@ -39,17 +68,10 @@ angular.module("sportsStore")
                 });
         }
 
-        $scope.redirectPage = function(path, item){
-            $scope.util.currentProduct = item;
+        $scope.redirectPage = function(path){
+            $scope.util.currentProduct = {};
             $location.path(path);
         }
-
-        /*$scope.invokeScrollToHash = function(elementId){
-            $timeout(function(){
-                $location.hash(elementId);
-                $anchorScroll();
-            }, 200);
-        }*/
 
         $scope.gotoElement = function (eID){
             // set the location.hash to the id of
@@ -60,25 +82,20 @@ angular.module("sportsStore")
             anchorSmoothScroll.scrollTo(eID);
 
         };
-        //TODO: Might use this for actual size photo gallery
-        /*$scope.readyItemGallery = function(){
-            $(document).ready(function () {
-                $('.photos-gallery img').on('click', function () {
-                    var src = $(this).attr('src');
-                    var img = '<div><img src="' + src + '" class="img-responsive"/></div>';
-                    $('#myModal').modal();
-                    $('#myModal').on('shown.bs.modal', function () {
-                        $('#myModal .modal-body').html(img);
-                    });
-                    $('#myModal').on('hidden.bs.modal', function () {
-                        $('#myModal .modal-body').html('');
-                    });
-                });
-            })
-        }*/
 
+        $scope.isAuthenticated = function(){
+            return authService.getData("isAuthenticated");
+        };
 
+        $scope.isEditor = function(){
+            var path = $location.path();
+            if(path == "/editor"){
+                return true
+            }
+           return false;
+        }
     })
+
     .filter("daysBetween", function () {
         return function (value) {
             var date;
@@ -109,4 +126,52 @@ angular.module("sportsStore")
                 return "Added " + difference_days + " days ago";
             }
         };
+    })
+    .directive("credentialsForm", function ($compile, $templateCache) {
+//        alert("Entered simple repeater directive..");
+        return {
+            restrict: "EA",
+            link: function(scope, elem, attrs){
+                elem.on("click", function(e){
+
+                    if(e.target.innerText == "Log In"){
+                        scope.isLogin = true;
+                    }
+                    else{
+                        scope.isLogin = false;
+                    }
+
+                    var content = $templateCache.get("/views/adminLogin.html");
+                    var listElem = angular.element(content[1]);
+                    var compileFn = $compile(listElem);
+                    compileFn(scope);
+
+                    $('#myModal').modal();
+                    $('#myModal').on('shown.bs.modal', function () {
+                        $('#myModal .modal-body').html(listElem);
+                    });
+                    $('#myModal').on('hidden.bs.modal', function () {
+                        $('#myModal .modal-body').html('');
+                    });
+                });
+
+
+            }
+        }
+    })
+    .directive("ngScopeElement", function () {
+        var directiveDefinitionObject = {
+
+            restrict: "A",
+
+            compile: function compile(tElement, tAttrs, transclude) {
+                return {
+                    pre: function preLink(scope, iElement, iAttrs, controller) {
+                        scope[iAttrs.ngScopeElement] = iElement;
+                    }
+                };
+            }
+        };
+
+        return directiveDefinitionObject;
     });

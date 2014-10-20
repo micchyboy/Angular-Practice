@@ -2,39 +2,17 @@
 <html ng-app="sportsStore">
 <head>
 <title>Real Estate App</title>
+<script src="ngmodules/angular-file-upload-shim.min.js"></script>
 <script src="/angular.js"></script>
+<script src="ngmodules/angular-file-upload.min.js"></script>
 <link href="/bootstrap.css" rel="stylesheet"/>
 <!--<link href="bootstrap-theme.css" rel="stylesheet"/>-->
 
 
 <script src="/jquery-1.10.2.min.js"></script>
 <script src="/bootstrap.min.js"></script>
-
-
-<script>
-    angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate"])
-            .config(function ($routeProvider) {
-                $routeProvider.when("/complete", {
-                    templateUrl: "/views/thankYou.html"
-                });
-                $routeProvider.when("/placeorder", {
-                    templateUrl: "/views/placeOrder.html"
-                });
-                $routeProvider.when("/checkout", {
-                    templateUrl: "/views/checkoutSummary.html"
-                });
-                $routeProvider.when("/products", {
-                    templateUrl: "/views/productList.html"
-                });
-                $routeProvider.when("/details", {
-                    templateUrl: "/views/productDetails.html"
-                });
-                $routeProvider.otherwise({
-                    redirectTo: "/products"
-                });
-            });
-</script>
 <script src="/controllers/sportsStore.js"></script>
+<script src="/controllers/adminControllers.js"></script>
 <script src="/filters/customFilters.js"></script>
 <script src="/controllers/productListControllers.js"></script>
 <script src="/controllers/productDetailsController.js"></script>
@@ -44,6 +22,7 @@
 <script src="/controllers/checkoutControllers.js"></script>
 <script src="/services/dataHandlerService.js"></script>
 <script src="/services/smoothScrollService.js"></script>
+<script src="/services/sessionStorageService.js"></script>
 
 <style>
 html,
@@ -182,6 +161,10 @@ body {
     .user-misc {
         display: none;
     }
+
+    .location-finder {
+        width: 130px !important;
+    }
 }
 
 @media (min-width: 518px) and (max-width: 767px) {
@@ -197,7 +180,6 @@ body {
         height: 20px;
         width: 26px;
     }*/
-
     .user-misc {
         display: none;
     }
@@ -250,6 +232,31 @@ body {
      background: rgba(0, 0, 0, 0.5);
  }*/
 
+.input-control {
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.user-button {
+    width: 80px;
+    color: #ffffff;
+    border-radius: 10px;
+    background-clip: padding-box;
+    padding: 7px 14px;
+}
+
 </style>
 </head>
 <body ng-controller="sportsStoreCtrl">
@@ -272,6 +279,75 @@ body {
         <!--<cart-summary/>-->
     </header>
     <div class="header-placeholder"></div>
+
+    <div id="search_filter_container">
+
+        <div>
+            <form name="myForm"
+                  novalidate
+                  class="form-inline" style="padding-top: 10px; padding-left: 30px">
+
+                <div>
+                    <span ng-hide="isEditor()">
+                        <select ng-model="searchData.location"
+                                ng-options="item for item in data.products  | orderBy:'city' | unique:'city'"
+                                class="input-control location-finder"
+                                style="width: 180px;"
+                                ng-click="selectCategory(searchData.location)">
+                            <option value="">
+                                Search All
+                            </option>
+                        </select>
+
+                        <input name="minPrice" type="text" ng-model="searchData.minPrice" class="input-control"
+                               style="width: 100px;" placeholder="Min. Price"
+                               ng-change="searchProduct(searchData.location, searchData.minPrice, searchData.maxPrice)">
+                        <input name="maxPrice" type="text" ng-model="searchData.maxPrice" class="input-control"
+                               style="width: 100px;" placeholder="Max. Price"
+                               ng-change="searchProduct(searchData.location, searchData.minPrice, searchData.maxPrice)">
+                    </span>
+
+                    <div style="width: 50px" class="pull-right">
+                        &nbsp;
+                    </div>
+
+
+                    <credentials-form ng-if="!isAuthenticated">
+                        <button name="maxPrice" type="button" class="input-control pull-right user-button"
+                                style="background-color: #3acb9a">
+                            Sign Up
+                        </button>
+
+                        <button name="maxPrice" type="button" class="input-control pull-right user-button"
+                                style="background-color: #227dda;">
+                            Log In
+                        </button>
+                    </credentials-form>
+
+                    <span ng-if="isAuthenticated">
+                        <button type="button" class="input-control pull-right user-button"
+                                ng-click="redirectPage('/product');"
+                                style="background-color: #3acb9a">
+                            List
+                        </button>
+
+                        <button type="button" class="input-control pull-right user-button"
+                                ng-click="redirectPage('/editor');"
+                                style="background-color: #227dda;">
+                            Create
+                        </button>
+                        <button name="maxPrice" type="button" class="input-control pull-right user-button"
+                                style="background: linear-gradient(to bottom, #d9534f 0%, #c12e2a 100%);">
+                            Log Out
+                        </button>
+                    </span>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
     <div class="alert alert-danger" ng-show="data.error">
         Error ({{data.error.status}}). The product data was not loaded.
         <a href="/app.html" class="alert-link">Click here to try again</a>
@@ -288,6 +364,10 @@ body {
 
     </div>
 </div>
+
+<div ng-include="'/views/modalTemplate.html'"></div>
+
+
 </body>
 <footer class="footer">
 

@@ -4,7 +4,7 @@ angular.module("sportsStore")
     .config(function($anchorScrollProvider){
         $anchorScrollProvider.disableAutoScrolling();
     })
-    .controller("productListCtrl", function ($scope, $filter, productListActiveClass, productListPageCount, cart) {
+    .controller("productListCtrl", function ($scope, $filter, productListActiveClass, productListPageCount, cart, authService) {
         var selectedCategory = null;
         var minimumPrice = 0;
         var maximumPrice = 0;
@@ -22,7 +22,7 @@ angular.module("sportsStore")
             if (selectedCategory == null && minimumPrice == 0 && maximumPrice == 0) {
                 return true;
             }
-            var isLocated = selectedCategory ? (product.category == selectedCategory) : true;
+            var isLocated = selectedCategory ? (product.city == selectedCategory) : true;
             var isGreaterMinPrice = minimumPrice ? (product.price >= minimumPrice) : true
             var isLesserMaxPrice = maximumPrice ? (product.price <= maximumPrice) : true;
 
@@ -51,4 +51,5 @@ angular.module("sportsStore")
 
             $scope.gotoElement('main');
         }
+
     });

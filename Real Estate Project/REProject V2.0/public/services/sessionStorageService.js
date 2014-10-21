@@ -1,9 +1,9 @@
-angular.module("authenticationServiceModule", [])
+angular.module("sportsStore")
     .factory("sessionStorage", function () {
         return {
 
             get: function (key) {
-                return localStorage.getItem(key);
+                return JSON.parse(localStorage.getItem(key));
             },
 
             save: function (key, data) {
@@ -18,14 +18,15 @@ angular.module("authenticationServiceModule", [])
                 localStorage.clear();
             }
         };
-    }).factory('authService', function ($http, sessionStorage, authUrl, $location, $q) {
+    }).factory('authService', function ($http, sessionStorage, authUrl, logOutUrl,
+                                        $location, $q, $rootScope) {
         //TODO: Try using $cookie or $cookieStore services
 
         return {
 
             getData: function (key) {
                 console.log("Using authentication service..");
-                return JSON.parse(sessionStorage.get(key));
+                return sessionStorage.get(key);
             },
 
             setData: function (key, data) {
@@ -49,6 +50,8 @@ angular.module("authenticationServiceModule", [])
                         sessionStorage.save("user", data.user);
                         sessionStorage.save("isAuthenticated", data.isAuthenticated);
 
+                        $rootScope.$broadcast("authSuccess", data.user);
+
                         deferred.resolve(data.user);
                     }).error(function (error) {
                         deferred.reject(error);
@@ -62,6 +65,10 @@ angular.module("authenticationServiceModule", [])
                 }
 
                 return deferred.promise;
+            },
+
+            logOut: function(){
+                return $http.get(logOutUrl);
             }
         };
     });

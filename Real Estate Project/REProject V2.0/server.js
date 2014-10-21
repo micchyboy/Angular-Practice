@@ -49,7 +49,7 @@ app.use(passport.session());
 passport.use(new passportLocal.Strategy(function (username, password, done) {
     console.log("Passport Local Strategy commence")
     User.findOne({username: username}, function (err, data) {
-        if (data.length != 0) {
+        if (data && data.length != 0) {
             console.log("Username matches. Comparing passwords");
             console.log("Queried object password: " + data.password)
             if (bcrypt.compareSync(password, data.password)) {
@@ -106,6 +106,18 @@ app.post('/login',
             user: req.user
         })
     });
+
+app.get('/logout', function (req, res) {
+    console.log("Logging out..")
+    req.session.destroy(function (err) {
+        res.redirect('/'); //Inside a callback… bulletproof!
+    });
+});
+
+app.get('/', function (req, res) {
+    res.redirect('/app.html');
+});
+
 
 app.post('/signup', function (req, res) {
     console.log("Sign UP!!")
@@ -187,7 +199,9 @@ app.post('/create', function (req, res) {
                     price: req.body.price,
                     city: req.body.city,
                     bath: req.body.bath,
-                    beds: req.body.beds
+                    beds: req.body.beds,
+                    features: req.body.features,
+                    details: req.body.details
                 };
                 user.products.push(product);
 

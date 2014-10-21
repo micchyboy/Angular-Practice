@@ -20,9 +20,9 @@
 <script src="/ngmodules/angular-route.js"></script>
 <script src="/ngmodules/angular-animate.js"></script>
 <script src="/controllers/checkoutControllers.js"></script>
-<script src="/services/dataHandlerService.js"></script>
 <script src="/services/smoothScrollService.js"></script>
 <script src="/services/sessionStorageService.js"></script>
+<script src="/services/stateSaveService.js"></script>
 
 <style>
 html,
@@ -140,6 +140,10 @@ body {
     .user-misc {
         display: none;
     }
+
+    .trademark-icon {
+        display: none;
+    }
 }
 
 @media (min-width: 424px) and (max-width: 517px) {
@@ -165,6 +169,11 @@ body {
     .location-finder {
         width: 130px !important;
     }
+
+    .trademark-icon {
+        display: none;
+    }
+
 }
 
 @media (min-width: 518px) and (max-width: 767px) {
@@ -181,6 +190,10 @@ body {
         width: 26px;
     }*/
     .user-misc {
+        display: none;
+    }
+
+    .trademark-icon {
         display: none;
     }
 }
@@ -257,14 +270,58 @@ body {
     padding: 7px 14px;
 }
 
+
+
+
+/*for sliding content*/
+.slide {
+    position: relative;
+}
+
+.slide.ng-leave, .slide.ng-enter {
+    -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    -moz-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    -ms-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    -o-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+
+    position:absolute;
+    left: 0;
+    right: 0;
+}
+
+.slide.left.ng-enter,
+.slide.right.ng-leave.ng-leave-active {
+    left: 100%;
+    opacity: 0;
+}
+
+.slide.left.ng-enter.ng-enter-active,
+.slide.left.ng-leave,
+.slide.right.ng-enter.ng-enter-active,
+.slide.right.ng-leave {
+    left:0;
+    opacity: 1;
+}
+
+.slide.left.ng-leave.ng-leave-active,
+.slide.right.ng-enter {
+    left: -100%;
+    opacity: 0;
+}
+
+
 </style>
 </head>
 <body ng-controller="sportsStoreCtrl">
 <div id="wrap">
+
     <header class="navbar navbar-inverse navbar-fixed-top">
         <nav class="container user-info">
             <div class="user-name pull-left">
-                Real Estate App
+                <img src="/images/icons/home.png" height="40px" width="40px" class="trademark-icon">
+
+                <span> Real Estate App </span>
             </div>
 
 
@@ -280,15 +337,16 @@ body {
     </header>
     <div class="header-placeholder"></div>
 
-    <div id="search_filter_container">
+    <div ng-controller="productListCtrl">
+        <div id="search_filter_container">
 
-        <div>
-            <form name="myForm"
-                  novalidate
-                  class="form-inline" style="padding-top: 10px; padding-left: 30px">
+            <div>
+                <form name="myForm"
+                      novalidate
+                      class="form-inline" style="padding-top: 10px; padding-left: 30px">
 
-                <div>
-                    <span ng-hide="isEditor()">
+                    <div>
+                    <span ng-show="isProduct()">
                         <select ng-model="searchData.location"
                                 ng-options="item for item in data.products  | orderBy:'city' | unique:'city'"
                                 class="input-control location-finder"
@@ -307,60 +365,57 @@ body {
                                ng-change="searchProduct(searchData.location, searchData.minPrice, searchData.maxPrice)">
                     </span>
 
-                    <div style="width: 50px" class="pull-right">
-                        &nbsp;
-                    </div>
+                        <div style="width: 50px" class="pull-right">
+                            &nbsp;
+                        </div>
 
 
-                    <credentials-form ng-if="!isAuthenticated">
-                        <button name="maxPrice" type="button" class="input-control pull-right user-button"
-                                style="background-color: #3acb9a">
-                            Sign Up
-                        </button>
+                        <credentials-form ng-if="!isAuthenticated()">
+                            <button name="maxPrice" type="button" class="input-control pull-right user-button"
+                                    style="background: linear-gradient(#3acb9a, #006600)">
+                                Sign Up
+                            </button>
 
-                        <button name="maxPrice" type="button" class="input-control pull-right user-button"
-                                style="background-color: #227dda;">
-                            Log In
-                        </button>
-                    </credentials-form>
+                            <button name="maxPrice" type="button" class="input-control pull-right user-button"
+                                    style="background: linear-gradient(#227dda, #000088);">
+                                Log In
+                            </button>
+                        </credentials-form>
 
-                    <span ng-if="isAuthenticated">
+                    <span ng-if="isAuthenticated()">
                         <button type="button" class="input-control pull-right user-button"
-                                ng-click="redirectPage('/product');"
-                                style="background-color: #3acb9a">
+                                ng-click="logout()"
+                                style="background: linear-gradient(#c12e2a, #880000);">
+                            Logout
+                        </button>
+                        <button type="button" class="input-control pull-right user-button"
+                                ng-click="redirectPage('/products');"
+                                style="background: linear-gradient(#3acb9a, #006600)">
                             List
                         </button>
 
                         <button type="button" class="input-control pull-right user-button"
                                 ng-click="redirectPage('/editor');"
-                                style="background-color: #227dda;">
+                                style="background: linear-gradient(#227dda, #000088);">
                             Create
                         </button>
-                        <button name="maxPrice" type="button" class="input-control pull-right user-button"
-                                style="background: linear-gradient(to bottom, #d9534f 0%, #c12e2a 100%);">
-                            Log Out
-                        </button>
                     </span>
-                </div>
+                    </div>
 
-            </form>
+                </form>
+            </div>
         </div>
 
-    </div>
 
-    <div class="alert alert-danger" ng-show="data.error">
-        Error ({{data.error.status}}). The product data was not loaded.
-        <a href="/app.html" class="alert-link">Click here to try again</a>
-    </div>
-    <!--<ng-view/>-->
+        <div class="alert alert-danger" ng-show="data.error">
+            Error ({{data.error.status}}). The product data was not loaded.
+            <a href="/app.html" class="alert-link">Click here to try again</a>
+        </div>
+        <!--<ng-view/>-->
 
-    <div role="main">
-        <!--<header class="bs-header" id="overview">
-
-
-        </header>-->
-        <ng-view/>
-
+        <div role="main">
+            <div ng-view ng-class="{slide: true, left: isDownwards, right: !isDownwards}"></div>
+        </div>
 
     </div>
 </div>

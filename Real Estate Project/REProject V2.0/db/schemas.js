@@ -20,6 +20,8 @@ module.exports.getUserModel = function () {
         bath: Number,
         beds: Number,
         primaryImage: String,
+        features: [String],
+        details: [String],
         created: { type: Date, default : Date.now }
     });
 

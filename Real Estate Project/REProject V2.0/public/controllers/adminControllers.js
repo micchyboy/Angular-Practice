@@ -1,60 +1,4 @@
 angular.module("sportsStore")
-    /*.config(function ($routeProvider) {
-        $routeProvider.when("/login", {
-            templateUrl: "/views/adminLogin.html"
-        });
-        $routeProvider.when("/main", {
-            templateUrl: "/views/adminMain.html"
-        });
-        $routeProvider.otherwise({
-            redirectTo: "/login"
-        });
-    })*/
-    .constant("authUrl", "http://localhost:5501/login")
-    .constant("signUpUrl", "http://localhost:5501/signup")
-    .constant("createUrl", "http://localhost:5501/create")
-    .constant("uploadUrl", "http://localhost:5501/upload")
-    .constant("ordersUrl", "http://localhost:5501/orders")
-    .constant("primaryImageUrl", "http://localhost:5501/primary_image")
-    .config(function ($locationProvider) {
-        /*if (window.history && history.pushState) {
-         $locationProvider.html5Mode(true);
-         }*/
-    })
-
-    //TODO: Might need interceptors in the future
-    /*.config(function ($httpProvider) {
-        $httpProvider.interceptors.push(function () {
-            return {
-                request: function (config) {
-                    console.log(config.data);
-//                    config.data.username = "jethrooo";
-                    return config;
-                }
-            }
-        });
-    })*/
-
-
-    /*.controller("topCtrl", function ($scope, authService, $location) {
-        $scope.data = {};
-        $scope.data.user = {};
-
-        $scope.$on("$routeChangeSuccess", function () {
-            console.log("Route change success!");
-            var isAuthenticated = authService.getData("isAuthenticated");
-            console.log("Is authenticated? " + (isAuthenticated))
-            if (!isAuthenticated) {
-                console.log("Redirect to login page..")
-                $location.path("/login");
-            }
-            else {
-                console.log("Authenticated! Proceed to main page..");
-                $scope.data.user = authService.getData("user");
-                $location.path("/main");
-            }
-        });
-    })
     .controller("authCtrl", function ($scope, $http, $location, authUrl, signUpUrl, authService) {
         $scope.authenticate = function (user, pass) {
             authService.authenticateUser($scope, user, pass)
@@ -90,58 +34,18 @@ angular.module("sportsStore")
             });
         }
     })
-    .controller("mainCtrl", function ($scope) {
-        console.log("Main Scope FUCKING data: " + $scope.data.user);
-        $scope.screens = ["Products", "Orders"];
-        $scope.current = $scope.screens[0];
-        $scope.setScreen = function (index) {
-            $scope.current = $scope.screens[index];
-        };
-        $scope.getScreen = function () {
-            return $scope.current == "Products"
-                ? "/views/adminProducts.html" : "/views/adminOrders.html";
-        };
-    })*/
-    .controller("authCtrl", function ($scope, $http, $location, authUrl, signUpUrl, authService) {
-        $scope.authenticate = function (user, pass) {
-            authService.authenticateUser($scope, user, pass)
-                .then(function (data) {
-                    console.log("Z POWER OF PROMISES!! THE FUCKING DATA: " + data);
-                    $location.path("/main");
-                    $scope.data.user = data;
-                },
-                function (error) {
-                    $scope.authenticationError = error;
-                });
-        }
-
-        $scope.signUp = function () {
-            $scope.accountCreated = false;
-            console.log("Signing up!")
-            $http({
-                url: signUpUrl,
-                method: "POST",
-                data: {
-                    username: $scope.credentials[0],
-                    password: $scope.credentials[1],
-                    email: $scope.credentials[2],
-                    phone: $scope.credentials[3]
-                }
-            }).success(function (data) {
-//                console.log("Success" + data);
-                $scope.accountCreated = true;
-//                $scope.authenticate(data.username, data.password)
-            }).error(function (error) {
-                console.log("Error is: " + error);
-                $scope.authenticationError = error;
-            });
-        }
-    })
-    .controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl, $timeout, $q) {
+    .controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl, $timeout, $q, dataHandler) {
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
         $scope.imageDescriptions = [];
         $scope.currentProduct = {};
         var deferred;
+
+        dataHandler.copyContents($scope);
+
+        $scope.$on("$locationChangeStart", function () {
+            var obj = {key : "currentProduct", value: $scope.currentProduct};
+            $scope.$emit("saveState", obj);
+        })
 
         $scope.saveProduct = function () {
             $http({
@@ -158,7 +62,8 @@ angular.module("sportsStore")
                     city: $scope.currentProduct.city,
                     bath: $scope.currentProduct.bath,
                     beds: $scope.currentProduct.beds,
-                    features: $scope.currentProduct.features
+                    features: $scope.currentProduct.features,
+                    details: $scope.currentProduct.details
                 }
             }).then(function (result) {
                 deferred = [];
@@ -312,14 +217,14 @@ angular.module("sportsStore")
                     $scope.$$nextSibling.index = 0; //accesses the transcluded scope
                     var index = 1;
                     var lastScope = $element;
-                    $element.find("button").on("click", function(){
-                        $scope.$apply(function(){
+                    $element.find("button").on("click", function () {
+                        $scope.$apply(function () {
                             var childScope = $scope.$parent.$new();
                             childScope.index = index++;
                             transcludeFn(childScope, function (clone) {
                                 var buttonElem = clone.find("button");
                                 buttonElem.addClass("btn-danger").text("-");
-                                buttonElem.on("click", function(){
+                                buttonElem.on("click", function () {
                                     clone.remove();
                                 });
                                 lastScope.after(clone);

@@ -201,7 +201,6 @@ select, a {
 </style>
 
 <div class="panel panel-default row"
-     ng-controller="productListCtrl"
      ng-hide="data.error"
      id="main-container">
 
@@ -212,7 +211,7 @@ select, a {
         <div class="row"><!--style="overflow-y: auto; height: 492px;">-->
 
             <div class="well well-sm col-lg-12 clearfix list-container"
-                 ng-repeat="item in data.products | filter:categoryFilterFn | range:selectedPage:pageSize"
+                 ng-repeat="item in data.products | filter:categoryFilterFn | range:selectedPage:pageSize track by data.products._id"
                  ng-mouseenter="hover = true"
                  ng-mouseleave="hover = false"
                  ng-class="{pointed: hover, hovered: util.currentProduct._id == item._id}"
@@ -245,7 +244,7 @@ select, a {
                             <tr>
                                 <td class="pill-section">
                                     <div class="pill-section-figure">
-                                        2
+                                        {{item.beds}}
 
                                     </div>
                                     <div class="pill-section-caption">
@@ -255,7 +254,7 @@ select, a {
                                 </td>
                                 <td class="pill-section">
                                     <div class="pill-section-figure">
-                                        2.5
+                                        {{item.bath}}
 
                                     </div>
                                     <div class="pill-section-caption">
@@ -283,7 +282,7 @@ select, a {
                             <tr>
                                 <td class="pill-section">
                                     <div class="pill-section-figure">
-                                        100 sq. m
+                                        {{item.floorArea}} sq. m
 
                                     </div>
                                     <div class="pill-section-caption">
@@ -293,7 +292,7 @@ select, a {
                                 </td>
                                 <td class="pill-section">
                                     <div class="pill-section-figure">
-                                        250 sq m
+                                        {{item.lotArea}} sq m
 
                                     </div>
                                     <div class="pill-section-caption">

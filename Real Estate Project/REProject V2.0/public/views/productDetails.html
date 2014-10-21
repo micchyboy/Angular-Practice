@@ -143,7 +143,7 @@
     }
 
     .btn-circle {
-        background-color: #C53F00;
+        background: linear-gradient(#d58512, #C53F00);
         color: #ebebeb;
         width: 120px;
         height: 40px;
@@ -224,10 +224,10 @@
                     Features
                 </div>
                 <div class="features-list"
-                     style="min-height: 200px; font-size: 12px; font-family: 'proxima-nova', sans-serif; color: #333333;">
+                     style="min-height: 100px; font-size: 12px; font-family: 'proxima-nova', sans-serif; color: #333333;">
                     <ul class="row">
-                        <li class="col-md-6 col-lg-6">Good Condition</li>
-                        <li class="col-md-6 col-lg-6">Near SM</li>
+                        <li class="col-md-6 col-lg-6" ng-repeat="item in util.currentProduct.features">{{item}}</li>
+                       <!-- <li class="col-md-6 col-lg-6">Near SM</li>
                         <li class="col-md-6 col-lg-6">Nice garden</li>
                         <li class="col-md-6 col-lg-6">Open sun </li>
                         <li class="col-md-6 col-lg-6">Near beach </li>
@@ -238,11 +238,8 @@
                         <li class="col-md-6 col-lg-6">Type: Bungalow</li>
                         <li class="col-md-6 col-lg-6">Style: 2 Story !</li>
                         <li class="col-md-6 col-lg-6">Lot Type: Rectangular</li>
-                        <li class="col-md-6 col-lg-6">Basement: Yes, Full </li>
-                        <!--<li class="col-lg-6">Garage: Triple, Attached </li>
-                        <li class="col-lg-6">Bedrooms: 5</li>
-                        <li class="col-lg-6">Address: #5 Aurora Pijuan St, </li>
-                        <li class="col-lg-6">Near Kencare</li>-->
+                        <li class="col-md-6 col-lg-6">Basement: Yes, Full </li>-->
+
 
 
                     </ul>
@@ -255,11 +252,11 @@
                 <div class="details-list"
                      style="height: 230px; overflow-y: auto; font-size: 12px; font-family: 'proxima-nova', sans-serif; color: #333333;">
                     <table>
-                        <tr>
-                            <td>Price: 2,000,000</td>
-                            <td>Bath: 3</td>
+                        <tr ng-repeat="item in filteredDetails">
+                           <td>{{item[0]}}</td>
+                            <td>{{item[1]}}</td>
                         </tr>
-                        <tr>
+                        <!--<tr>
                             <td>Bedrooms: 3</td>
                             <td>Lot Area: 120 sq. m</td>
                         </tr>
@@ -290,7 +287,7 @@
                         <tr>
                             <td>Built in 1980</td>
                             <td>Near Kencare</td>
-                        </tr>
+                        </tr>-->
 
                     </table>
                 </div>

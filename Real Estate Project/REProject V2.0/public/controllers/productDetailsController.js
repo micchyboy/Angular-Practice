@@ -6,6 +6,11 @@ angular.module("sportsStore")
             return thumbnail.replace(thumbPath, "/images/actual-size");
         }
 
+        $scope.$on("$destroy", function () {
+            if ($scope.photoInterval.interval) {
+                $scope.photoInterval.end();
+            }
+        });
         $scope.$watch("util.currentProduct.thumbnailImages", function () {
             $scope.currentProductImages = $scope.util.currentProduct.thumbnailImages;
             if ($scope.photoInterval.interval) {
@@ -29,8 +34,8 @@ angular.module("sportsStore")
         $scope.photoInterval = {
             start: function () {
                 /*$scope.selectThumbnail = function (image) {
-                    $scope.currentImage = $scope.convertToActualSize(image);
-                }*/
+                 $scope.currentImage = $scope.convertToActualSize(image);
+                 }*/
 
                 $scope.selectUp = function () {
                     shiftArrayLeft($scope.currentProductImages);
@@ -66,6 +71,19 @@ angular.module("sportsStore")
             var item = arr.pop();
             arr.unshift(item)
         }
+
+        (function (data, multiples) {
+            var temp = angular.copy(data);
+            var result = [];
+            var times = Math.ceil(temp.length / multiples);
+            for (var i = 0; i < times; i++) {
+                var a = temp.splice(0, multiples);
+                result.push(a);
+            }
+
+            $scope.filteredDetails = result;
+        })($scope.util.currentProduct.details, 2);
+
     }).directive("modalGallery", function ($compile) {
         console.log("Entered modal directive");
         return {
@@ -76,7 +94,7 @@ angular.module("sportsStore")
                     scope.leftDistance = "-" + (index * 100) + "%"
                 }
 
-                scope.setImageDescription = function(index){
+                scope.setImageDescription = function (index) {
                     scope.imageDescription = scope.galleryImages[index].imageDescription;
                 }
 
@@ -84,7 +102,7 @@ angular.module("sportsStore")
                     scope.productImages = scope.util.currentProduct.thumbnailImages.slice();
                     scope.galleryImages = scope.util.currentProduct.galleryImages.slice();
                 })
-                function initialize(){
+                function initialize() {
                     scope.imageDescription = scope.galleryImages[0].imageDescription;
                     scope.ulWidth = (scope.productImages.length * 100) + "%";
                     scope.liWidth = (100 / scope.productImages.length) + "%";
@@ -117,4 +135,5 @@ angular.module("sportsStore")
                 });
             }
         }
-    });
+    })
+

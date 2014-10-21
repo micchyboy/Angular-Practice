@@ -1,30 +1,48 @@
-angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate",
-    "authenticationServiceModule", "angularFileUpload"])
+var resolve = {
+    delay: function($q, $timeout) {
+        console.log("delay");
+        var delay = $q.defer();
+        $timeout(delay.resolve, 0, false);
+        return delay.promise;
+    }
+};
+
+angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", "angularFileUpload"])
     .config(function ($routeProvider) {
         $routeProvider.when("/products", {
-            templateUrl: "/views/productList.html"
+            templateUrl: "/views/productList.html",
+            resolve: resolve
         });
-        $routeProvider.when("/details", {
+        /*$routeProvider.when("/details", {
             templateUrl: "/views/productDetails.html"
-        });
+        });*/
         $routeProvider.when("/editor", {
-            templateUrl: "/views/editorView.html"
+            templateUrl: "/views/editorView.html",
+            resolve: resolve
         });
         $routeProvider.otherwise({
             redirectTo: "/products"
         });
     })
-    .run(function($templateCache, $http){
-        $http.get('/views/adminLogin.html', {cache:$templateCache});
+    .run(function ($templateCache, $http) {
+        $http.get('/views/adminLogin.html', {cache: $templateCache});
     })
+    .constant("domain", "http://localhost:5501")
     .constant("dataUrl", "http://localhost:5501/jethro/products")
+    .constant("authUrl", "http://localhost:5501/login")
+    .constant("logOutUrl", "http://localhost:5501/logout")
+    .constant("signUpUrl","http://localhost:5501/signup")
+    .constant("createUrl", "http://localhost:5501/create")
+    .constant("uploadUrl", "http://localhost:5501/upload")
+    .constant("ordersUrl","http://localhost:5501/orders")
+    .constant("primaryImageUrl", "http://localhost:5501/primary_image")
     .config(function ($locationProvider) {
-       /* if (window.history && history.pushState) {
-            $locationProvider.html5Mode(true);
-        }*/
+        /* if (window.history && history.pushState) {
+         $locationProvider.html5Mode(true);
+         }*/
     })
-    .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl, cart,
-                                             $location, $anchorScroll, $timeout, anchorSmoothScroll, authService) {
+    .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl, cart, $location,
+                                             $anchorScroll, $timeout, anchorSmoothScroll, authService) {
         $scope.data = {
         };
         $scope.util = {};
@@ -37,14 +55,26 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate",
             console.log("Is authenticated? " + (isAuthenticated))
             if (!isAuthenticated) {
                 console.log("Redirect to login page..")
-                $location.path("/login");
+                $location.path("/products");
+            }
+            else{
+                $scope.data.user = authService.getData("user");
             }
         });
 
+        $scope.logout = function () {
+            console.log("Logging out..")
+            authService.logOut().then(function () {
+                authService.removeData("user");
+                authService.removeData("isAuthenticated");
+            }, function (error) {
+                $scope.authenticationError = error;
+            });
+        }
 
         $http.get(dataUrl)
             .success(function (data) {
-                for(var i in data){
+                for (var i in data) {
                     console.log(i + ": " + data[i]);
                 }
                 console.log(data.products);
@@ -68,12 +98,12 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate",
                 });
         }
 
-        $scope.redirectPage = function(path){
-            $scope.util.currentProduct = {};
+        $scope.redirectPage = function (path) {
+//            $scope.util.currentProduct = {};
             $location.path(path);
         }
 
-        $scope.gotoElement = function (eID){
+        $scope.gotoElement = function (eID) {
             // set the location.hash to the id of
             // the element you wish to scroll to.
             $location.hash('details');
@@ -83,28 +113,51 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate",
 
         };
 
-        $scope.isAuthenticated = function(){
-            return authService.getData("isAuthenticated");
+        $scope.isAuthenticated = function () {
+            if (authService.getData("isAuthenticated") == true) {
+                return true;
+            }
+            return false;
         };
 
-        $scope.isEditor = function(){
+        $scope.isProduct = function () {
             var path = $location.path();
-            if(path == "/editor"){
+            if (path == "/products") {
                 return true
             }
-           return false;
+            return false;
         }
+
+
+
+        //for sliding content
+        var oldLocation = '';
+        $scope.$on('$routeChangeStart', function(angularEvent, next) {
+            console.log("routeChangeStart");
+            var isDownwards = true;
+            if (next && next.$$route) {
+                var newLocation = next.$$route.originalPath;
+                if (oldLocation !== newLocation && oldLocation.indexOf(newLocation) !== -1) {
+                    isDownwards = false;
+                }
+
+                oldLocation = newLocation;
+            }
+
+            $scope.isDownwards = isDownwards;
+        });
+        //end of sliding content
     })
 
     .filter("daysBetween", function () {
         return function (value) {
             var date;
-            if(angular.isString(value)){
+            if (angular.isString(value)) {
                 date = new Date(value);
             }
 
             //Get 1 day in milliseconds
-            var one_day=1000*60*60*24;
+            var one_day = 1000 * 60 * 60 * 24;
 
             // Convert both dates to milliseconds
             var date1_ms = date.getTime();
@@ -113,13 +166,13 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate",
             // Calculate the difference in milliseconds
             var difference_ms = date2_ms - date1_ms;
 
-            var difference_days = Math.round(difference_ms/one_day);
+            var difference_days = Math.round(difference_ms / one_day);
             // Convert back to days and return
             var desc = "";
-            if(difference_days == 0){
+            if (difference_days == 0) {
                 return "Added today";
             }
-            else if(difference_days == 1){
+            else if (difference_days == 1) {
                 return "Added 1 day ago"
             }
             else {
@@ -131,13 +184,13 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate",
 //        alert("Entered simple repeater directive..");
         return {
             restrict: "EA",
-            link: function(scope, elem, attrs){
-                elem.on("click", function(e){
+            link: function (scope, elem, attrs) {
+                elem.on("click", function (e) {
 
-                    if(e.target.innerText == "Log In"){
+                    if (e.target.innerText == "Log In") {
                         scope.isLogin = true;
                     }
-                    else{
+                    else {
                         scope.isLogin = false;
                     }
 
@@ -153,6 +206,10 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate",
                     $('#myModal').on('hidden.bs.modal', function () {
                         $('#myModal .modal-body').html('');
                     });
+                    scope.$on("authSuccess", function(){
+                        $('#myModal').modal('hide');
+                    });
+
                 });
 
 

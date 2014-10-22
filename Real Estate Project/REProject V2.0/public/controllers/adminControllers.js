@@ -34,10 +34,13 @@ angular.module("sportsStore")
             });
         }
     })
-    .controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl, $timeout, $q, dataHandler) {
+    .controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl,
+                                        $timeout, $q, dataHandler, updateUrl) {
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
         $scope.imageDescriptions = [];
         $scope.currentProduct = {};
+        $scope.currentProduct.features = [];
+        $scope.currentProduct.details = [];
         var deferred;
 
         dataHandler.copyContents($scope);
@@ -51,6 +54,61 @@ angular.module("sportsStore")
             $scope.currentProduct = product;
         })
 
+        $scope.updateProduct = function(){
+            $http({
+                url: updateUrl,
+                method: "PUT",
+                data: {
+                    user: $scope.data.user,
+                    _id: $scope.currentProduct._id,
+                    category: $scope.currentProduct.category,
+                    floorArea: $scope.currentProduct.floorArea,
+                    lotArea: $scope.currentProduct.lotArea,
+                    price: $scope.currentProduct.price,
+                    city: $scope.currentProduct.city,
+                    bath: $scope.currentProduct.bath,
+                    beds: $scope.currentProduct.beds,
+                    features: $scope.currentProduct.features,
+                    details: $scope.currentProduct.details,
+                    galleryImages: $scope.currentProduct.galleryImages
+                }
+            }).then(function (result) {
+                deferred = [];
+//                console.log("Successfully saved product!! " + data);
+                console.log("Prooooooduct ID: " + result);
+
+                $scope.myModel = {
+                    username: $scope.data.user.username,
+                    productId: $scope.currentProduct._id
+                };
+                if ($scope.selectedFiles.length != 0) {
+                    for (var i = 0; i < $scope.selectedFiles.length; i++) {
+                        deferred[i] = $q.defer();
+                        if (i == 0) {
+                            $scope.myModel.imageDescription = $scope.imageDescriptions[i];
+                            $scope.start(i);
+                        }
+
+                        (function (i) {
+//                            var j = i;
+                            deferred[i].promise.then(function () {
+                                i++;
+                                if (i < $scope.selectedFiles.length) {
+                                    $scope.myModel.imageDescription = $scope.imageDescriptions[i];
+                                    $scope.start(i);
+                                }
+                            })
+                        })(i);
+//                        console.log("Image description "+ i +": " +  $scope.myModel.imageDescription)
+
+                    }
+                }
+            }).catch(function (error) {
+                console.log("Error is: " + error);
+                $scope.authenticationError = error;
+            });
+        }
+
         $scope.saveProduct = function () {
             $http({
                 url: createUrl,
@@ -58,16 +116,17 @@ angular.module("sportsStore")
                 data: {
                     user: $scope.data.user,
                     category: $scope.currentProduct.category,
-                    description: $scope.currentProduct.description,
+//                    description: $scope.currentProduct.description,
                     floorArea: $scope.currentProduct.floorArea,
                     lotArea: $scope.currentProduct.lotArea,
-                    name: $scope.currentProduct.name,
                     price: $scope.currentProduct.price,
                     city: $scope.currentProduct.city,
                     bath: $scope.currentProduct.bath,
                     beds: $scope.currentProduct.beds,
                     features: $scope.currentProduct.features,
-                    details: $scope.currentProduct.details
+                    details: $scope.currentProduct.details,
+                    thumbnailImages: $scope.currentProduct.thumbnailImages,
+                    galleryImages: $scope.currentProduct.galleryImages
                 }
             }).then(function (result) {
                 deferred = [];
@@ -225,14 +284,26 @@ angular.module("sportsStore")
 
                     var clonedElems = [];
                     var items;
-                    parentScope.$on("editProduct", function (event, product) {
 
-                        if($attr["type"] == "features"){
-                            items = product.features;
+                    function initializeItems(product) {
+                        if ($attr["type"] == "features") {
+                            items = product ? product.features : $scope.currentProduct.features;
+                            $scope.$watch("currentProduct.features", function () {
+                                items = product ? product.features : $scope.currentProduct.features;
+                            }, true)
                         }
-                        else{
-                            items = product.details;
+                        else {
+                            items = product ? product.details : $scope.currentProduct.details;
+                            $scope.$watch("currentProduct.details", function () {
+                                items = product ? product.details : $scope.currentProduct.details;
+                                console.log(items.length);
+                            }, true)
                         }
+                    }
+
+                    initializeItems();
+                    parentScope.$on("editProduct", function (event, product) {
+                        initializeItems(product);
                         for (var i = 1; i < items.length; i++) {
                             var childScope = parentScope.$new();
                             childScope.index = i;
@@ -296,7 +367,9 @@ angular.module("sportsStore")
 
                                 (function (childScope) {
                                     buttonElem.on("click", function () {
-                                        items.splice(childScope.index, 1);
+                                        if(items) {
+                                            items.splice(childScope.index, 1);
+                                        }
                                         clonedElems.splice(childScope.index - 1, 1);
                                         lastElem = clonedElems[clonedElems.length - 1];
                                         if(!lastElem){

@@ -233,7 +233,7 @@ select, a {
                                 Add to cart
                             </button>-->
                             <div>
-                                <button class="btn btn-success" ng-click="editProduct(item)">Edit</button>
+                                <button class="btn btn-success" ng-click="editProduct(item); util.mode='update'">Edit</button>
                             </div>
                             <div class="pill-section-figure">
                                 {{item.created | daysBetween}}

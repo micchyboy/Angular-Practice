@@ -176,6 +176,44 @@ app.post('/signup', function (req, res) {
     });
 });
 
+app.put('/update', function (req, res) {
+
+    console.log("Updating product..")
+    console.log("My User object: " + req.body.user.username);
+
+    var id = new mongoose.Types.ObjectId(req.body._id);
+
+    mongoose.model('Users').update(
+        {
+            "products._id": id
+        },
+        {
+            $set: {
+                "products.$.category": req.body.category,
+//                "products.$.description": req.body.description,
+                "products.$.floorArea": req.body.floorArea,
+                "products.$.lotArea": req.body.lotArea,
+                "products.$.price": req.body.price,
+                "products.$.city": req.body.city,
+                "products.$.bath": req.body.bath,
+                "products.$.beds": req.body.beds,
+                "products.$.features": req.body.features,
+                "products.$.details": req.body.details,
+                "products.$.galleryImages": req.body.galleryImages
+            }
+        }
+        , function (err, result) {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err.message);
+            }
+            console.log("Product is now updated.")
+            res.json(result);
+        }
+    )
+});
+
+
 app.post('/create', function (req, res) {
 //        console.log(req.headers)
     console.log("Creating product..")
@@ -191,11 +229,9 @@ app.post('/create', function (req, res) {
                 var product = {
                     _id: id,
                     category: req.body.category,
-                    description: req.body.description,
+//                    description: req.body.description,
                     floorArea: req.body.floorArea,
-//                    image: req.body.images,
                     lotArea: req.body.lotArea,
-                    name: req.body.name,
                     price: req.body.price,
                     city: req.body.city,
                     bath: req.body.bath,

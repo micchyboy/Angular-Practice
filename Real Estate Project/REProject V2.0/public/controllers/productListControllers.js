@@ -55,10 +55,11 @@ angular.module("sportsStore")
 
         $scope.editProduct = function(item){
             $scope.redirectPage("/editor");
-            $scope.$on("$routeChangeSuccess", function(){
+            var cleanUpEditProdBroad =  $scope.$on("$routeChangeSuccess", function(){
                 $scope.$broadcast("editProduct", item);
-            })
 
+                cleanUpEditProdBroad();
+            })
 
         }
     });

@@ -11,6 +11,9 @@
         height: 520px;
     }
 
+    .fd-inputs {
+        margin-bottom: 2px !important;
+    }
     .features-form {
         height: 260px;
     }
@@ -114,8 +117,7 @@
                         </div>
                         <div class="panel-body">
                             <simple-repeater type="features">
-                                {{index}}
-                                <div class="form-group multiple-form-group input-group">
+                                <div class="form-group multiple-form-group input-group fd-inputs">
                                     <input type="text" class="form-control"
                                            ng-model="currentProduct.features[index]">
                              <span class="input-group-btn">
@@ -136,8 +138,7 @@
                         </div>
                         <div class="panel-body">
                             <simple-repeater type="details">
-                                {{index}}
-                                <div class="form-group multiple-form-group input-group">
+                                <div class="form-group multiple-form-group input-group fd-inputs">
                                     <input type="text" class="form-control"
                                            ng-model="currentProduct.details[index]">
                              <span class="input-group-btn">

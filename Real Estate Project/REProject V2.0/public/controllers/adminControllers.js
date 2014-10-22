@@ -208,7 +208,7 @@ angular.module("sportsStore")
             return total;
         }
     })
-    .directive("simpleRepeater", function () {
+    .directive("simpleRepeater", function ($rootScope) {
 //        alert("Entered simple repeater directive..");
         return {
             restrict: "EA",
@@ -219,7 +219,6 @@ angular.module("sportsStore")
             compile: function (element, attrs, transcludeFn) {
                 return function ($scope, $element, $attr) {
                     $scope.$$nextSibling.index = 0; //accesses the transcluded scope
-
                     var parentScope = $scope.$new();
                     var index = 1;
                     var lastElem = $element;

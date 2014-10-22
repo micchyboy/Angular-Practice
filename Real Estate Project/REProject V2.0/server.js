@@ -295,8 +295,8 @@ app.post('/delete', function (req, res) {
     )
 
     var actualSizePath = "public/images/actual-size/" + req.body.user.username + "/" + req.body._id;
-    var galleryPath = "public/images/gallery/" + req.body.user.username + "/" + req.body._id
-    var thumbnailPath = "public/images/thumbnail/" + req.body.user.username + "/" + req.body._id
+    var galleryPath = "public/images/gallery/" + req.body.user.username + "/" + req.body._id;
+    var thumbnailPath = "public/images/thumbnails/" + req.body.user.username + "/" + req.body._id;
 
     fs.remove(actualSizePath, function(err){
         if (err){

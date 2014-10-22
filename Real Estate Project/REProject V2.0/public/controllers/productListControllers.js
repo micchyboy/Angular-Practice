@@ -85,6 +85,10 @@ angular.module("sportsStore")
             }).then(function (result) {
                 console.log("Product deleted.");
                 $scope.data.products.splice(index, 1);
+
+                if($scope.util.currentProduct._id == item._id){
+                    $scope.util.currentProduct = {};
+                }
 //                $route.reload();
             })
         }

@@ -211,7 +211,7 @@ select, a {
         <div class="row"><!--style="overflow-y: auto; height: 492px;">-->
 
             <div class="well well-sm col-lg-12 clearfix list-container"
-                 ng-repeat="item in data.products | filter:categoryFilterFn | range:selectedPage:pageSize track by data.products._id"
+                 ng-repeat="item in data.products | filter:categoryFilterFn | range:selectedPage:pageSize track by $index"
                  ng-mouseenter="hover = true"
                  ng-mouseleave="hover = false"
                  ng-class="{pointed: hover, hovered: util.currentProduct._id == item._id}"

@@ -12,7 +12,7 @@ angular.module("sportsStore")
             }
         });
         $scope.$watch("util.currentProduct.thumbnailImages", function () {
-            $scope.currentProductImages = $scope.util.currentProduct.thumbnailImages;
+            $scope.currentProductImages = $scope.util.currentProduct.thumbnailImages.slice();
             if ($scope.photoInterval.interval) {
                 $scope.photoInterval.end();
             }

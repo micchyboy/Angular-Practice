@@ -414,7 +414,7 @@ body {
         <!--<ng-view/>-->
 
         <div role="main">
-            <div ng-view ng-class="{slide: true, left: isDownwards, right: !isDownwards}"></div>
+            <div ng-view ng-class="{slide: hash != 'details', left: isDownwards, right: !isDownwards}"></div>
         </div>
 
     </div>

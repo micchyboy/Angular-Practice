@@ -43,8 +43,12 @@ angular.module("sportsStore")
         dataHandler.copyContents($scope);
 
         $scope.$on("$locationChangeStart", function () {
-            var obj = {key : "currentProduct", value: $scope.currentProduct};
+            var obj = {key: "currentProduct", value: $scope.currentProduct};
             $scope.$emit("saveState", obj);
+        })
+
+        $scope.$on("editProduct", function (event, product) {
+            $scope.currentProduct = product;
         })
 
         $scope.saveProduct = function () {
@@ -215,25 +219,106 @@ angular.module("sportsStore")
             compile: function (element, attrs, transcludeFn) {
                 return function ($scope, $element, $attr) {
                     $scope.$$nextSibling.index = 0; //accesses the transcluded scope
+
+                    var parentScope = $scope.$new();
                     var index = 1;
-                    var lastScope = $element;
-                    $element.find("button").on("click", function () {
-                        $scope.$apply(function () {
-                            var childScope = $scope.$parent.$new();
-                            childScope.index = index++;
+                    var lastElem = $element;
+
+                    var clonedElems = [];
+                    var items;
+                    parentScope.$on("editProduct", function (event, product) {
+
+                        if($attr["type"] == "features"){
+                            items = product.features;
+                        }
+                        else{
+                            items = product.details;
+                        }
+                        for (var i = 1; i < items.length; i++) {
+                            var childScope = parentScope.$new();
+                            childScope.index = i;
+                            (function (childScope) {
+                                childScope.$on("indexChanged", function (event, removedIndex) {
+                                    if (childScope.index > removedIndex) {
+                                        childScope.index--;
+                                        childScope.$digest();
+                                    }
+                                })
+                            })(childScope);
+
                             transcludeFn(childScope, function (clone) {
+                                clonedElems.push(clone);
                                 var buttonElem = clone.find("button");
                                 buttonElem.addClass("btn-danger").text("-");
-                                buttonElem.on("click", function () {
-                                    clone.remove();
-                                });
-                                lastScope.after(clone);
-                                lastScope = clone;
+
+                                (function (childScope) {
+                                    buttonElem.on("click", function () {
+                                        items.splice(childScope.index, 1);
+                                        clonedElems.splice(childScope.index - 1, 1);
+                                        lastElem = clonedElems[clonedElems.length - 1];
+                                        if(!lastElem){
+                                            lastElem = $element;
+                                        }
+                                        clone.remove();
+                                        index--;
+                                        var childScopeIndex = childScope.index;
+                                        childScope.$destroy();
+                                        parentScope.$broadcast("indexChanged", childScopeIndex);
+                                    });
+                                })(childScope);
+
+                                lastElem.after(clone);
+                                lastElem = clone;
+                            });
+
+                        }
+                        index = items.length;
+                    })
+
+
+                    $element.find("button").on("click", function () {
+                        parentScope.$apply(function () {
+                            var childScope = parentScope.$new();
+                            childScope.index = index++;
+
+                            (function (childScope) {
+                                childScope.$on("indexChanged", function (event, removedIndex) {
+                                    if (childScope.index > removedIndex) {
+                                        childScope.index--;
+                                        childScope.$digest();
+                                    }
+                                })
+                            })(childScope);
+
+                            transcludeFn(childScope, function (clone) {
+                                clonedElems.push(clone);
+                                var buttonElem = clone.find("button");
+                                buttonElem.addClass("btn-danger").text("-");
+
+                                (function (childScope) {
+                                    buttonElem.on("click", function () {
+                                        items.splice(childScope.index, 1);
+                                        clonedElems.splice(childScope.index - 1, 1);
+                                        lastElem = clonedElems[clonedElems.length - 1];
+                                        if(!lastElem){
+                                            lastElem = $element;
+                                        }
+                                        clone.remove();
+                                        index--;
+                                        var childScopeIndex = childScope.index;
+                                        childScope.$destroy();
+                                        parentScope.$broadcast("indexChanged", childScopeIndex);
+                                    });
+                                })(childScope);
+
+                                lastElem.after(clone);
+                                lastElem = clone;
                             });
                         })
 
-                    })
+                    });
                 }
             }
         }
-    });
+    })
+

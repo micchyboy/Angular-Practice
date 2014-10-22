@@ -4,7 +4,8 @@ angular.module("sportsStore")
     .config(function($anchorScrollProvider){
         $anchorScrollProvider.disableAutoScrolling();
     })
-    .controller("productListCtrl", function ($scope, $filter, productListActiveClass, productListPageCount, cart, authService) {
+    .controller("productListCtrl", function ($scope, $filter, productListActiveClass, productListPageCount,
+                                             cart, $location) {
         var selectedCategory = null;
         var minimumPrice = 0;
         var maximumPrice = 0;
@@ -49,7 +50,15 @@ angular.module("sportsStore")
         $scope.showDetailsView = function (item) {
             $scope.util.currentProduct = item;
 
-            $scope.gotoElement('main');
+//            $scope.gotoElement('main');
         }
 
+        $scope.editProduct = function(item){
+            $scope.redirectPage("/editor");
+            $scope.$on("$routeChangeSuccess", function(){
+                $scope.$broadcast("editProduct", item);
+            })
+
+
+        }
     });

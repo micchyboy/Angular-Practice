@@ -113,7 +113,8 @@
                             </h3>
                         </div>
                         <div class="panel-body">
-                            <simple-repeater>
+                            <simple-repeater type="features">
+                                {{index}}
                                 <div class="form-group multiple-form-group input-group">
                                     <input type="text" class="form-control"
                                            ng-model="currentProduct.features[index]">
@@ -134,7 +135,8 @@
                             </h3>
                         </div>
                         <div class="panel-body">
-                            <simple-repeater>
+                            <simple-repeater type="details">
+                                {{index}}
                                 <div class="form-group multiple-form-group input-group">
                                     <input type="text" class="form-control"
                                            ng-model="currentProduct.details[index]">
@@ -200,9 +202,50 @@
 
                 </div>
 
+
+
+                <div class="col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="panel panel-info upload-form">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Edit Images
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div>
+
+                                <div class="row" style="height: 420px; overflow-y: auto">
+                                    <div class="col-sm-6 col-md-3 col-lg-3" ng-repeat="item in currentProduct.galleryImages">
+                                        <div style="margin-top: 20px">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <img ng-src="{{item.path}}"
+                                                             style="width: 200px; height: 150px">
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 5px"></tr>
+                                                <tr>
+                                                    <td>
+                                                        <label>Description:</label>
+                                                        <input type="text" ng-model="item.imageDescription"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
+
 
 
 </div>

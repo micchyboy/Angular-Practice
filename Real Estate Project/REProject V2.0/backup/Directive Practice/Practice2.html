@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <title>Directive Scopes</title>
+    <script src="angular.js"></script>
+    <link href="bootstrap.css" rel="stylesheet" />
+    <link href="bootstrap-theme.css" rel="stylesheet" />
+    <!--<script type="text/ng-template" id="scopeTemplate">
+        <div class="panel-body">
+            <p>Data Value: {{local}}</p>
+        </div>
+    </script>-->
+    <script type="text/javascript">
+        angular.module("exampleApp", [])
+                .controller("scopeCtrl", function ($scope,$timeout) {
+                    $scope.data = { name: "Adam" };
+                    $scope.arr = ["12"];
+
+                    $scope.test = $scope.arr[0];
+
+                    $scope.$watch("arr", function(){
+                        $scope.test = $scope.arr[0];
+                    }, true)
+
+                    $timeout(function(){
+                        $scope.arr[0] = 20;
+                    }, 3000)
+                });
+    </script>
+</head>
+<body ng-controller="scopeCtrl">
+<div class="panel panel-default">
+    <input ng-model="arr[0]"/>
+    {{test}}
+    {{arr[0]}}
+</div>
+</body>
+</html>

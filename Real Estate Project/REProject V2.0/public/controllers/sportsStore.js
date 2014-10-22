@@ -41,7 +41,7 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
          $locationProvider.html5Mode(true);
          }*/
     })
-    .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl, cart, $location,
+    .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl, cart,
                                              $anchorScroll, $timeout, anchorSmoothScroll, authService) {
         $scope.data = {
         };

@@ -266,6 +266,69 @@ app.post('/create', function (req, res) {
 });
 
 
+app.post('/delete', function (req, res) {
+
+    console.log("Deleting product..")
+    console.log("My User object: " + req.body.user.username);
+
+    var id = new mongoose.Types.ObjectId(req.body._id);
+
+    mongoose.model('Users').update(
+        {
+            "username": req.body.user.username
+        },
+        {
+            $pull: {
+                "products": {
+                    "_id" : id
+                }
+            }
+        }
+        , function (err, result) {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err.message);
+            }
+            console.log("Deleted product.")
+            res.json(result);
+        }
+    )
+
+    var actualSizePath = "public/images/actual-size/" + req.body.user.username + "/" + req.body._id;
+    var galleryPath = "public/images/gallery/" + req.body.user.username + "/" + req.body._id
+    var thumbnailPath = "public/images/thumbnail/" + req.body.user.username + "/" + req.body._id
+
+    fs.remove(actualSizePath, function(err){
+        if (err){
+            console.error(err);
+            res.status(500).send(err.message);
+        }
+        else{
+            console.log("Removed images from " + actualSizePath);
+        }
+    });
+
+    fs.remove(galleryPath, function(err){
+        if (err){
+            console.error(err);
+            res.status(500).send(err.message);
+        }
+        else{
+            console.log("Removed images from " + galleryPath);
+        }
+    });
+
+    fs.remove(thumbnailPath, function(err){
+        if (err){
+            console.error(err);
+            res.status(500).send(err.message);
+        }
+        else{
+            console.log("Removed images from " + thumbnailPath);
+        }
+    });
+});
+
 app.post('/upload', function (req, res) {
     var busDeferred = Q.defer();
     var fsDeferred = Q.defer();

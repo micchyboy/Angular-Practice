@@ -43,14 +43,20 @@ angular.module("sportsStore")
         $scope.currentProduct.details = [];
         var deferred;
 
-        dataHandler.copyContents($scope);
+        /*dataHandler.copyContents($scope);
 
         $scope.$on("$locationChangeStart", function () {
             var obj = {key: "currentProduct", value: $scope.currentProduct};
             $scope.$emit("saveState", obj);
+        })*/
+
+        $scope.$on("createProduct", function (event) {
+            console.log("Create event received");
+            $scope.currentProduct = {};
         })
 
         $scope.$on("editProduct", function (event, product) {
+            console.log("Edit event received");
             $scope.currentProduct = product;
         })
 

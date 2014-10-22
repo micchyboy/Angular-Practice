@@ -20,6 +20,10 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
             templateUrl: "/views/editorView.html",
             resolve: resolve
         });
+        $routeProvider.when("/create", {
+            templateUrl: "/views/editorView.html",
+            resolve: resolve
+        });
         $routeProvider.otherwise({
             redirectTo: "/products"
         });
@@ -33,6 +37,7 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
     .constant("logOutUrl", "http://localhost:5501/logout")
     .constant("signUpUrl","http://localhost:5501/signup")
     .constant("createUrl", "http://localhost:5501/create")
+    .constant("deleteUrl", "http://localhost:5501/delete")
     .constant("updateUrl", "http://localhost:5501/update")
     .constant("uploadUrl", "http://localhost:5501/upload")
     .constant("ordersUrl","http://localhost:5501/orders")

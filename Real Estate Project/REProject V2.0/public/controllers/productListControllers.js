@@ -1,11 +1,11 @@
 angular.module("sportsStore")
     .constant("productListActiveClass", "btn-primary")
     .constant("productListPageCount", 8)
-    .config(function($anchorScrollProvider){
+    .config(function ($anchorScrollProvider) {
         $anchorScrollProvider.disableAutoScrolling();
     })
     .controller("productListCtrl", function ($scope, $filter, productListActiveClass, productListPageCount,
-                                             cart, $location) {
+                                             cart, $http, deleteUrl, $route, $location) {
         var selectedCategory = null;
         var minimumPrice = 0;
         var maximumPrice = 0;
@@ -53,13 +53,39 @@ angular.module("sportsStore")
 //            $scope.gotoElement('main');
         }
 
-        $scope.editProduct = function(item){
+        $scope.editProduct = function (item) {
+            $scope.util.mode = 'update';
             $scope.redirectPage("/editor");
-            var cleanUpEditProdBroad =  $scope.$on("$routeChangeSuccess", function(){
+            var cleanUpEditProdBroad = $scope.$on("$routeChangeSuccess", function () {
                 $scope.$broadcast("editProduct", item);
 
                 cleanUpEditProdBroad();
             })
 
+        }
+
+        $scope.createProduct = function () {
+            $scope.util.mode = 'create';
+            $scope.redirectPage('/create');
+            var cleanUpCreateProdBroad = $scope.$on("$routeChangeSuccess", function () {
+                $scope.$broadcast("createProduct");
+
+                cleanUpCreateProdBroad();
+            })
+        }
+
+        $scope.deleteProduct = function (item, index) {
+            $http({
+                url: deleteUrl,
+                method: "POST",
+                data: {
+                    user: $scope.data.user,
+                    _id: item._id
+                }
+            }).then(function (result) {
+                console.log("Product deleted.");
+                $scope.data.products.splice(index, 1);
+//                $route.reload();
+            })
         }
     });

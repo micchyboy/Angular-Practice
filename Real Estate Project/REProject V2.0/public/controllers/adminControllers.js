@@ -1,10 +1,13 @@
 angular.module("sportsStore")
-    .controller("authCtrl", function ($scope, $http, $location, authUrl, signUpUrl, authService) {
+    .controller("authCtrl", function ($scope, $http, $location, authUrl, signUpUrl, authService, $timeout) {
         $scope.authenticate = function (user, pass) {
             authService.authenticateUser($scope, user, pass)
                 .then(function (data) {
                     console.log("Z POWER OF PROMISES!! THE FUCKING DATA: " + data);
-                    $location.path("/main");
+                    $(".login-success").slideDown();
+                    $timeout(function () {
+                        $(".login-success").slideUp();
+                    }, 3000);
                     $scope.data.user = data;
                 },
                 function (error) {
@@ -34,38 +37,41 @@ angular.module("sportsStore")
             });
         }
     })
-    .controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl,
-                                        $timeout, $q, dataHandler, updateUrl) {
+    .controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl, $timeout, $q, dataHandler, updateUrl) {
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
         $scope.imageDescriptions = [];
-        $scope.currentProduct = {};
-        $scope.currentProduct.features = [];
-        $scope.currentProduct.details = [];
+        initializeCurrentProduct();
         var deferred;
 
         /*dataHandler.copyContents($scope);
 
-        $scope.$on("$locationChangeStart", function () {
-            var obj = {key: "currentProduct", value: $scope.currentProduct};
-            $scope.$emit("saveState", obj);
-        })*/
+         $scope.$on("$locationChangeStart", function () {
+         var obj = {key: "currentProduct", value: $scope.currentProduct};
+         $scope.$emit("saveState", obj);
+         })*/
 
-        $scope.numberWithDecimalPattern = function(){
+        function initializeCurrentProduct() {
+            $scope.currentProduct = {};
+            $scope.currentProduct.features = [];
+            $scope.currentProduct.details = [];
+        }
+
+        $scope.numberWithDecimalPattern = function () {
             return new RegExp("^[0-9]+[.]?[0-9]*$");
         }
 
-        $scope.numberPattern = function(){
+        $scope.numberPattern = function () {
             return new RegExp("^[0-9]+$");
         }
 
-        $scope.containsImages = function(){
+        $scope.containsImages = function () {
             return ($scope.selectedFiles && $scope.selectedFiles.length > 0) ||
                 ($scope.currentProduct.galleryImages && $scope.currentProduct.galleryImages.length > 0);
         }
 
         $scope.$on("createProduct", function (event) {
             console.log("Create event received");
-            $scope.currentProduct = {};
+            initializeCurrentProduct();
         })
 
         $scope.$on("editProduct", function (event, product) {
@@ -73,11 +79,11 @@ angular.module("sportsStore")
             $scope.currentProduct = angular.copy(product);
         })
 
-        $scope.cancelEdit = function(){
-            $scope.currentProduct = {};
+        $scope.cancelEdit = function () {
+            initializeCurrentProduct();
         }
 
-        $scope.updateProduct = function(){
+        $scope.updateProduct = function () {
             $http({
                 url: updateUrl,
                 method: "PUT",
@@ -104,7 +110,7 @@ angular.module("sportsStore")
                     username: $scope.data.user.username,
                     productId: $scope.currentProduct._id
                 };
-                if ($scope.selectedFiles.length != 0) {
+                if ($scope.selectedFiles && $scope.selectedFiles.length != 0) {
                     for (var i = 0; i < $scope.selectedFiles.length; i++) {
                         deferred[i] = $q.defer();
                         if (i == 0) {
@@ -120,6 +126,17 @@ angular.module("sportsStore")
                                     $scope.myModel.imageDescription = $scope.imageDescriptions[i];
                                     $scope.start(i);
                                 }
+
+                                if (i == $scope.selectedFiles.length) {
+                                    return;
+                                }
+                            }).then(function () {
+                                $(".update-success").slideDown();
+                                $timeout(function () {
+                                    $(".update-success").slideUp();
+                                }, 3000);
+
+                                $scope.getProducts();
                             })
                         })(i);
 //                        console.log("Image description "+ i +": " +  $scope.myModel.imageDescription)
@@ -160,7 +177,7 @@ angular.module("sportsStore")
                     username: $scope.data.user.username,
                     productId: result.data.productId
                 };
-                if ($scope.selectedFiles.length != 0) {
+                if ($scope.selectedFiles && $scope.selectedFiles.length != 0) {
                     for (var i = 0; i < $scope.selectedFiles.length; i++) {
                         deferred[i] = $q.defer();
                         if (i == 0) {
@@ -176,12 +193,25 @@ angular.module("sportsStore")
                                     $scope.myModel.imageDescription = $scope.imageDescriptions[i];
                                     $scope.start(i);
                                 }
+
+                                if (i == $scope.selectedFiles.length) {
+                                    return;
+                                }
+                            }).then(function () {
+                                $(".create-success").slideDown();
+                                $timeout(function () {
+                                    $(".create-success").slideUp();
+                                }, 3000);
+
+                                $scope.getProducts();
                             })
                         })(i);
 //                        console.log("Image description "+ i +": " +  $scope.myModel.imageDescription)
 
                     }
                 }
+
+
             }).catch(function (error) {
                 console.log("Error is: " + error);
                 $scope.authenticationError = error;
@@ -348,7 +378,7 @@ angular.module("sportsStore")
                                         items.splice(childScope.index, 1);
                                         clonedElems.splice(childScope.index - 1, 1);
                                         lastElem = clonedElems[clonedElems.length - 1];
-                                        if(!lastElem){
+                                        if (!lastElem) {
                                             lastElem = $element;
                                         }
                                         clone.remove();
@@ -364,7 +394,7 @@ angular.module("sportsStore")
                             });
 
                         }
-                        if(items.length != 0) {
+                        if (items.length != 0) {
                             index = items.length;
                         }
                     })
@@ -391,12 +421,12 @@ angular.module("sportsStore")
 
                                 (function (childScope) {
                                     buttonElem.on("click", function () {
-                                        if(items) {
+                                        if (items) {
                                             items.splice(childScope.index, 1);
                                         }
                                         clonedElems.splice(childScope.index - 1, 1);
                                         lastElem = clonedElems[clonedElems.length - 1];
-                                        if(!lastElem){
+                                        if (!lastElem) {
                                             lastElem = $element;
                                         }
                                         clone.remove();

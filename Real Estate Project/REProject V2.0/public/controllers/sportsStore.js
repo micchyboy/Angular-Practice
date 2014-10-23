@@ -54,7 +54,6 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
         $scope.util = {};
         $scope.util.currentProduct = {};
 
-
         $scope.$on("$routeChangeSuccess", function () {
             console.log("Route change success! Main");
             var isAuthenticated = authService.getData("isAuthenticated");
@@ -73,22 +72,29 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
             authService.logOut().then(function () {
                 authService.removeData("user");
                 authService.removeData("isAuthenticated");
+
+                $(".logout-success").slideDown();
+                $timeout(function(){
+                    $(".logout-success").slideUp();
+                },3000);
             }, function (error) {
                 $scope.authenticationError = error;
             });
         }
 
-        $http.get(dataUrl)
-            .success(function (data) {
-                for (var i in data) {
-                    console.log(i + ": " + data[i]);
-                }
-                console.log(data.products);
-                $scope.data.products = data.products;
-            })
-            .error(function (error) {
-                $scope.data.error = error;
-            });
+        $scope.getProducts = function(){
+            $http.get(dataUrl)
+                .success(function (data) {
+                    for (var i in data) {
+                        console.log(i + ": " + data[i]);
+                    }
+                    console.log(data.products);
+                    $scope.data.products = data.products;
+                })
+                .error(function (error) {
+                    $scope.data.error = error;
+                });
+        }
         $scope.sendOrder = function (shippingDetails) {
             var order = angular.copy(shippingDetails);
             order.products = cart.getProducts();
@@ -134,7 +140,7 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
             return false;
         }
 
-
+        $scope.getProducts();
 
         //for sliding content
         var oldLocation = '';
@@ -196,8 +202,11 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
                     if (e.target.innerText == "Log In") {
                         scope.isLogin = true;
                     }
-                    else {
+                    else if (e.target.innerText == "Sign Up") {
                         scope.isLogin = false;
+                    }
+                    else {
+                        return;
                     }
 
                     var content = $templateCache.get("/views/adminLogin.html");

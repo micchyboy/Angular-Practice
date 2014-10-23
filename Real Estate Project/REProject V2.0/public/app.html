@@ -144,6 +144,10 @@ body {
     .trademark-icon {
         display: none;
     }
+
+    .navigation, .credentials-nav {
+        display: none;
+    }
 }
 
 @media (min-width: 424px) and (max-width: 517px) {
@@ -174,6 +178,10 @@ body {
         display: none;
     }
 
+    .navigation, .credentials-nav {
+        display: none;
+    }
+
 }
 
 @media (min-width: 518px) and (max-width: 767px) {
@@ -196,6 +204,14 @@ body {
     .trademark-icon {
         display: none;
     }
+
+    .navigation, .credentials-nav {
+        display: none;
+    }
+
+    .nav-drop-down, .cred-nav-drop-down {
+        display: inline;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -206,11 +222,19 @@ body {
     .user-details {
         font-size: 18px;
     }
+
+    .nav-drop-down, .cred-nav-drop-down {
+        display: none;
+    }
 }
 
 @media (min-width: 992px) {
     .user-details {
         font-size: 24px;
+    }
+
+    .nav-drop-down, .cred-nav-drop-down {
+        display: none;
     }
 }
 
@@ -270,6 +294,10 @@ body {
     padding: 7px 14px;
 }
 
+.login-success, .logout-success, .create-success, .update-success{
+    margin-bottom: 2px;
+    display: none;
+}
 
 
 
@@ -370,19 +398,29 @@ body {
                         </div>
 
 
-                        <credentials-form ng-if="!isAuthenticated()">
-                            <button name="maxPrice" type="button" class="input-control pull-right user-button"
+                        <credentials-form ng-if="!isAuthenticated()" class="credentials-nav">
+                            <button type="button" class="input-control pull-right user-button"
                                     style="background: linear-gradient(#3acb9a, #006600)">
                                 Sign Up
                             </button>
 
-                            <button name="maxPrice" type="button" class="input-control pull-right user-button"
+                            <button type="button" class="input-control pull-right user-button"
                                     style="background: linear-gradient(#227dda, #000088);">
                                 Log In
                             </button>
                         </credentials-form>
 
-                    <span ng-if="isAuthenticated()">
+                        <credentials-form ng-if="!isAuthenticated()" class="btn-group pull-right cred-nav-drop-down">
+                            <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Action <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a>Log In</a></li>
+                                <li><a>Sign Up</a></li>
+                            </ul>
+                        </credentials-form>
+
+
+
+                    <span ng-if="isAuthenticated()" class="navigation">
                         <button type="button" class="input-control pull-right user-button"
                                 ng-click="logout()"
                                 style="background: linear-gradient(#c12e2a, #880000);">
@@ -400,16 +438,41 @@ body {
                             Create
                         </button>
                     </span>
+
+
+                        <div ng-if="isAuthenticated()" class="btn-group pull-right nav-drop-down">
+                            <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Action <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a ng-click="createProduct();">Create</a></li>
+                                <li><a ng-click="redirectPage('/products');">List</a></li>
+                                <li><a ng-click="logout()">Logout</a></li>
+                            </ul>
+                        </div>
                     </div>
 
                 </form>
             </div>
         </div>
 
-
         <div class="alert alert-danger" ng-show="data.error">
             Error ({{data.error.status}}). The product data was not loaded.
             <a href="/app.html" class="alert-link">Click here to try again</a>
+        </div>
+
+        <div class="alert alert-info login-success">
+            You have successfully logged in!
+        </div>
+
+        <div class="alert alert-danger logout-success">
+            You successfully logged out!
+        </div>
+
+        <div class="alert alert-success create-success">
+            You have successfully created a new listing!
+        </div>
+
+        <div class="alert alert-success update-success">
+            You successfully updated the listing!
         </div>
         <!--<ng-view/>-->
 

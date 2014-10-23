@@ -50,6 +50,19 @@ angular.module("sportsStore")
             $scope.$emit("saveState", obj);
         })*/
 
+        $scope.numberWithDecimalPattern = function(){
+            return new RegExp("^[0-9]+[.]?[0-9]*$");
+        }
+
+        $scope.numberPattern = function(){
+            return new RegExp("^[0-9]+$");
+        }
+
+        $scope.containsImages = function(){
+            return ($scope.selectedFiles && $scope.selectedFiles.length > 0) ||
+                ($scope.currentProduct.galleryImages && $scope.currentProduct.galleryImages.length > 0);
+        }
+
         $scope.$on("createProduct", function (event) {
             console.log("Create event received");
             $scope.currentProduct = {};
@@ -57,8 +70,12 @@ angular.module("sportsStore")
 
         $scope.$on("editProduct", function (event, product) {
             console.log("Edit event received");
-            $scope.currentProduct = product;
+            $scope.currentProduct = angular.copy(product);
         })
+
+        $scope.cancelEdit = function(){
+            $scope.currentProduct = {};
+        }
 
         $scope.updateProduct = function(){
             $http({
@@ -302,7 +319,6 @@ angular.module("sportsStore")
                             items = product ? product.details : $scope.currentProduct.details;
                             $scope.$watch("currentProduct.details", function () {
                                 items = product ? product.details : $scope.currentProduct.details;
-                                console.log(items.length);
                             }, true)
                         }
                     }
@@ -348,7 +364,9 @@ angular.module("sportsStore")
                             });
 
                         }
-                        index = items.length;
+                        if(items.length != 0) {
+                            index = items.length;
+                        }
                     })
 
 

@@ -143,6 +143,16 @@
     font-family: "proxima-nova", sans-serif;
 }
 
+#item-options {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color: #939292;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: "proxima-nova", sans-serif;
+}
+
 .index {
     position: absolute;
     top: 2px;
@@ -227,17 +237,20 @@ select, a {
                         <span class="index">{{$index + 1}}</span>
                         <span class="location-name" ng-class="{highlighted: hover}">{{item.city}}</span>
 
-                        <div id="adder">
+
                             <!--<button ng-click="addProductToCart(item)"
                                     class="btn btn-success">
                                 Add to cart
                             </button>-->
+                        <div id="item-options" ng-if="isAuthenticated()">
                             <div>
-                                <button class="btn btn-danger" ng-click="deleteProduct(item, $index);">Delete</button>
+                                <input type="image" src="/images/icons/edit-icon.png" ng-click="editProduct(item);"/>
                             </div>
                             <div>
-                                <button class="btn btn-success" ng-click="editProduct(item);">Edit</button>
+                                <input type="image" src="/images/icons/delete-icon.png" ng-click="deleteProduct(item, $index);"/>
                             </div>
+                        </div>
+                        <div id="adder">
                             <div class="pill-section-figure">
                                 {{item.created | daysBetween}}
 

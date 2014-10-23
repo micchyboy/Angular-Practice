@@ -170,9 +170,9 @@ body {
         display: none;
     }
 
-    .location-finder {
+    /*.location-finder {
         width: 130px !important;
-    }
+    }*/
 
     .trademark-icon {
         display: none;
@@ -377,8 +377,8 @@ body {
                     <span ng-show="isProduct()">
                         <select ng-model="searchData.location"
                                 ng-options="item for item in data.products  | orderBy:'city' | unique:'city'"
-                                class="input-control location-finder"
-                                style="width: 180px;"
+                                class="input-control"
+                                style="width: 130px;"
                                 ng-click="selectCategory(searchData.location)">
                             <option value="">
                                 Search All
@@ -386,11 +386,19 @@ body {
                         </select>
 
                         <input name="minPrice" type="text" ng-model="searchData.minPrice" class="input-control"
-                               style="width: 100px;" placeholder="Min. Price"
+                               style="width: 93px;" placeholder="Min. Price"
                                ng-change="searchProduct(searchData.location, searchData.minPrice, searchData.maxPrice)">
                         <input name="maxPrice" type="text" ng-model="searchData.maxPrice" class="input-control"
-                               style="width: 100px;" placeholder="Max. Price"
+                               style="width: 93px;" placeholder="Max. Price"
                                ng-change="searchProduct(searchData.location, searchData.minPrice, searchData.maxPrice)">
+
+                        <span style="font-weight: bold">Sort by:</span>
+                        <select ng-model="searchData.criteria"
+                                ng-options="item.value as item.criteria for item in util.sortBy"
+                                class="input-control"
+                                style="width: 87px;"
+                                ng-click="sorter(searchData.criteria)">
+                        </select>
                     </span>
 
                         <div style="width: 50px" class="pull-right">

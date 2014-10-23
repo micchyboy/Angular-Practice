@@ -10,6 +10,9 @@ angular.module("sportsStore")
         var minimumPrice = 0;
         var maximumPrice = 0;
 
+        $scope.searchData = {};
+        $scope.searchData.criteria = $scope.util.sortBy.default;
+
         $scope.selectedPage = 1;
         $scope.pageSize = productListPageCount;
         $scope.selectCategory = function (newCategory) {
@@ -92,4 +95,5 @@ angular.module("sportsStore")
 //                $route.reload();
             })
         }
+
     });

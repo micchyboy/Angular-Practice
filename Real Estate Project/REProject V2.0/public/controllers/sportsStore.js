@@ -54,6 +54,14 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
         $scope.util = {};
         $scope.util.currentProduct = {};
 
+        $scope.util.sortBy = [
+            {criteria: "Time ascending", value: "updatedAt"},
+            {criteria: "Time descending", value: "-updatedAt"},
+            {criteria: "Price ascending", value: "price"},
+            {criteria: "Price descending", value: "-price"}
+        ];
+        $scope.util.sortBy.default = "updatedAt";
+
         $scope.$on("$routeChangeSuccess", function () {
             console.log("Route change success! Main");
             var isAuthenticated = authService.getData("isAuthenticated");

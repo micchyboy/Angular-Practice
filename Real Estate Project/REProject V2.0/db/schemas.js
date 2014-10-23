@@ -22,7 +22,8 @@ module.exports.getUserModel = function () {
         primaryImage: String,
         features: [String],
         details: [String],
-        created: { type: Date, default : Date.now }
+        createdAt: { type: Date, default : Date.now },
+        updatedAt: { type: Date, default : Date.now }
     });
 
     var userSchema = new Schema({

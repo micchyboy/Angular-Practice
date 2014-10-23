@@ -199,7 +199,8 @@ app.put('/update', function (req, res) {
                 "products.$.beds": req.body.beds,
                 "products.$.features": req.body.features,
                 "products.$.details": req.body.details,
-                "products.$.galleryImages": req.body.galleryImages
+                "products.$.galleryImages": req.body.galleryImages,
+                "products.$.updatedAt": Date.now
             }
         }
         , function (err, result) {

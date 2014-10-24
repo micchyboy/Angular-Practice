@@ -52,6 +52,11 @@
                             console.log($files[f]);
                         }
                     }
+
+                    $scope.viewFiles = function(){
+                        console.log("Files ares: " + $scope.selectedFiles);
+
+                    }
                 });
     </script>
 </head>
@@ -62,6 +67,9 @@
     </div>
     <div class="panel-body" scope-demo="console.log($eve" nameprop="{{data.name}}"></div>-->
     <input type="file" ng-file-select="onFileSelect($files)" multiple onclick="this.value=null">
+    <input type="file" ng-file-select="onFileSelect($files)" multiple ng-model="selectedFiles"
+           onclick="this.value=null">
+    <button ng-click="viewFiles()">View files</button>
 </div>
 </body>
 </html>

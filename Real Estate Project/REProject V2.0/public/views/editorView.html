@@ -56,9 +56,10 @@
     }
 </style>
 
+<div class="panel-body main-editor" ng-controller="editorCtrl">
 <form name="detailsForm" novalidate>
 
-<div class="panel-body main-editor" ng-controller="editorCtrl">
+
 <div class="container">
 <div class="row">
 <div class="col-md-12 col-lg-12">
@@ -89,6 +90,7 @@
          <span class="notification-bar alert alert-warning" ng-show="!containsImages()">
         You may save/update but no photos yet
         </span>
+
         <span class="notification-bar alert alert-info" ng-show="containsImages()">
         You may save/update anytime
         </span>
@@ -244,9 +246,9 @@
             <div class="panel-body">
                 <div>
                     <!--<label>Upload images:</label>-->
-                    <input type="file" ng-file-select="onFileSelect($files)" multiple
+                    <input  type="file" name="filez" ng-model="filez" ng-file-select="onFileSelect($files)" multiple
                            onclick="this.value=null"
-                           onchange="angular.element(this).scope().$apply('imageDescriptions = []')">
+                           onchange="angular.element(this).scope().$apply('imageDescriptions = []');">
 
                     <div class="row" style="height: 420px; overflow-y: auto">
                         <div class="col-md-6 col-lg-6" ng-repeat="f in selectedFiles">
@@ -322,6 +324,7 @@
 </div>
 
 
-</div>
+
 
 </form>
+</div>

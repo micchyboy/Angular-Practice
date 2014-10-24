@@ -64,6 +64,33 @@ angular.module("sportsStore")
             return new RegExp("^[0-9]+$");
         }
 
+        //TODO: not used, logic moved to server to append "- Copy" on duplicates
+        $scope.renameDuplicate = function () {
+            var imagesPath = $scope.currentProduct.thumbnailImages;
+            var imageArr = [];
+
+            for (var j = 0; j < imagesPath.length; j++) {
+                var imageFilename = imagesPath[j].substring(imagesPath[j].lastIndexOf("/") + 1, imagesPath[j].length);
+                imageArr[j] = imageFilename;
+                for (var i = 0; i < $scope.selectedFiles.length; i++) {
+                    if (imageFilename == $scope.selectedFiles[i].name) {
+                        var duplicateName = $scope.selectedFiles[i].name;
+                        $scope.selectedFiles[i].name = "Copy - " + duplicateName;
+//                        $scope.duplicate = imageFilename;
+//                        $scope.detailsForm.files.$setValidity("duplicate", true);
+                    }
+                }
+            }
+
+            /*if (imageArr.indexOf(uploadFilename) != -1) {
+             $scope.duplicate = uploadFilename;
+             $scope.detailsForm.filez.$setValidity("duplicate", false);
+             }*/
+            /*else {
+             $scope.detailsForm.filez.$setValidity("duplicate", true);
+             }*/
+        }
+
         $scope.containsImages = function () {
             return ($scope.selectedFiles && $scope.selectedFiles.length > 0) ||
                 ($scope.currentProduct.galleryImages && $scope.currentProduct.galleryImages.length > 0);
@@ -126,23 +153,30 @@ angular.module("sportsStore")
                                     $scope.myModel.imageDescription = $scope.imageDescriptions[i];
                                     $scope.start(i);
                                 }
-
-                                if (i == $scope.selectedFiles.length) {
-                                    return;
-                                }
-                            }).then(function () {
-                                $(".update-success").slideDown();
-                                $timeout(function () {
-                                    $(".update-success").slideUp();
-                                }, 3000);
-
-                                $scope.getProducts();
                             })
+                                /*.then(function () {
+                                if (i == $scope.selectedFiles.length) {
+                                    $(".update-success").slideDown();
+                                    $timeout(function () {
+                                        $(".update-success").slideUp();
+                                    }, 3000);
+
+                                    $scope.getProducts();
+                                }
+                                })*/
                         })(i);
 //                        console.log("Image description "+ i +": " +  $scope.myModel.imageDescription)
 
                     }
                 }
+
+                $(".update-success").slideDown();
+                $timeout(function () {
+                    $(".update-success").slideUp();
+                }, 3000);
+                $scope.getProducts();
+                $scope.util.currentProduct = {};
+
             }).catch(function (error) {
                 console.log("Error is: " + error);
                 $scope.authenticationError = error;
@@ -194,23 +228,29 @@ angular.module("sportsStore")
                                     $scope.start(i);
                                 }
 
-                                if (i == $scope.selectedFiles.length) {
-                                    return;
-                                }
-                            }).then(function () {
-                                $(".create-success").slideDown();
-                                $timeout(function () {
-                                    $(".create-success").slideUp();
-                                }, 3000);
-
-                                $scope.getProducts();
                             })
+                                /*.then(function () {
+                                if (i == $scope.selectedFiles.length) {
+                                    $(".create-success").slideDown();
+                                    $timeout(function () {
+                                        $(".create-success").slideUp();
+                                    }, 3000);
+
+                                    $scope.getProducts();
+                                }
+                                })*/
                         })(i);
 //                        console.log("Image description "+ i +": " +  $scope.myModel.imageDescription)
 
                     }
                 }
 
+                $(".create-success").slideDown();
+                $timeout(function () {
+                    $(".create-success").slideUp();
+                }, 3000);
+                $scope.getProducts();
+                $scope.util.currentProduct = {};
 
             }).catch(function (error) {
                 console.log("Error is: " + error);
@@ -231,6 +271,14 @@ angular.module("sportsStore")
             }
             $scope.upload = [];
             $scope.uploadResult = [];
+
+            /* for(var i = 0; i < $files.length; i++) {
+             $scope.containsDuplicate($files[i].name);
+             if ($scope.detailsForm.filez.$error.duplicate) {
+             $files.splice(i, 1);
+             }
+             }*/
+
             $scope.selectedFiles = $files;
             $scope.dataUrls = [];
             for (var i = 0; i < $files.length; i++) {
@@ -342,13 +390,13 @@ angular.module("sportsStore")
                         if ($attr["type"] == "features") {
                             items = product ? product.features : $scope.currentProduct.features;
                             $scope.$watch("currentProduct.features", function () {
-                                items = product ? product.features : $scope.currentProduct.features;
+                                items = $scope.currentProduct.features;
                             }, true)
                         }
                         else {
                             items = product ? product.details : $scope.currentProduct.details;
                             $scope.$watch("currentProduct.details", function () {
-                                items = product ? product.details : $scope.currentProduct.details;
+                                items = $scope.currentProduct.details;
                             }, true)
                         }
                     }
@@ -405,37 +453,36 @@ angular.module("sportsStore")
                             var childScope = parentScope.$new();
                             childScope.index = index++;
 
-                            (function (childScope) {
-                                childScope.$on("indexChanged", function (event, removedIndex) {
-                                    if (childScope.index > removedIndex) {
-                                        childScope.index--;
-                                        childScope.$digest();
-                                    }
-                                })
-                            })(childScope);
+                            //initial childScope.index = 1
+                            childScope.$on("indexChanged", function (event, removedIndex) {
+                                if (childScope.index > removedIndex) {
+                                    childScope.index--;
+                                    childScope.$digest();
+                                }
+                            })
 
+                            //initial childScope.index = 1
                             transcludeFn(childScope, function (clone) {
                                 clonedElems.push(clone);
                                 var buttonElem = clone.find("button");
                                 buttonElem.addClass("btn-danger").text("-");
 
-                                (function (childScope) {
-                                    buttonElem.on("click", function () {
-                                        if (items) {
-                                            items.splice(childScope.index, 1);
-                                        }
-                                        clonedElems.splice(childScope.index - 1, 1);
-                                        lastElem = clonedElems[clonedElems.length - 1];
-                                        if (!lastElem) {
-                                            lastElem = $element;
-                                        }
-                                        clone.remove();
-                                        index--;
-                                        var childScopeIndex = childScope.index;
-                                        childScope.$destroy();
-                                        parentScope.$broadcast("indexChanged", childScopeIndex);
-                                    });
-                                })(childScope);
+                                //initial childScope.index = 1
+                                buttonElem.on("click", function () {
+                                    if (items) {
+                                        items.splice(childScope.index, 1);
+                                    }
+                                    clonedElems.splice(childScope.index - 1, 1);
+                                    lastElem = clonedElems[clonedElems.length - 1];
+                                    if (!lastElem) {
+                                        lastElem = $element;
+                                    }
+                                    clone.remove();
+                                    index--;
+                                    var childScopeIndex = childScope.index;
+                                    childScope.$destroy();
+                                    parentScope.$broadcast("indexChanged", childScopeIndex);
+                                });
 
                                 lastElem.after(clone);
                                 lastElem = clone;

@@ -60,7 +60,7 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
             {criteria: "Price ascending", value: "price"},
             {criteria: "Price descending", value: "-price"}
         ];
-        $scope.util.sortBy.default = "updatedAt";
+        $scope.util.sortBy.default = "-updatedAt";
 
         $scope.$on("$routeChangeSuccess", function () {
             console.log("Route change success! Main");

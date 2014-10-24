@@ -200,7 +200,7 @@ app.put('/update', function (req, res) {
                 "products.$.features": req.body.features,
                 "products.$.details": req.body.details,
                 "products.$.galleryImages": req.body.galleryImages,
-                "products.$.updatedAt": Date.now
+                "products.$.updatedAt": new Date()
             }
         }
         , function (err, result) {
@@ -346,15 +346,73 @@ app.post('/upload', function (req, res) {
                 var parsedModel = JSON.parse(val);
 //                var path = __dirname + '/files/' + parsedModel.username + "/" + parsedModel.productId + "/" + filename;
                 var path = 'public/images/actual-size/' + parsedModel.username + "/" + parsedModel.productId + "/" + filename;
-                fs.ensureFileSync(path);
-//                console.log("Saving: " + filename);
-                fstream = fs.createWriteStream(path);
-                console.log("Saved: " + filename);
-                file.pipe(fstream);
 
-                fstream.on("finish", function () {
-                    fsDeferred.resolve([path, parsedModel, filename]);
+                async.waterfall([
+                    function(callback){
+                        /*fs.stat(path, function(err, stat) {
+                            if(err == null) {
+                                console.log('File exists');
+                                var newFilename = "Copy - " + filename;
+                                var newPath = 'public/images/actual-size/' + parsedModel.username + "/" +
+                                    parsedModel.productId + "/" + newFilename;
+                                callback(null, newPath, newFilename);
+                            } else if(err.code == 'ENOENT') {
+                                callback(null, path, filename);
+                            } else {
+                                callback(err);
+                            }
+                        });*/
+                        var newPath = path;
+                        var newFilename = filename;
+                        function renameDuplicate(path, filename){
+                            fs.exists(path, function(exists) {
+                                if (exists) {
+                                    console.log('File exists');
+                                    newFilename = "Copy - " + filename;
+
+                                    newPath = 'public/images/actual-size/' + parsedModel.username + "/" +
+                                        parsedModel.productId + "/" + newFilename;
+
+                                    renameDuplicate(newPath, newFilename);
+
+                                } else {
+                                    callback(null, newPath, newFilename);
+                                }
+                            });
+                        }
+
+                        renameDuplicate(newPath, newFilename);
+                        /*fs.exists(path, function(exists) {
+                            if (exists) {
+                                console.log('File exists');
+                                var newFilename = "Copy - " + filename;
+                                var newPath = 'public/images/actual-size/' + parsedModel.username + "/" +
+                                    parsedModel.productId + "/" + newFilename;
+                                callback(null, newPath, newFilename);
+                            } else {
+                                callback(null, path, filename);
+                            }
+                        });*/
+                    },
+                    function(path, filename){
+                        fs.ensureFileSync(path);
+//                console.log("Saving: " + filename);
+                        fstream = fs.createWriteStream(path);
+                        console.log("Saved: " + filename);
+                        file.pipe(fstream);
+
+                        fstream.on("finish", function () {
+                            fsDeferred.resolve([path, parsedModel, filename]);
+                        })
+                    }
+                ],
+                function(err){
+                    console.log(err);
+                    res.status(err.code).send(err.message);
                 })
+
+
+
 
             });
         }

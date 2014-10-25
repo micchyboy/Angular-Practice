@@ -5,7 +5,7 @@ angular.module("sportsStore")
         $anchorScrollProvider.disableAutoScrolling();
     })
     .controller("productListCtrl", function ($scope, $filter, productListActiveClass, productListPageCount,
-                                             cart, $http, deleteUrl, $route, $location) {
+                                             cart, $http, deleteUrl, primaryImageUrl) {
         var selectedCategory = null;
         var minimumPrice = 0;
         var maximumPrice = 0;
@@ -93,6 +93,20 @@ angular.module("sportsStore")
                     $scope.util.currentProduct = {};
                 }
 //                $route.reload();
+            })
+        }
+
+        $scope.savePrimaryImage = function (productId, filename) {
+            $http({
+                url: primaryImageUrl,
+                method: "POST",
+                data: {
+                    user: $scope.data.user,
+                    _id: productId,
+                    primaryImage: filename
+                }
+            }).then(function (result) {
+                console.log("Save Primary Image")
             })
         }
 

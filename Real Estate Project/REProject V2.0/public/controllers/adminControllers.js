@@ -110,6 +110,41 @@ angular.module("sportsStore")
             initializeCurrentProduct();
         }
 
+
+        $scope.isPrimary = function (flag, arg) {
+            $scope.setNewPrimary = function (filename) {
+                $scope.currentProduct.primaryImage = null;
+                $scope.primaryImage = filename;
+
+                $scope.selectedPrimary = filename;
+            }
+
+            $scope.setExistingPrimary = function (item) {
+                $scope.primaryImage = null;
+                $scope.currentProduct.primaryImage = item.path;
+
+                var filename = item.path.substring(item.path.lastIndexOf("/") + 1, item.path.length);
+                $scope.selectedPrimary = filename;
+
+            }
+
+            if (flag == "N") {
+
+                return $scope.primaryImage == arg;
+            }
+            else if (flag == "E") {
+                var galleryPath = $scope.currentProduct.primaryImage;
+                if (galleryPath && galleryPath.indexOf("/images/thumbnails") > -1) {
+                    galleryPath = $scope.convertToGallerySize(galleryPath);
+                }
+
+                return galleryPath == arg
+            }
+
+
+        }
+
+
         $scope.updateProduct = function () {
             $http({
                 url: updateUrl,
@@ -126,12 +161,15 @@ angular.module("sportsStore")
                     beds: $scope.currentProduct.beds,
                     features: $scope.currentProduct.features,
                     details: $scope.currentProduct.details,
-                    galleryImages: $scope.currentProduct.galleryImages
+                    galleryImages: $scope.currentProduct.galleryImages,
+                    primaryImage: $scope.currentProduct.primaryImage
                 }
             }).then(function (result) {
                 deferred = [];
 //                console.log("Successfully saved product!! " + data);
                 console.log("Prooooooduct ID: " + result);
+
+                $scope.savePrimaryImage($scope.currentProduct._id, $scope.selectedPrimary);
 
                 $scope.myModel = {
                     username: $scope.data.user.username,
@@ -154,16 +192,16 @@ angular.module("sportsStore")
                                     $scope.start(i);
                                 }
                             })
-                                /*.then(function () {
-                                if (i == $scope.selectedFiles.length) {
-                                    $(".update-success").slideDown();
-                                    $timeout(function () {
-                                        $(".update-success").slideUp();
-                                    }, 3000);
+                                .then(function () {
+                                    if (i == $scope.selectedFiles.length) {
+                                        /*$(".update-success").slideDown();
+                                         $timeout(function () {
+                                         $(".update-success").slideUp();
+                                         }, 3000);*/
 
-                                    $scope.getProducts();
-                                }
-                                })*/
+                                        $scope.getProducts();
+                                    }
+                                })
                         })(i);
 //                        console.log("Image description "+ i +": " +  $scope.myModel.imageDescription)
 
@@ -184,6 +222,7 @@ angular.module("sportsStore")
         }
 
         $scope.saveProduct = function () {
+
             $http({
                 url: createUrl,
                 method: "POST",
@@ -207,6 +246,8 @@ angular.module("sportsStore")
 //                console.log("Successfully saved product!! " + data);
                 console.log("Prooooooduct ID: " + result.data.productId);
 
+                $scope.savePrimaryImage(result.data.productId, $scope.selectedPrimary);
+
                 $scope.myModel = {
                     username: $scope.data.user.username,
                     productId: result.data.productId
@@ -229,16 +270,16 @@ angular.module("sportsStore")
                                 }
 
                             })
-                                /*.then(function () {
-                                if (i == $scope.selectedFiles.length) {
-                                    $(".create-success").slideDown();
-                                    $timeout(function () {
-                                        $(".create-success").slideUp();
-                                    }, 3000);
+                                .then(function () {
+                                    if (i == $scope.selectedFiles.length) {
+                                        /*$(".create-success").slideDown();
+                                         $timeout(function () {
+                                         $(".create-success").slideUp();
+                                         }, 3000);*/
 
-                                    $scope.getProducts();
-                                }
-                                })*/
+                                        $scope.getProducts();
+                                    }
+                                })
                         })(i);
 //                        console.log("Image description "+ i +": " +  $scope.myModel.imageDescription)
 
@@ -346,8 +387,10 @@ angular.module("sportsStore")
         }
         console.log("Editor Scope!");
 
-    })
-    .controller("ordersCtrl", function ($scope, $http, ordersUrl) {
+    }
+)
+    .
+    controller("ordersCtrl", function ($scope, $http, ordersUrl) {
         $http.get(ordersUrl, {withCredentials: true})
             .success(function (data) {
                 $scope.orders = data;

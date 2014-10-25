@@ -1,11 +1,6 @@
 angular.module("sportsStore")
     .controller("productDetailsCtrl", function ($scope, $interval) {
 
-        $scope.convertToActualSize = function (thumbnail) {
-            var thumbPath = "/images/thumbnails";
-            return thumbnail.replace(thumbPath, "/images/actual-size");
-        }
-
         $scope.$on("$destroy", function () {
             if ($scope.photoInterval.interval) {
                 $scope.photoInterval.end();

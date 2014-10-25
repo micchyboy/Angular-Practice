@@ -54,6 +54,10 @@
         color: #006600;
         font-weight: bold;
     }
+
+    .thumbnail {
+        margin-bottom: 5px;
+    }
 </style>
 
 <div class="panel-body main-editor" ng-controller="editorCtrl">
@@ -251,8 +255,32 @@
                            onchange="angular.element(this).scope().$apply('imageDescriptions = []');">
 
                     <div class="row" style="height: 420px; overflow-y: auto">
-                        <div class="col-md-6 col-lg-6" ng-repeat="f in selectedFiles">
-                            <div style="margin-top: 20px">
+                        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" ng-repeat="f in selectedFiles">
+
+
+                            <div class="thumbnail">
+                                <!--<img src="/bootstrap/images/kittens.jpg"
+                                     alt="Generic placeholder thumbnail">-->
+                                <img ng-show="dataUrls[$index]" ng-src="{{dataUrls[$index]}}">
+                            </div>
+                            <div class="caption">
+                                <!--<p>Primary Image <input type="radio"></p>-->
+                                <p><input type="text" ng-model="imageDescriptions[$index]"
+                                          style="width: 100%" placeholder="Description"/></p>
+                                <p>
+                                    <a class="btn btn-default btn-sm" ng-class="{'btn-primary' : isPrimary('N', f.name)}"
+                                       ng-click="setNewPrimary(f.name)" role="button">
+                                        Primary
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" role="button">
+                                        Remove
+                                    </a>
+                                </p>
+                            </div>
+
+
+
+                            <!--<div style="margin-top: 20px">
                                 <table>
                                     <tr>
                                         <td style="width: 50%">
@@ -270,7 +298,11 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </div>
+                            </div>-->
+
+
+
+
                         </div>
                     </div>
 
@@ -293,8 +325,32 @@
             <div>
 
                 <div class="row" style="height: 420px; overflow-y: auto">
-                    <div class="col-sm-6 col-md-3 col-lg-3" ng-repeat="item in currentProduct.galleryImages">
-                        <div style="margin-top: 20px">
+                    <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" ng-repeat="item in currentProduct.galleryImages">
+
+
+                        <div class="thumbnail">
+                            <!--<img src="/bootstrap/images/kittens.jpg"
+                                 alt="Generic placeholder thumbnail">-->
+                            <img ng-src="{{item.path}}">
+                        </div>
+                        <div class="caption">
+                            <!--<p>Primary Image <input type="radio"></p>-->
+                            <p><input type="text" ng-model="item.imageDescription"
+                                      style="width: 100%" placeholder="Description"/></p>
+                            <p>
+                                <a class="btn btn-default" ng-class="{'btn-primary' : isPrimary('E', item.path)}"
+                                   ng-click="setExistingPrimary(item)" role="button">
+                                    Primary
+                                </a>
+                                <a class="btn btn-danger" role="button">
+                                    Remove
+                                </a>
+                            </p>
+                        </div>
+
+
+
+                        <!--<div style="margin-top: 20px">
                             <table>
                                 <tr>
                                     <td>
@@ -310,7 +366,11 @@
                                     </td>
                                 </tr>
                             </table>
-                        </div>
+                        </div>-->
+
+
+
+
                     </div>
                 </div>
 

@@ -349,19 +349,6 @@ app.post('/upload', function (req, res) {
 
                 async.waterfall([
                     function(callback){
-                        /*fs.stat(path, function(err, stat) {
-                            if(err == null) {
-                                console.log('File exists');
-                                var newFilename = "Copy - " + filename;
-                                var newPath = 'public/images/actual-size/' + parsedModel.username + "/" +
-                                    parsedModel.productId + "/" + newFilename;
-                                callback(null, newPath, newFilename);
-                            } else if(err.code == 'ENOENT') {
-                                callback(null, path, filename);
-                            } else {
-                                callback(err);
-                            }
-                        });*/
                         var newPath = path;
                         var newFilename = filename;
                         function renameDuplicate(path, filename){
@@ -382,17 +369,6 @@ app.post('/upload', function (req, res) {
                         }
 
                         renameDuplicate(newPath, newFilename);
-                        /*fs.exists(path, function(exists) {
-                            if (exists) {
-                                console.log('File exists');
-                                var newFilename = "Copy - " + filename;
-                                var newPath = 'public/images/actual-size/' + parsedModel.username + "/" +
-                                    parsedModel.productId + "/" + newFilename;
-                                callback(null, newPath, newFilename);
-                            } else {
-                                callback(null, path, filename);
-                            }
-                        });*/
                     },
                     function(path, filename){
                         fs.ensureFileSync(path);
@@ -473,10 +449,11 @@ app.post('/upload', function (req, res) {
                         $addToSet: {
                             "products.$.galleryImages": imageObject,
                             "products.$.thumbnailImages": staticThumbPath
-                        },
+                        }
+                        /*,
                         $set: {
                             "products.$.primaryImage": staticThumbPath
-                        }
+                        }*/
                     }
                     , function (err, result) {
                         if (err) {
@@ -504,22 +481,25 @@ app.post('/upload', function (req, res) {
 });
 
 app.post('/primary_image', function (req, res) {
+    var primaryImage = '/images/thumbnails/' + req.body.user.username + "/" + req.body._id + "/" + req.body.primaryImage;
     mongoose.model('Users').update(
         {
-            "products._id": productId
+            "products._id": req.body._id
 
         },
         {
             $set: {
-                "products.$.primaryImage": primaryImagePath
+                "products.$.primaryImage": primaryImage
             }
         }
         , function (err, result) {
             if (err) {
                 console.log(err);
-                return;
+                res.status(500).send(err.message);
             }
-            console.log(result);
+            else{
+                console.log("Saved primary image " + primaryImage);
+            }
         }
     )
 });

@@ -148,6 +148,16 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
             return false;
         }
 
+        $scope.convertToActualSize = function (thumbnail) {
+            var thumbPath = "/images/thumbnails";
+            return thumbnail.replace(thumbPath, "/images/actual-size");
+        }
+
+        $scope.convertToGallerySize = function (thumbnail) {
+            var thumbPath = "/images/thumbnails";
+            return thumbnail.replace(thumbPath, "/images/gallery");
+        }
+
         $scope.getProducts();
 
         //for sliding content

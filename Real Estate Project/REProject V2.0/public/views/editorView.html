@@ -17,10 +17,12 @@
 
     .features-form {
         height: 260px;
+        overflow-y: auto;
     }
 
     .details-form {
         height: 260px;
+        overflow-y: auto;
     }
 
     .required-details-form {
@@ -88,6 +90,10 @@
         <span class="notification-bar alert alert-danger"
               ng-show="!detailsForm.$error.required && detailsForm.$error.pattern">
         Whole numbers or decimals only
+        </span>
+        <span class="notification-bar alert alert-danger"
+              ng-show="!detailsForm.$error.required && !detailsForm.$error.pattern && detailsForm.$error.primaryImage">
+        Please select a primary image
         </span>
     </span>
     <span ng-hide="detailsForm.$invalid">
@@ -257,7 +263,6 @@
                     <div class="row" style="height: 420px; overflow-y: auto">
                         <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" ng-repeat="f in selectedFiles">
 
-
                             <div class="thumbnail">
                                 <!--<img src="/bootstrap/images/kittens.jpg"
                                      alt="Generic placeholder thumbnail">-->
@@ -277,31 +282,6 @@
                                     </a>
                                 </p>
                             </div>
-
-
-
-                            <!--<div style="margin-top: 20px">
-                                <table>
-                                    <tr>
-                                        <td style="width: 50%">
-                                            <img ng-show="dataUrls[$index]" ng-src="{{dataUrls[$index]}}"
-                                                 style="width: 120px; height: 90px">
-                                            {{($index + 1) + '.'}}
-                                            {{f.name}}
-                                        </td>
-                                    </tr>
-                                    <tr style="height: 5px"></tr>
-                                    <tr>
-                                        <td>
-                                            <label>Description:</label>
-                                            <input type="text" ng-model="imageDescriptions[$index]"/>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>-->
-
-
-
 
                         </div>
                     </div>
@@ -327,7 +307,6 @@
                 <div class="row" style="height: 420px; overflow-y: auto">
                     <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" ng-repeat="item in currentProduct.galleryImages">
 
-
                         <div class="thumbnail">
                             <!--<img src="/bootstrap/images/kittens.jpg"
                                  alt="Generic placeholder thumbnail">-->
@@ -338,38 +317,15 @@
                             <p><input type="text" ng-model="item.imageDescription"
                                       style="width: 100%" placeholder="Description"/></p>
                             <p>
-                                <a class="btn btn-default" ng-class="{'btn-primary' : isPrimary('E', item.path)}"
+                                <a class="btn btn-default btn-sm" ng-class="{'btn-primary' : isPrimary('E', item.path)}"
                                    ng-click="setExistingPrimary(item)" role="button">
                                     Primary
                                 </a>
-                                <a class="btn btn-danger" role="button">
+                                <a class="btn btn-danger btn-sm" role="button">
                                     Remove
                                 </a>
                             </p>
                         </div>
-
-
-
-                        <!--<div style="margin-top: 20px">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <img ng-src="{{item.path}}"
-                                             style="width: 200px; height: 150px">
-                                    </td>
-                                </tr>
-                                <tr style="height: 5px"></tr>
-                                <tr>
-                                    <td>
-                                        <label>Description:</label>
-                                        <input type="text" ng-model="item.imageDescription"/>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>-->
-
-
-
 
                     </div>
                 </div>

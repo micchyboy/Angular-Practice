@@ -499,6 +499,7 @@ app.post('/primary_image', function (req, res) {
             }
             else{
                 console.log("Saved primary image " + primaryImage);
+                res.end("Done saving primary image");
             }
         }
     )

@@ -25,7 +25,7 @@ angular.module("sportsStore")
         return {
 
             getData: function (key) {
-                console.log("Using authentication service..");
+//                console.log("Using authentication service..");
                 return sessionStorage.get(key);
             },
 

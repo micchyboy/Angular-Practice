@@ -87,16 +87,17 @@ angular.module("sportsStore")
                 }
             }).then(function (result) {
                 console.log("Product deleted.");
-                $scope.data.products.splice(index, 1);
 
                 if($scope.util.currentProduct._id == item._id){
                     $scope.util.currentProduct = {};
                 }
+                $scope.data.products.splice($scope.data.products.indexOf(item), 1);
 //                $route.reload();
             })
         }
 
         $scope.savePrimaryImage = function (productId, filename) {
+            console.log("Calling save primary image id: " + productId);
             $http({
                 url: primaryImageUrl,
                 method: "POST",

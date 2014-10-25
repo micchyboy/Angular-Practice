@@ -110,11 +110,13 @@ angular.module("sportsStore")
             initializeCurrentProduct();
         }
 
-
         $scope.isPrimary = function (flag, arg) {
             if(!$scope.selectedPrimary){
                 var imagePath = $scope.currentProduct.primaryImage;
-                var filename = imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.length);
+                var filename;
+                if(imagePath) {
+                    filename = imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.length);
+                }
                 $scope.selectedPrimary = filename;
             }
 
@@ -134,8 +136,17 @@ angular.module("sportsStore")
 
             }
 
-            if (flag == "N") {
+            if($scope.selectedFiles && $scope.selectedFiles.length > 0 && !$scope.currentProduct.primaryImage){
+                if($scope.selectedPrimary) {
+                    $scope.detailsForm.$setValidity("primaryImage", true);
+                }
+                else{
+                    $scope.detailsForm.$setValidity("primaryImage", false);
+                }
+            }
 
+
+            if (flag == "N") {
                 return $scope.primaryImage == arg;
             }
             else if (flag == "E") {
@@ -146,8 +157,6 @@ angular.module("sportsStore")
 
                 return galleryPath == arg
             }
-
-
         }
 
 

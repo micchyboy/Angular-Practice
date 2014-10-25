@@ -137,7 +137,7 @@
     position: absolute;
     top: 0px;
     right: 5px;
-    color: #939292;
+    color: #006600;
     font-size: 12px;
     font-weight: 700;
     font-family: "proxima-nova", sans-serif;
@@ -206,6 +206,10 @@ select, a {
     /*background: linear-gradient(to bottom right, #a1a1a1 , #444444);*/
     z-index: -1;
     /*background-color: #222222;*/
+}
+
+.display-none {
+    display: none;
 }
 
 </style>
@@ -345,16 +349,20 @@ select, a {
                 </div>-->
 
             </div>
+
+            <div class="pull-right btn-group">
+                <a ng-repeat="page in data.products | filter:categoryFilterFn | pageCount:pageSize"
+                   ng-click="selectPage($index + 1)"
+                   class="btn btn-default"
+                   ng-class="getPageClass($index + 1)">
+                    {{$index + 1}}
+                </a>
+            </div>
+            <span class="pull-right" style="font-weight: bolder; font-size: 15px"
+                  ng-class="{'display-none' : !data.products || !data.products.length > 0}">Page: &nbsp; </span>
         </div>
 
-        <div class="pull-right btn-group">
-            <a ng-repeat="page in data.products | filter:categoryFilterFn | pageCount:pageSize"
-               ng-click="selectPage($index + 1)"
-               class="btn btn-default"
-               ng-class="getPageClass($index + 1)">
-                {{$index + 1}}
-            </a>
-        </div>
+
     </div>
     <div class="col-md-6 col-lg-6" id="main">
         <div ng-hide="util.currentProduct._id">

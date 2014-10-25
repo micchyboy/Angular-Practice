@@ -112,6 +112,12 @@ angular.module("sportsStore")
 
 
         $scope.isPrimary = function (flag, arg) {
+            if(!$scope.selectedPrimary){
+                var imagePath = $scope.currentProduct.primaryImage;
+                var filename = imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.length);
+                $scope.selectedPrimary = filename;
+            }
+
             $scope.setNewPrimary = function (filename) {
                 $scope.currentProduct.primaryImage = null;
                 $scope.primaryImage = filename;

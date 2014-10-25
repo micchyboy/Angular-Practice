@@ -55,10 +55,10 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
         $scope.util.currentProduct = {};
 
         $scope.util.sortBy = [
-            {criteria: "Time ascending", value: "updatedAt"},
-            {criteria: "Time descending", value: "-updatedAt"},
-            {criteria: "Price ascending", value: "price"},
-            {criteria: "Price descending", value: "-price"}
+            {criteria: "Time-", value: "updatedAt"},
+            {criteria: "Time+", value: "-updatedAt"},
+            {criteria: "Price+", value: "price"},
+            {criteria: "Price-", value: "-price"}
         ];
         $scope.util.sortBy.default = "-updatedAt";
 

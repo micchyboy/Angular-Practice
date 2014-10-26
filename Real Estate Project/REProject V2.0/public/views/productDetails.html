@@ -186,15 +186,12 @@
 
                         <div style="float: left; height: 60px; width: 100%;">
                             <div style="width: 65%; float: left;">
-                                <!--<img src="/images/up-arrow.png" height="10px" width="10px" ng-click="selectUp()">-->
                                 <img ng-src="{{currentProductImages[$index]}}" height="60px" width="70px"
                                      ng-class="{selectedThumbnail : isCurrentImage(currentProductImages[$index])}"
                                      ng-repeat="item in currentProductImages | limitTo: 3"/>
                                 <!--ng-click="selectThumbnail(currentProductImages[$index])"-->
 
 
-                                <!--<img src="/images/down-arrow.png" height="10px" width="10px"
-                                     ng-click="selectDown()">-->
                             </div>
                             <div style="float: left; height: 60px; width: 35%; ">
                                 <button class="btn-circle vertical-center" modal-gallery>Show Gallery</button>

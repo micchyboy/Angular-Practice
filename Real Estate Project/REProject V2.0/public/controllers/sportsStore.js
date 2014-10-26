@@ -31,18 +31,18 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
     .run(function ($templateCache, $http) {
         $http.get('/views/adminLogin.html', {cache: $templateCache});
     })
-    .constant("domain", "http://localhost:5501")
-    .constant("dataUrl", "http://localhost:5501/jethro/products")
-    .constant("authUrl", "http://localhost:5501/login")
-    .constant("logOutUrl", "http://localhost:5501/logout")
-    .constant("signUpUrl","http://localhost:5501/signup")
-    .constant("createUrl", "http://localhost:5501/create")
-    .constant("deleteUrl", "http://localhost:5501/delete")
-    .constant("deleteImageUrl", "http://localhost:5501/delete_image")
-    .constant("updateUrl", "http://localhost:5501/update")
-    .constant("uploadUrl", "http://localhost:5501/upload")
-    .constant("ordersUrl","http://localhost:5501/orders")
-    .constant("primaryImageUrl", "http://localhost:5501/primary_image")
+    .constant("domain", "http://192.168.1.100:5501")
+    .constant("dataUrl", "http://192.168.1.100:5501/jethro/products")
+    .constant("authUrl", "http://192.168.1.100:5501/login")
+    .constant("logOutUrl", "http://192.168.1.100:5501/logout")
+    .constant("signUpUrl","http://192.168.1.100:5501/signup")
+    .constant("createUrl", "http://192.168.1.100:5501/create")
+    .constant("deleteUrl", "http://192.168.1.100:5501/delete")
+    .constant("deleteImageUrl", "http://192.168.1.100:5501/delete_image")
+    .constant("updateUrl", "http://192.168.1.100:5501/update")
+    .constant("uploadUrl", "http://192.168.1.100:5501/upload")
+    .constant("ordersUrl","http://192.168.1.100:5501/orders")
+    .constant("primaryImageUrl", "http://192.168.1.100:5501/primary_image")
     .config(function ($locationProvider) {
         /* if (window.history && history.pushState) {
          $locationProvider.html5Mode(true);
@@ -208,7 +208,10 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
             var difference_days = Math.round(difference_ms / one_day);
             // Convert back to days and return
             var desc = "";
-            if (difference_days == 0) {
+            if(difference_days < 0){
+                return "Added now";
+            }
+            else if (difference_days == 0) {
                 if(difference_hours == 0){
                     if(difference_mins == 0){
                         return "Added now"

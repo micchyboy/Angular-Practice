@@ -91,8 +91,8 @@ angular.module("sportsStore")
              }*/
         }
 
-        $scope.removeSelectedFile = function(file){
-            if($scope.selectedPrimary == file.name){
+        $scope.removeSelectedFile = function (file) {
+            if ($scope.selectedPrimary == file.name) {
                 $scope.selectedPrimary = "";
             }
             var index = $scope.selectedFiles.indexOf(file);
@@ -223,8 +223,11 @@ angular.module("sportsStore")
                                          $timeout(function () {
                                          $(".update-success").slideUp();
                                          }, 3000);*/
-                                        $scope.savePrimaryImage($scope.currentProduct._id, $scope.selectedPrimary);
-                                        $scope.getProducts();
+                                        $scope.savePrimaryImage($scope.currentProduct._id, $scope.selectedPrimary)
+                                            .then(function (result) {
+                                                console.log("Saved Primary Image")
+                                                $scope.getProducts();
+                                            });
                                     }
                                 })
                         })(i);
@@ -299,8 +302,11 @@ angular.module("sportsStore")
                                          $timeout(function () {
                                          $(".create-success").slideUp();
                                          }, 3000);*/
-                                        $scope.savePrimaryImage(result.data.productId, $scope.selectedPrimary);
-                                        $scope.getProducts();
+                                        $scope.savePrimaryImage(result.data.productId, $scope.selectedPrimary)
+                                            .then(function (result) {
+                                                console.log("Saved Primary Image")
+                                                $scope.getProducts();
+                                            });
                                     }
                                 })
                         })(i);

@@ -98,7 +98,7 @@ angular.module("sportsStore")
 
         $scope.savePrimaryImage = function (productId, filename) {
             console.log("Calling save primary image id: " + productId);
-            $http({
+            return $http({
                 url: primaryImageUrl,
                 method: "POST",
                 data: {
@@ -106,8 +106,6 @@ angular.module("sportsStore")
                     _id: productId,
                     primaryImage: filename
                 }
-            }).then(function (result) {
-                console.log("Save Primary Image")
             })
         }
 

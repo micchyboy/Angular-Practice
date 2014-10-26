@@ -5,7 +5,7 @@ angular.module("sportsStore")
         $anchorScrollProvider.disableAutoScrolling();
     })
     .controller("productListCtrl", function ($scope, $filter, productListActiveClass, productListPageCount,
-                                             cart, $http, deleteUrl, primaryImageUrl) {
+                                             $http, deleteUrl, primaryImageUrl) {
         var selectedCategory = null;
         var minimumPrice = 0;
         var maximumPrice = 0;
@@ -32,14 +32,8 @@ angular.module("sportsStore")
 
             return (isLocated && isGreaterMinPrice && isLesserMaxPrice);
         }
-        $scope.getCategoryClass = function (category) {
-            return selectedCategory == category ? productListActiveClass : "";
-        }
         $scope.getPageClass = function (page) {
             return $scope.selectedPage == page ? productListActiveClass : "";
-        }
-        $scope.addProductToCart = function (product) {
-            cart.addProduct(product.id, product.name, product.price);
         }
 
         $scope.searchProduct = function (location, minPrice, maxPrice) {

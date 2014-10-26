@@ -242,11 +242,6 @@ select, a {
                         <span class="index">{{$index + 1}}</span>
                         <span class="location-name" ng-class="{highlighted: hover}">{{item.city}}</span>
 
-
-                            <!--<button ng-click="addProductToCart(item)"
-                                    class="btn btn-success">
-                                Add to cart
-                            </button>-->
                         <div id="item-options" ng-if="isAuthenticated()">
                             <div>
                                 <input type="image" src="/images/icons/edit-icon.png" ng-click="editProduct(item);"/>
@@ -378,17 +373,6 @@ select, a {
         </div>
     </div>
 </div>
-<!--<div class="container">
-    <div class="row">
-        &lt;!&ndash;<a ng-click="selectCategory()"
-               class="btn btn-block btn-default btn-lg col-lg-1">Home</a>&ndash;&gt;
-            <div ng-repeat="item in data.products | orderBy:'category' | unique:'category'"
-                 ng-click="selectCategory(item)"
-                 class=" btn btn-lg btn-default col-md-2"
-                 ng-class="getCategoryClass(item)">
-                {{item}}
-            </div>
-        </div>-->
 </div>
 
 

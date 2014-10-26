@@ -7,7 +7,7 @@ var resolve = {
     }
 };
 
-angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", "angularFileUpload"])
+angular.module("sportsStore", ["customFilters", "ngRoute", "ngAnimate", "angularFileUpload"])
     .config(function ($routeProvider) {
         $routeProvider.when("/products", {
             templateUrl: "/views/productList.html",
@@ -48,7 +48,7 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
          $locationProvider.html5Mode(true);
          }*/
     })
-    .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl, cart,
+    .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl,
                                              $anchorScroll, $timeout, anchorSmoothScroll, authService) {
         $scope.data = {
         };
@@ -102,20 +102,6 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
                 })
                 .error(function (error) {
                     $scope.data.error = error;
-                });
-        }
-        $scope.sendOrder = function (shippingDetails) {
-            var order = angular.copy(shippingDetails);
-            order.products = cart.getProducts();
-            $http.post(orderUrl, order)
-                .success(function (data) {
-                    $scope.data.orderId = data.id;
-                    cart.getProducts().length = 0;
-                })
-                .error(function (error) {
-                    $scope.data.orderError = error;
-                }).finally(function () {
-                    $location.path("/complete");
                 });
         }
 

@@ -77,7 +77,7 @@ angular.module("sportsStore")
             })
         }
 
-        $scope.deleteProduct = function (item, index) {
+        $scope.deleteProduct = function (item) {
             $http({
                 url: deleteUrl,
                 method: "POST",

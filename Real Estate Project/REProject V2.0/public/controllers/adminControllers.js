@@ -37,7 +37,7 @@ angular.module("sportsStore")
             });
         }
     })
-    .controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl, $timeout, $q, dataHandler, updateUrl) {
+    .controller("editorCtrl", function ($scope, createUrl, $http, $upload, uploadUrl, deleteImageUrl, $timeout, $q, dataHandler, updateUrl) {
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
         $scope.imageDescriptions = [];
         initializeCurrentProduct();
@@ -92,8 +92,12 @@ angular.module("sportsStore")
         }
 
         $scope.containsImages = function () {
-            return ($scope.selectedFiles && $scope.selectedFiles.length > 0) ||
+            var hasImage = ($scope.selectedFiles && $scope.selectedFiles.length > 0) ||
                 ($scope.currentProduct.galleryImages && $scope.currentProduct.galleryImages.length > 0);
+
+            $scope.detailsForm.$setValidity("hasImage", hasImage);
+
+            return hasImage;
         }
 
         $scope.$on("createProduct", function (event) {
@@ -136,14 +140,14 @@ angular.module("sportsStore")
 
             }
 
-            if ($scope.selectedFiles && $scope.selectedFiles.length > 0 && !$scope.currentProduct.primaryImage) {
-                if ($scope.selectedPrimary) {
-                    $scope.detailsForm.$setValidity("primaryImage", true);
-                }
-                else {
-                    $scope.detailsForm.$setValidity("primaryImage", false);
-                }
+//            if ($scope.selectedFiles && $scope.selectedFiles.length > 0 && !$scope.currentProduct.primaryImage) {
+            if ($scope.selectedPrimary) {
+                $scope.detailsForm.$setValidity("primaryImage", true);
             }
+            else {
+                $scope.detailsForm.$setValidity("primaryImage", false);
+            }
+//            }
 
 
             if (flag == "N") {
@@ -402,10 +406,33 @@ angular.module("sportsStore")
         }
         console.log("Editor Scope!");
 
-    }
-)
-    .
-    controller("ordersCtrl", function ($scope, $http, ordersUrl) {
+
+        $scope.deleteProductImage = function (item) {
+            $http({
+                url: deleteImageUrl,
+                method: "POST",
+                data: {
+                    user: $scope.data.user,
+                    imageId: item._id,
+                    galleryPath: item.path
+                }
+            }).then(function (result) {
+                console.log("Image deleted.");
+
+                var index = $scope.currentProduct.galleryImages.indexOf(item);
+
+                if ($scope.currentProduct.thumbnailImages[index] == $scope.currentProduct.primaryImage) {
+                    $scope.selectedPrimary = "";
+                    $scope.currentProduct.primaryImage = "";
+                }
+                $scope.currentProduct.galleryImages.splice(index, 1);
+                $scope.currentProduct.thumbnailImages.splice(index, 1);
+//                $route.reload();
+            })
+        }
+
+    })
+    .controller("ordersCtrl", function ($scope, $http, ordersUrl) {
         $http.get(ordersUrl, {withCredentials: true})
             .success(function (data) {
                 $scope.orders = data;
@@ -490,6 +517,28 @@ angular.module("sportsStore")
             }
         }
     })
+    /*.directive("requireExistingImage", function(){
+     return {
+     link: function($scope){
+     $scope.$watch("selectedFiles", function(){
+     validateImageExists();
+     }, true)
+
+     function validateImageExists() {
+     var imageExist = $scope.currentProduct.galleryImages && $scope.currentProduct.galleryImages.length > 0;
+     if (imageExist) {
+     $scope.detailsForm.$setValidity("imageExist", true);
+     }
+     else if ($scope.selectedFiles && $scope.selectedFiles.length > 0) {
+     $scope.detailsForm.$setValidity("imageExist", true);
+     }
+     else {
+     $scope.detailsForm.$setValidity("imageExist", false);
+     }
+     }
+     }
+     }
+     })*/
     .directive("simpleRepeater", function ($rootScope) {
 //        alert("Entered simple repeater directive..");
         return {

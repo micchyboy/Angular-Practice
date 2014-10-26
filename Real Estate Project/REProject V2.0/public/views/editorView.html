@@ -88,16 +88,17 @@
               ng-show="!detailsForm.$error.required && detailsForm.$error.pattern">
         Whole numbers or decimals only
         </span>
+         <span class="notification-bar alert alert-danger"
+               ng-show="!detailsForm.$error.required && !detailsForm.$error.pattern && !containsImages()">
+        Please select at least one image
+        </span>
         <span class="notification-bar alert alert-danger"
-              ng-show="!detailsForm.$error.required && !detailsForm.$error.pattern && detailsForm.$error.primaryImage">
+              ng-show="!detailsForm.$error.required && !detailsForm.$error.pattern && containsImages()
+              && detailsForm.$error.primaryImage">
         Please select a primary image
         </span>
     </span>
     <span ng-hide="detailsForm.$invalid">
-         <span class="notification-bar alert alert-warning" ng-show="!containsImages()">
-        You may save/update but no photos yet
-        </span>
-
         <span class="notification-bar alert alert-info" ng-show="containsImages()">
         You may save/update anytime
         </span>
@@ -253,7 +254,7 @@
             <div class="panel-body">
                 <div>
                     <!--<label>Upload images:</label>-->
-                    <input type="file" name="filez" ng-model="filez" ng-file-select="onFileSelect($files)" multiple
+                    <input type="file" ng-file-select="onFileSelect($files)" multiple
                            onclick="this.value=null"
                            onchange="angular.element(this).scope().$apply('imageDescriptions = []');">
 
@@ -321,7 +322,7 @@
                                    ng-click="setExistingPrimary(item)" role="button">
                                     Primary
                                 </a>
-                                <a class="btn btn-danger btn-sm" role="button">
+                                <a class="btn btn-danger btn-sm" ng-click="deleteProductImage(item)" role="button">
                                     Remove
                                 </a>
                             </p>

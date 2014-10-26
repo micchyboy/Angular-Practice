@@ -330,6 +330,85 @@ app.post('/delete', function (req, res) {
     });
 });
 
+app.post('/delete_image', function (req, res) {
+
+    console.log("Deleting image..")
+    console.log("My User object: " + req.body.user.username);
+
+    var imageId = new mongoose.Types.ObjectId(req.body.imageId);
+
+
+    var galleryPath = "public" + req.body.galleryPath;
+    var actualSizePath = "public" + convertToActualSize(req.body.galleryPath);
+    var thumbnailPath = "public" + convertToThumbnail(req.body.galleryPath);
+
+    var staticThumbPath = convertToThumbnail(req.body.galleryPath);
+
+    mongoose.model('Users').update(
+        {
+            "products.galleryImages._id": imageId
+        },
+        {
+            $pull: {
+                "products.$.galleryImages": {
+                    "_id" : imageId
+                },
+                "products.$.thumbnailImages": staticThumbPath
+            }
+        }
+        , function (err, result) {
+            if (err) {
+                console.log(err);
+            }
+            console.log("Deleted image from db: " + staticThumbPath);
+            console.log("Deleted image from db: " + req.body.galleryPath);
+            res.json(result);
+        }
+    );
+
+    fs.remove(actualSizePath, function(err){
+        if (err){
+            console.error(err);
+            res.status(500).send(err.message);
+        }
+        else{
+            console.log("Removed images from " + actualSizePath);
+        }
+    });
+
+    fs.remove(galleryPath, function(err){
+        if (err){
+            console.error(err);
+            res.status(500).send(err.message);
+        }
+        else{
+            console.log("Removed images from " + galleryPath);
+        }
+    });
+
+    fs.remove(thumbnailPath, function(err){
+        if (err){
+            console.error(err);
+            res.status(500).send(err.message);
+        }
+        else{
+            console.log("Removed images from " + thumbnailPath);
+        }
+    });
+
+    function convertToActualSize(gallery) {
+        var galleryPath = "/images/gallery";
+        return gallery.replace(galleryPath, "/images/actual-size");
+    }
+
+    function convertToThumbnail(gallery) {
+        var galleryPath = "/images/gallery";
+        return gallery.replace(galleryPath, "/images/thumbnails");
+    }
+});
+
+
+
 app.post('/upload', function (req, res) {
     var busDeferred = Q.defer();
     var fsDeferred = Q.defer();

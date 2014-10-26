@@ -38,6 +38,7 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
     .constant("signUpUrl","http://localhost:5501/signup")
     .constant("createUrl", "http://localhost:5501/create")
     .constant("deleteUrl", "http://localhost:5501/delete")
+    .constant("deleteImageUrl", "http://localhost:5501/delete_image")
     .constant("updateUrl", "http://localhost:5501/update")
     .constant("uploadUrl", "http://localhost:5501/upload")
     .constant("ordersUrl","http://localhost:5501/orders")

@@ -402,7 +402,7 @@ body {
                                style="width: 93px;" placeholder="Max. Price"
                                ng-change="searchProduct(searchData.location, searchData.minPrice, searchData.maxPrice)">
 
-                        <span style="font-weight: bold">Sort by:</span>
+                        <!--<span style="font-weight: bold">Sort by:</span>-->
                         <select ng-model="searchData.criteria"
                                 ng-options="item.value as item.criteria for item in util.sortBy"
                                 class="input-control"

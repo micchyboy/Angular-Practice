@@ -27,6 +27,7 @@ function left(arr) {
     return arr;
 }*/
 
+/*
 alert(undefined > 1);
 
 var newFilename = "filename";
@@ -45,4 +46,18 @@ function renameDuplicate(filename) {
 
 
 var arr5 = ["filename", "Copy - filename"];
-renameDuplicate(newFilename);
+renameDuplicate(newFilename);*/
+
+//ng-repeat lite replication
+var item1 = { name: "Jet"};
+var arr1 = [];
+var arr2 = [];
+
+arr1.push(item1);
+arr2.push(item1);
+
+alert(arr1[0]);
+alert(arr2[0]);
+arr2.splice(0);
+alert(arr1[0]);
+alert(arr2[0]);

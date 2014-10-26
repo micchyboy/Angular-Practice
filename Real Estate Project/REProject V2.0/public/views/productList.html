@@ -225,7 +225,7 @@ select, a {
         <div class="row"><!--style="overflow-y: auto; height: 492px;">-->
 
             <div class="well well-sm col-lg-12 clearfix list-container"
-                 ng-repeat="item in data.products | filter:categoryFilterFn | range:selectedPage:pageSize | orderBy: searchData.criteria track by $index"
+                 ng-repeat="item in data.products | filter:categoryFilterFn | orderBy: searchData.criteria | range:selectedPage:pageSize track by $index"
                  ng-mouseenter="hover = true"
                  ng-mouseleave="hover = false"
                  ng-class="{pointed: hover, hovered: util.currentProduct._id == item._id}"
@@ -233,7 +233,7 @@ select, a {
                 <!--ng-click="redirectPage('/details',item)">-->
                 <div class="house-image" style="float: left; margin-right: 25px; margin-left: 10px">
 
-                    <img ng-src="{{item.primaryImage}}" bind-image-src>
+                    <img ng-src="{{item.primaryImage}}">
                 </div>
 
                 <div style="float: left; width: 48%">

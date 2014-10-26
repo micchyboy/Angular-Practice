@@ -36,7 +36,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary delete-product">Delete</button>
+            <button type="button" class="btn btn-primary delete-item">Delete</button>
         </div>
     </div>
 </script>
@@ -48,11 +48,11 @@
             <h4 class="modal-title">Confirmation</h4>
         </div>
         <div class="modal-body">
-            <p>Do you want to save changes you made to document before closing?</p>
+            <p>Do you want to save now?</p>
 
-            <p class="text-warning">
+            <!--<p class="text-warning">
                 <small>If you don't save, your changes will be lost.</small>
-            </p>
+            </p>-->
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -68,11 +68,11 @@
             <h4 class="modal-title">Confirmation</h4>
         </div>
         <div class="modal-body">
-            <p>Do you want to save changes you made to document before closing?</p>
+            <p>Do you want to save the updates you made?</p>
 
-            <p class="text-warning">
-                <small>If you don't save, your changes will be lost.</small>
-            </p>
+            <!--<p class="text-warning">
+                <small>This will overwrite the details you saved before</small>
+            </p>-->
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -95,6 +95,9 @@
             <div>
                 <img ng-src="{{item}}" height="60px" width="70px" style="padding: 1px; cursor:pointer; margin-top: 10px" ng-repeat="item in productImages"
                      ng-click="calculateLeftDistance($index); setImageDescription($index)"/>
+            </div>
+            <div style="text-align: center">
+                <button class="btn btn-danger close-gallery">Close</button>
             </div>
         </div>
     </div>

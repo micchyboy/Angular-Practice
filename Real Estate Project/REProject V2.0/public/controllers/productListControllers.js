@@ -112,12 +112,12 @@ angular.module("sportsStore")
         }
 
     })
-    .directive("deleteConfirmation", function () {
+    .directive("deleteProductConfirmation", function () {
         return {
             link: function ($scope, $elem, $attrs) {
                 var content = document.querySelector("#deleteConfirmation").textContent.trim();
                 var listElem = angular.element(content);
-                var deleteButton = angular.element(listElem[0].querySelector(".delete-product"));
+                var deleteButton = angular.element(listElem[0].querySelector(".delete-item"));
 
                 $elem.on('click', function () {
                     $scope.$apply(function () {
@@ -137,6 +137,7 @@ angular.module("sportsStore")
                         deleteButton.on("click", function () {
                             $scope.deleteProduct($scope.item, $scope.$index);
                             $('#myModalContentOnly').modal('hide');
+                            deleteButton.off("click");
                         })
                     })
 

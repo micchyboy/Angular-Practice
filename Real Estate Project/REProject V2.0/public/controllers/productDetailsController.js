@@ -126,6 +126,11 @@ angular.module("sportsStore")
                             $('#myModal').off('shown.bs.modal');
                             $('#myModal .modal-body').html('');
                         });
+
+                        var closeBtn = angular.element(listElem[0].querySelector(".close-gallery"));
+                        closeBtn.on("click", function () {
+                            $('#myModal').modal('hide');
+                        })
                     })
 
                 });

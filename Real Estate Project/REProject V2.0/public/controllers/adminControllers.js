@@ -526,6 +526,39 @@ angular.module("sportsStore")
             }
         }
     })
+    .directive("deleteImageConfirmation", function () {
+        return {
+            link: function ($scope, $elem, $attrs) {
+                var content = document.querySelector("#deleteConfirmation").textContent.trim();
+                var listElem = angular.element(content);
+                var deleteButton = angular.element(listElem[0].querySelector(".delete-item"));
+
+                $elem.on('click', function () {
+                    $scope.$apply(function () {
+
+                        console.log("List Element: " + listElem);
+
+                        $('#myModalContentOnly').modal();
+                        $('#myModalContentOnly').on('shown.bs.modal', function () {
+                            $('#myModalContentOnly .modal-content').html(listElem[0]);
+                        });
+                        $('#myModalContentOnly').on('hidden.bs.modal', function () {
+                            $('#myModalContentOnly').off('shown.bs.modal');
+                            deleteButton.off("click");
+                            $('#myModalContentOnly .modal-content').html('');
+                        });
+
+                        deleteButton.on("click", function () {
+                            $scope.deleteProductImage($scope.item);
+                            $('#myModalContentOnly').modal('hide');
+                            deleteButton.off("click");
+                        })
+                    })
+
+                });
+            }
+        }
+    })
     /*.directive("requireExistingImage", function(){
      return {
      link: function($scope){

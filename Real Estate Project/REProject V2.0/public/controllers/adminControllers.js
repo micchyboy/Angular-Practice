@@ -189,15 +189,12 @@ angular.module("sportsStore")
                     beds: $scope.currentProduct.beds,
                     features: $scope.currentProduct.features,
                     details: $scope.currentProduct.details,
-                    galleryImages: $scope.currentProduct.galleryImages,
-                    primaryImage: $scope.currentProduct.primaryImage
+                    galleryImages: $scope.currentProduct.galleryImages
                 }
             }).then(function (result) {
                 deferred = [];
 //                console.log("Successfully saved product!! " + data);
                 console.log("Prooooooduct ID: " + result);
-
-                $scope.savePrimaryImage($scope.currentProduct._id, $scope.selectedPrimary);
 
                 $scope.myModel = {
                     username: $scope.data.user.username,
@@ -226,7 +223,7 @@ angular.module("sportsStore")
                                          $timeout(function () {
                                          $(".update-success").slideUp();
                                          }, 3000);*/
-
+                                        $scope.savePrimaryImage($scope.currentProduct._id, $scope.selectedPrimary);
                                         $scope.getProducts();
                                     }
                                 })
@@ -274,8 +271,6 @@ angular.module("sportsStore")
 //                console.log("Successfully saved product!! " + data);
                 console.log("Prooooooduct ID: " + result.data.productId);
 
-                $scope.savePrimaryImage(result.data.productId, $scope.selectedPrimary);
-
                 $scope.myModel = {
                     username: $scope.data.user.username,
                     productId: result.data.productId
@@ -304,7 +299,7 @@ angular.module("sportsStore")
                                          $timeout(function () {
                                          $(".create-success").slideUp();
                                          }, 3000);*/
-
+                                        $scope.savePrimaryImage(result.data.productId, $scope.selectedPrimary);
                                         $scope.getProducts();
                                     }
                                 })

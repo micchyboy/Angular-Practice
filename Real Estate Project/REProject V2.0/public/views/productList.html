@@ -234,6 +234,7 @@ select, a {
                 <div class="house-image" style="float: left; margin-right: 25px; margin-left: 10px">
 
                     <img ng-src="{{item.primaryImage}}">
+                    <span ng-hide="item.primaryImage"> <img ng-src="/images/gif/lg-loading-spinner.gif"></span>
                 </div>
 
                 <div style="float: left; width: 48%">

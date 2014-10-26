@@ -1,21 +1,4 @@
-<script type="text/ng-template" id="galleryTemplate">
-    <div id="slideshow-wrap">
-        <div id="slideshow-inner">
-            <ul ng-style="{'left' : leftDistance, 'width' : ulWidth}">
-                <li ng-repeat="item in galleryImages" ng-style="{'width' : liWidth}">
-                    <img ng-src="{{item.path}}"/>
-                </li>
-            </ul>
-        </div>
-        <div style="margin-top: 5px">
-            <div style="text-align: center; font-weight: bold; font-size: 25px"><span>{{imageDescription}}</span></div>
-            <div>
-                <img ng-src="{{item}}" height="60px" width="70px" style="padding: 1px; cursor:pointer; margin-top: 10px" ng-repeat="item in productImages"
-                 ng-click="calculateLeftDistance($index); setImageDescription($index)"/>
-            </div>
-        </div>
-    </div>
-</script>
+
 
 <style>
     .modal-dialog {

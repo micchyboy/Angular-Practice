@@ -111,4 +111,51 @@ angular.module("sportsStore")
             })
         }
 
+    })
+    .directive("deleteConfirmation", function () {
+        return {
+            link: function ($scope, $elem, $attrs) {
+                var content = document.querySelector("#deleteConfirmation").textContent.trim();
+                var listElem = angular.element(content);
+                var deleteButton = angular.element(listElem[0].querySelector(".delete-product"));
+
+                $elem.on('click', function () {
+                    $scope.$apply(function () {
+
+                        console.log("List Element: " + listElem);
+
+                        $('#myModalContentOnly').modal();
+                        $('#myModalContentOnly').on('shown.bs.modal', function () {
+                            $('#myModalContentOnly .modal-content').html(listElem[0]);
+                        });
+                        $('#myModalContentOnly').on('hidden.bs.modal', function () {
+                            $('#myModalContentOnly').off('shown.bs.modal');
+                            deleteButton.off("click");
+                            $('#myModalContentOnly .modal-content').html('');
+                        });
+
+                        deleteButton.on("click", function () {
+                            $scope.deleteProduct($scope.item, $scope.$index);
+                            $('#myModalContentOnly').modal('hide');
+                        })
+                    })
+
+                });
+            }
+        }
+    })
+    .directive("bindImageSrc", function(){
+        return {
+            link: function($scope, $elem, $attrs){
+                $attrs.$observe("ngSrc", function(value){
+                    if(value){
+                        console.log("Image src changed to: " + value);
+                        $attrs.$set("src", value);
+                    }
+                    else{
+                        //add the spinner
+                    }
+                })
+            }
+        }
     });

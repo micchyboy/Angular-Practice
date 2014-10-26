@@ -111,10 +111,10 @@ angular.module("sportsStore")
         }
 
         $scope.isPrimary = function (flag, arg) {
-            if(!$scope.selectedPrimary){
+            if (!$scope.selectedPrimary) {
                 var imagePath = $scope.currentProduct.primaryImage;
                 var filename;
-                if(imagePath) {
+                if (imagePath) {
                     filename = imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.length);
                 }
                 $scope.selectedPrimary = filename;
@@ -136,11 +136,11 @@ angular.module("sportsStore")
 
             }
 
-            if($scope.selectedFiles && $scope.selectedFiles.length > 0 && !$scope.currentProduct.primaryImage){
-                if($scope.selectedPrimary) {
+            if ($scope.selectedFiles && $scope.selectedFiles.length > 0 && !$scope.currentProduct.primaryImage) {
+                if ($scope.selectedPrimary) {
                     $scope.detailsForm.$setValidity("primaryImage", true);
                 }
-                else{
+                else {
                     $scope.detailsForm.$setValidity("primaryImage", false);
                 }
             }
@@ -424,6 +424,70 @@ angular.module("sportsStore")
                     order.products[i].count * order.products[i].price;
             }
             return total;
+        }
+    })
+    .directive("saveConfirmation", function () {
+        return {
+            link: function ($scope, $elem, $attrs) {
+                var content = document.querySelector("#saveConfirmation").textContent.trim();
+                var listElem = angular.element(content);
+                var saveButton = angular.element(listElem[0].querySelector(".save-product"));
+
+                $elem.on('click', function () {
+                    $scope.$apply(function () {
+
+                        console.log("List Element: " + listElem);
+
+                        $('#myModalContentOnly').modal();
+                        $('#myModalContentOnly').on('shown.bs.modal', function () {
+                            $('#myModalContentOnly .modal-content').html(listElem[0]);
+                        });
+                        $('#myModalContentOnly').on('hidden.bs.modal', function () {
+                            $('#myModalContentOnly').off('shown.bs.modal');
+                            saveButton.off("click");
+                            $('#myModalContentOnly .modal-content').html('');
+                        });
+
+                        saveButton.on("click", function () {
+                            $scope.saveProduct();
+                            $('#myModalContentOnly').modal('hide');
+                        })
+                    })
+
+                });
+            }
+        }
+    })
+    .directive("updateConfirmation", function () {
+        return {
+            link: function ($scope, $elem, $attrs) {
+                var content = document.querySelector("#updateConfirmation").textContent.trim();
+                var listElem = angular.element(content);
+                var updateButton = angular.element(listElem[0].querySelector(".update-product"));
+
+                $elem.on('click', function () {
+                    $scope.$apply(function () {
+
+                        console.log("List Element: " + listElem);
+
+                        $('#myModalContentOnly').modal();
+                        $('#myModalContentOnly').on('shown.bs.modal', function () {
+                            $('#myModalContentOnly .modal-content').html(listElem[0]);
+                        });
+                        $('#myModalContentOnly').on('hidden.bs.modal', function () {
+                            $('#myModalContentOnly').off('shown.bs.modal');
+                            updateButton.off("click");
+                            $('#myModalContentOnly .modal-content').html('');
+                        });
+
+                        updateButton.on("click", function () {
+                            $scope.updateProduct();
+                            $('#myModalContentOnly').modal('hide');
+                        })
+                    })
+
+                });
+            }
         }
     })
     .directive("simpleRepeater", function ($rootScope) {

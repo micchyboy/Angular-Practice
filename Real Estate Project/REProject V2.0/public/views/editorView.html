@@ -73,11 +73,12 @@
 
     <span ng-switch on="util.mode">
         <span ng-switch-when="update">
-            <button class="btn btn-primary" ng-click="updateProduct()" ng-disabled="detailsForm.$invalid">Update
+            <button class="btn btn-primary" update-confirmation ng-disabled="detailsForm.$invalid">Update
             </button>
         </span>
         <span ng-switch-default>
-            <button class="btn btn-primary" ng-click="saveProduct()" ng-disabled="detailsForm.$invalid">Save</button>
+            <!--<button class="btn btn-primary" ng-click="saveProduct()" ng-disabled="detailsForm.$invalid">Save</button>-->
+            <button class="btn btn-primary" save-confirmation ng-disabled="detailsForm.$invalid">Save</button>
         </span>
     </span>
     <!--<button class="btn btn-danger" ng-click="cancelEdit()">Clear All</button>-->
@@ -256,7 +257,7 @@
             <div class="panel-body">
                 <div>
                     <!--<label>Upload images:</label>-->
-                    <input  type="file" name="filez" ng-model="filez" ng-file-select="onFileSelect($files)" multiple
+                    <input type="file" name="filez" ng-model="filez" ng-file-select="onFileSelect($files)" multiple
                            onclick="this.value=null"
                            onchange="angular.element(this).scope().$apply('imageDescriptions = []');">
 
@@ -272,8 +273,10 @@
                                 <!--<p>Primary Image <input type="radio"></p>-->
                                 <p><input type="text" ng-model="imageDescriptions[$index]"
                                           style="width: 100%" placeholder="Description"/></p>
+
                                 <p>
-                                    <a class="btn btn-default btn-sm" ng-class="{'btn-primary' : isPrimary('N', f.name)}"
+                                    <a class="btn btn-default btn-sm"
+                                       ng-class="{'btn-primary' : isPrimary('N', f.name)}"
                                        ng-click="setNewPrimary(f.name)" role="button">
                                         Primary
                                     </a>
@@ -316,6 +319,7 @@
                             <!--<p>Primary Image <input type="radio"></p>-->
                             <p><input type="text" ng-model="item.imageDescription"
                                       style="width: 100%" placeholder="Description"/></p>
+
                             <p>
                                 <a class="btn btn-default btn-sm" ng-class="{'btn-primary' : isPrimary('E', item.path)}"
                                    ng-click="setExistingPrimary(item)" role="button">
@@ -340,7 +344,6 @@
 </div>
 
 
-
-
 </form>
 </div>
+

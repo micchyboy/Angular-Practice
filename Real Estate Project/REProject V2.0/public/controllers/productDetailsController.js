@@ -111,7 +111,7 @@ angular.module("sportsStore")
                     scope.$apply(function () {
                         scope.src = scope.currentImage;
                         console.log(scope.productImages.length);
-                        var content = document.querySelector("#galleryTemplate").outerText;
+                        var content = document.querySelector("#galleryTemplate").textContent.trim();
                         var listElem = angular.element(content);
                         var compileFn = $compile(listElem);
                         compileFn(scope);
@@ -123,6 +123,7 @@ angular.module("sportsStore")
                             $('#myModal .modal-body').html(listElem[0]);
                         });
                         $('#myModal').on('hidden.bs.modal', function () {
+                            $('#myModal').off('shown.bs.modal');
                             $('#myModal .modal-body').html('');
                         });
                     })

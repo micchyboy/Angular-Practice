@@ -233,7 +233,7 @@ select, a {
                 <!--ng-click="redirectPage('/details',item)">-->
                 <div class="house-image" style="float: left; margin-right: 25px; margin-left: 10px">
 
-                    <img ng-src="{{item.primaryImage}}">
+                    <img ng-src="{{item.primaryImage}}" bind-image-src>
                 </div>
 
                 <div style="float: left; width: 48%">
@@ -251,7 +251,7 @@ select, a {
                                 <input type="image" src="/images/icons/edit-icon.png" ng-click="editProduct(item);"/>
                             </div>
                             <div>
-                                <input type="image" src="/images/icons/delete-icon.png" ng-click="deleteProduct(item, $index);"/>
+                                <input type="image" src="/images/icons/delete-icon.png" delete-confirmation />
                             </div>
                         </div>
                         <div id="adder">
@@ -366,7 +366,7 @@ select, a {
     </div>
     <div class="col-md-6 col-lg-6" id="main">
         <div ng-hide="util.currentProduct._id">
-            <span style="font-size: 30px">Click Any Product To See Details</span>
+            <!--<span style="font-size: 30px">Click Any Product To See Details</span>-->
         </div>
         <!--For fixed details view on right page-->
         <!--<div ng-if="util.currentProduct.id"  style="position: fixed; width: 40%" class="details-view">

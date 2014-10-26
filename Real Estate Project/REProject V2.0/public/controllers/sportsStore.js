@@ -233,10 +233,10 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
             link: function (scope, elem, attrs) {
                 elem.on("click", function (e) {
 
-                    if (e.target.innerText == "Log In") {
+                    if (e.target.textContent.trim() == "Log In") {
                         scope.showSignUpForm = false;
                     }
-                    else if (e.target.innerText == "Sign Up") {
+                    else if (e.target.textContent.trim() == "Sign Up") {
                         scope.showSignUpForm = true;
                     }
                     else {
@@ -253,6 +253,7 @@ angular.module("sportsStore", ["customFilters", "cart", "ngRoute", "ngAnimate", 
                         $('#myModal .modal-body').html(listElem);
                     });
                     $('#myModal').on('hidden.bs.modal', function () {
+                        $('#myModal').off('shown.bs.modal');
                         $('#myModal .modal-body').html('');
                     });
                     scope.$on("authSuccess", function(){

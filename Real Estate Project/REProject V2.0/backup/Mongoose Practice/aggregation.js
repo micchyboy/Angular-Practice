@@ -159,6 +159,7 @@ mongoose.model('Users').find({username: "jethro"}
     }
 )*/
 
+
 mongoose.model('Users').update(
     {
         "products.galleryImages.imageDescription": "penguin"

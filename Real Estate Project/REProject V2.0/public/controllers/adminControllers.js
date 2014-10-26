@@ -91,6 +91,15 @@ angular.module("sportsStore")
              }*/
         }
 
+        $scope.removeSelectedFile = function(file){
+            if($scope.selectedPrimary == file.name){
+                $scope.selectedPrimary = "";
+            }
+            var index = $scope.selectedFiles.indexOf(file);
+            $scope.selectedFiles.splice(index, 1);
+            $scope.dataUrls.splice(index, 1);
+        }
+
         $scope.containsImages = function () {
             var hasImage = ($scope.selectedFiles && $scope.selectedFiles.length > 0) ||
                 ($scope.currentProduct.galleryImages && $scope.currentProduct.galleryImages.length > 0);

@@ -208,7 +208,7 @@
                      ng-show="util.currentProduct.features && util.currentProduct.features.length > 0"
                      style="min-height: 100px; font-size: 12px; font-family: 'proxima-nova', sans-serif; color: #333333;">
                     <ul class="row">
-                        <li class="col-md-6 col-lg-6" ng-repeat="item in util.currentProduct.features">{{item}}</li>
+                        <li class="col-md-6 col-lg-6" ng-repeat="item in util.currentProduct.features track by $index">{{item}}</li>
 
                     </ul>
                 </div>

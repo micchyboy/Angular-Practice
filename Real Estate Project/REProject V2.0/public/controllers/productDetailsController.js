@@ -67,17 +67,23 @@ angular.module("sportsStore")
             arr.unshift(item)
         }
 
-        (function (data, multiples) {
-            var temp = angular.copy(data);
-            var result = [];
-            var times = Math.ceil(temp.length / multiples);
-            for (var i = 0; i < times; i++) {
-                var a = temp.splice(0, multiples);
-                result.push(a);
-            }
+        $scope.$watch("util.currentProduct", function(){
+            (function(data, multiples) {
+                var temp = angular.copy(data);
+                var result = [];
+                var times = Math.ceil(temp.length / multiples);
+                for (var i = 0; i < times; i++) {
+                    var a = temp.splice(0, multiples);
+                    result.push(a);
+                }
 
-            $scope.filteredDetails = result;
-        })($scope.util.currentProduct.details, 2);
+                $scope.filteredDetails = result;
+            })($scope.util.currentProduct.details, 2);
+        })
+       /* $scope.filterDetails = function(data, multiples) {
+
+            return $scope.filteredDetails;
+        };*///($scope.util.currentProduct.details, 2);
 
     }).directive("modalGallery", function ($compile) {
         console.log("Entered modal directive");

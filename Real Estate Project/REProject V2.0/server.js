@@ -100,7 +100,7 @@ app.post('/login',
         console.log("CMOOOOOOOOOON!!")
         // If this function gets called, authentication was successful.
         // `req.user` contains the authenticated user.
-        console.log("My User object: " + req.user)
+//        console.log("My User object: " + req.user)
         res.json({
             isAuthenticated: req.isAuthenticated(),
             user: req.user
@@ -110,11 +110,20 @@ app.post('/login',
 app.get('/logout', function (req, res) {
     console.log("Logging out..")
     req.session.destroy(function (err) {
-        res.redirect('/'); //Inside a callback… bulletproof!
+        console.log("Destroyed session.");
+        res.send('Session deleted'); //Inside a callback… bulletproof!
+        /*if(err){
+            console.log("Error: " + err);
+            res.status(500).send(err.message);
+        }
+        else{
+            res.end("Destroyed session.");
+        }*/
     });
 });
 
 app.get('/', function (req, res) {
+    console.log("Routing to main page..")
     res.redirect('/app.html');
 });
 

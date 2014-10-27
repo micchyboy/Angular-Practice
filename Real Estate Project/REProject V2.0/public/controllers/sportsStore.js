@@ -1,5 +1,5 @@
 var resolve = {
-    delay: function($q, $timeout) {
+    delay: function ($q, $timeout) {
         console.log("delay");
         var delay = $q.defer();
         $timeout(delay.resolve, 0, false);
@@ -14,8 +14,8 @@ angular.module("sportsStore", ["customFilters", "ngRoute", "ngAnimate", "angular
             resolve: resolve
         });
         /*$routeProvider.when("/details", {
-            templateUrl: "/views/productDetails.html"
-        });*/
+         templateUrl: "/views/productDetails.html"
+         });*/
         $routeProvider.when("/editor", {
             templateUrl: "/views/editorView.html",
             resolve: resolve
@@ -35,21 +35,21 @@ angular.module("sportsStore", ["customFilters", "ngRoute", "ngAnimate", "angular
     .constant("dataUrl", "http://192.168.1.100:5501/jethro/products")
     .constant("authUrl", "http://192.168.1.100:5501/login")
     .constant("logOutUrl", "http://192.168.1.100:5501/logout")
-    .constant("signUpUrl","http://192.168.1.100:5501/signup")
+    .constant("signUpUrl", "http://192.168.1.100:5501/signup")
     .constant("createUrl", "http://192.168.1.100:5501/create")
     .constant("deleteUrl", "http://192.168.1.100:5501/delete")
     .constant("deleteImageUrl", "http://192.168.1.100:5501/delete_image")
     .constant("updateUrl", "http://192.168.1.100:5501/update")
     .constant("uploadUrl", "http://192.168.1.100:5501/upload")
-    .constant("ordersUrl","http://192.168.1.100:5501/orders")
+    .constant("ordersUrl", "http://192.168.1.100:5501/orders")
     .constant("primaryImageUrl", "http://192.168.1.100:5501/primary_image")
     .config(function ($locationProvider) {
-        /* if (window.history && history.pushState) {
-         $locationProvider.html5Mode(true);
-         }*/
+        if (window.history && history.pushState) {
+            $locationProvider.html5Mode(true);
+        }
     })
-    .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl,
-                                             $anchorScroll, $timeout, anchorSmoothScroll, authService) {
+    .controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl, $anchorScroll,
+                                             $timeout, anchorSmoothScroll, authService) {
         $scope.data = {
         };
         $scope.util = {};
@@ -71,27 +71,32 @@ angular.module("sportsStore", ["customFilters", "ngRoute", "ngAnimate", "angular
                 console.log("Redirect to login page..")
                 $location.path("/products");
             }
-            else{
+            else {
                 $scope.data.user = authService.getData("user");
             }
         });
 
         $scope.logout = function () {
             console.log("Logging out..")
-            authService.logOut().then(function () {
+            authService.logOut().then(function (data) {
                 authService.removeData("user");
                 authService.removeData("isAuthenticated");
 
+                console.log(data);
+
                 $(".logout-success").slideDown();
-                $timeout(function(){
+                $timeout(function () {
                     $(".logout-success").slideUp();
-                },3000);
+                }, 3000);
+
+                $location.path("/");
             }, function (error) {
+                console.log("Error logging out..");
                 $scope.authenticationError = error;
             });
         }
 
-        $scope.getProducts = function(){
+        $scope.getProducts = function () {
             $http.get(dataUrl)
                 .success(function (data) {
                     for (var i in data) {
@@ -149,7 +154,7 @@ angular.module("sportsStore", ["customFilters", "ngRoute", "ngAnimate", "angular
 
         //for sliding content
         var oldLocation = '';
-        $scope.$on('$routeChangeStart', function(angularEvent, next) {
+        $scope.$on('$routeChangeStart', function (angularEvent, next) {
             console.log("routeChangeStart");
             var isDownwards = true;
             if (next && next.$$route) {
@@ -194,18 +199,18 @@ angular.module("sportsStore", ["customFilters", "ngRoute", "ngAnimate", "angular
             var difference_days = Math.round(difference_ms / one_day);
             // Convert back to days and return
             var desc = "";
-            if(difference_days < 0){
+            if (difference_days < 0) {
                 return "Added now";
             }
             else if (difference_days == 0) {
-                if(difference_hours == 0){
-                    if(difference_mins == 0){
+                if (difference_hours == 0) {
+                    if (difference_mins == 0) {
                         return "Added now"
                     }
-                    var minutesStr = difference_mins == 1 ? "Added 1 minute ago" :  "Added " + difference_mins + " minutes ago";
+                    var minutesStr = difference_mins == 1 ? "Added 1 minute ago" : "Added " + difference_mins + " minutes ago";
                     return minutesStr;
                 }
-                var hoursStr = difference_hours == 1 ? "Added 1 hour ago" :  "Added " + difference_hours + " hours ago";
+                var hoursStr = difference_hours == 1 ? "Added 1 hour ago" : "Added " + difference_hours + " hours ago";
                 return hoursStr;
             }
             else if (difference_days == 1) {
@@ -246,7 +251,7 @@ angular.module("sportsStore", ["customFilters", "ngRoute", "ngAnimate", "angular
                         $('#myModal').off('shown.bs.modal');
                         $('#myModal .modal-body').html('');
                     });
-                    scope.$on("authSuccess", function(){
+                    scope.$on("authSuccess", function () {
                         $('#myModal').modal('hide');
                     });
 

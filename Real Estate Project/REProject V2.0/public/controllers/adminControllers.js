@@ -30,6 +30,11 @@ angular.module("sportsStore")
             }).success(function (data) {
 //                console.log("Success" + data);
                 $scope.accountCreated = true;
+                $(".signup-success").slideDown();
+                $timeout(function () {
+                    $(".signup-success").slideUp();
+                }, 3000);
+                $scope.$emit("authSuccess");
 //                $scope.authenticate(data.username, data.password)
             }).error(function (error) {
                 console.log("Error is: " + error);

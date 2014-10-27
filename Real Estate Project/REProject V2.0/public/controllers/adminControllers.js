@@ -142,7 +142,7 @@ angular.module("sportsStore")
 
             $scope.setExistingPrimary = function (item) {
                 $scope.primaryImage = null;
-                $scope.currentProduct.primaryImage = item.path;
+                $scope.currentProduct.primaryImage = $scope.convertToThumbnailSize(item.path);
 
                 var filename = item.path.substring(item.path.lastIndexOf("/") + 1, item.path.length);
                 $scope.selectedPrimary = filename;
@@ -189,7 +189,8 @@ angular.module("sportsStore")
                     beds: $scope.currentProduct.beds,
                     features: $scope.currentProduct.features,
                     details: $scope.currentProduct.details,
-                    galleryImages: $scope.currentProduct.galleryImages
+                    galleryImages: $scope.currentProduct.galleryImages,
+                    primaryImage: $scope.currentProduct.primaryImage
                 }
             }).then(function (result) {
                 deferred = [];

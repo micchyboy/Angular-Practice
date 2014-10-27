@@ -31,18 +31,18 @@ angular.module("sportsStore", ["customFilters", "ngRoute", "ngAnimate", "angular
     .run(function ($templateCache, $http) {
         $http.get('/views/adminLogin.html', {cache: $templateCache});
     })
-    .constant("domain", "http://192.168.1.100:5501")
-    .constant("dataUrl", "http://192.168.1.100:5501/jethro/products")
-    .constant("authUrl", "http://192.168.1.100:5501/login")
-    .constant("logOutUrl", "http://192.168.1.100:5501/logout")
-    .constant("signUpUrl", "http://192.168.1.100:5501/signup")
-    .constant("createUrl", "http://192.168.1.100:5501/create")
-    .constant("deleteUrl", "http://192.168.1.100:5501/delete")
-    .constant("deleteImageUrl", "http://192.168.1.100:5501/delete_image")
-    .constant("updateUrl", "http://192.168.1.100:5501/update")
-    .constant("uploadUrl", "http://192.168.1.100:5501/upload")
-    .constant("ordersUrl", "http://192.168.1.100:5501/orders")
-    .constant("primaryImageUrl", "http://192.168.1.100:5501/primary_image")
+    .constant("domain", "http://192.168.254.101:5501")
+    .constant("dataUrl", "http://192.168.254.101:5501/jethro/products")
+    .constant("authUrl", "http://192.168.254.101:5501/login")
+    .constant("logOutUrl", "http://192.168.254.101:5501/logout")
+    .constant("signUpUrl", "http://192.168.254.101:5501/signup")
+    .constant("createUrl", "http://192.168.254.101:5501/create")
+    .constant("deleteUrl", "http://192.168.254.101:5501/delete")
+    .constant("deleteImageUrl", "http://192.168.254.101:5501/delete_image")
+    .constant("updateUrl", "http://192.168.254.101:5501/update")
+    .constant("uploadUrl", "http://192.168.254.101:5501/upload")
+    .constant("ordersUrl", "http://192.168.254.101:5501/orders")
+    .constant("primaryImageUrl", "http://192.168.254.101:5501/primary_image")
     .config(function ($locationProvider) {
         if (window.history && history.pushState) {
             $locationProvider.html5Mode(true);
@@ -148,6 +148,11 @@ angular.module("sportsStore", ["customFilters", "ngRoute", "ngAnimate", "angular
         $scope.convertToGallerySize = function (thumbnail) {
             var thumbPath = "/images/thumbnails";
             return thumbnail.replace(thumbPath, "/images/gallery");
+        }
+
+        $scope.convertToThumbnailSize = function (gallery) {
+            var galleryPath = "/images/gallery";
+            return gallery.replace(galleryPath, "/images/thumbnails");
         }
 
         $scope.getProducts();
